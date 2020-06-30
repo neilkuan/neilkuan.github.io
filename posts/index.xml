@@ -20,14 +20,5 @@
       <description>&lt;h1 id=&#34;lolbanner-&#34;&gt;LoLBanner ~~&lt;/h1&gt;</description>
     </item>
     
-    <item>
-      <title>My First Post</title>
-      <link>https://blog.neilkuan.dev/posts/my-first-post/</link>
-      <pubDate>Sun, 28 Jun 2020 22:33:16 +0800</pubDate>
-      
-      <guid>https://blog.neilkuan.dev/posts/my-first-post/</guid>
-      <description></description>
-    </item>
-    
   </channel>
 </rss>

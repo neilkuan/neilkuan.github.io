@@ -21,15 +21,6 @@
     </item>
     
     <item>
-      <title>My First Post</title>
-      <link>https://blog.neilkuan.dev/posts/my-first-post/</link>
-      <pubDate>Sun, 28 Jun 2020 22:33:16 +0800</pubDate>
-      
-      <guid>https://blog.neilkuan.dev/posts/my-first-post/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Least privilege ?! IAM Role For Service Account (IRSA)</title>
       <link>https://blog.neilkuan.dev/aws/2020-04-22-aws-iam-role-for-eks-service-account/</link>
       <pubDate>Wed, 22 Apr 2020 18:00:00 +0000</pubDate>
