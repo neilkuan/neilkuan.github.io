@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>IAM on Neil Blog</title>
+    <link>https://blog.neilkuan.dev/tags/iam/</link>
+    <description>Recent content in IAM on Neil Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 22 Apr 2020 18:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.neilkuan.dev/tags/iam/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Least privilege ?! IAM Role For Service Account (IRSA)</title>
+      <link>https://blog.neilkuan.dev/aws/2020-04-22-aws-iam-role-for-eks-service-account/</link>
+      <pubDate>Wed, 22 Apr 2020 18:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/aws/2020-04-22-aws-iam-role-for-eks-service-account/</guid>
+      <description>&lt;p&gt;Least privilege ?! IAM Role For Service Account (IRSA)&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
