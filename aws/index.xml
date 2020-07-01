@@ -12,6 +12,15 @@
     
     
     <item>
+      <title>AWS S3 Private endpoint</title>
+      <link>https://blog.neilkuan.dev/aws/aws_s3_private_endpoint/</link>
+      <pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/aws/aws_s3_private_endpoint/</guid>
+      <description>&lt;h1 id=&#34;aws-s3-private-endpoint&#34;&gt;AWS S3 Private endpoint&lt;/h1&gt;</description>
+    </item>
+    
+    <item>
       <title>Let’s Encrypt</title>
       <link>https://blog.neilkuan.dev/aws/certbot_lets_encrypt_create_ca_aws_route53/</link>
       <pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
