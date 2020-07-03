@@ -227,10 +227,11 @@ Certbot 提供相當完整的安裝指引，到 <a href="https://certbot.eff.org
 <p><a href="https://certbot-dns-route53.readthedocs.io/en/stable/">https://certbot-dns-route53.readthedocs.io/en/stable/</a></p>
 <blockquote>
 <p>現在假設您的執行環境是 EC2 (ubuntu) , EC2 的 IAM Role 也已 attach 上述的 IAM Policy 。
-# run image and set .aws default config in container
-$ docker run -it &ndash;rm -v ~ &ndash;entrypoint ash certbot/dns-route53</p>
+# run image and set .aws default config in container</p>
 </blockquote>
-<pre><code># 將YOUR_DOMAIN 換成您拖管在 route53 的 domain name , YOUR_EMAIL 換成您的 Email。
+<pre><code>$ docker run -it --rm -v ~ --entrypoint ash certbot/dns-route53
+
+# 將YOUR_DOMAIN 換成您拖管在 route53 的 domain name , YOUR_EMAIL 換成您的 Email。
 # 進入 container 內。
 certbot certonly --agree-tos \
    --dns-route53 \
