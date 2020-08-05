@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Neil Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 17 Jul 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 04 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://blog.neilkuan.dev/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>超炫砲 LoLBanner ~~</title>
+      <link>https://blog.neilkuan.dev/posts/2020-08-04-building-docker-images-with-kaniko/</link>
+      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/posts/2020-08-04-building-docker-images-with-kaniko/</guid>
+      <description>&lt;h1 id=&#34;kaniko-&#34;&gt;Kaniko ~~&lt;/h1&gt;</description>
+    </item>
     
     <item>
       <title>CDK for Terraform Amazing</title>

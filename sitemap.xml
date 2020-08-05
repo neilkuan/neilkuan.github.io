@@ -3,6 +3,83 @@
       
       
 	  <url>
+	    <loc>https://blog.neilkuan.dev/tags/cicd/</loc>
+	    <lastmod>2020-08-04</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
+	    <loc>https://blog.neilkuan.dev/tags/docker/</loc>
+	    <lastmod>2020-08-04</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
+	    <loc>https://blog.neilkuan.dev/tags/kaniko/</loc>
+	    <lastmod>2020-08-04</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
+	    <loc>https://blog.neilkuan.dev/</loc>
+	    <lastmod>2020-08-04</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
+	    <loc>https://blog.neilkuan.dev/posts/</loc>
+	    <lastmod>2020-08-04</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
+	    <loc>https://blog.neilkuan.dev/tags/</loc>
+	    <lastmod>2020-08-04</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
+	    <loc>https://blog.neilkuan.dev/posts/2020-08-04-building-docker-images-with-kaniko/</loc>
+	    <lastmod>2020-08-04</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
 	    <loc>https://blog.neilkuan.dev/tags/cdk/</loc>
 	    <lastmod>2020-07-17</lastmod>
         
@@ -15,50 +92,6 @@
       
 	  <url>
 	    <loc>https://blog.neilkuan.dev/posts/cdk_for_terraform_amazing_docker/</loc>
-	    <lastmod>2020-07-17</lastmod>
-        
-
-        
-	  </url>
-	  
-  
-      
-      
-	  <url>
-	    <loc>https://blog.neilkuan.dev/tags/docker/</loc>
-	    <lastmod>2020-07-17</lastmod>
-        
-
-        
-	  </url>
-	  
-  
-      
-      
-	  <url>
-	    <loc>https://blog.neilkuan.dev/</loc>
-	    <lastmod>2020-07-17</lastmod>
-        
-
-        
-	  </url>
-	  
-  
-      
-      
-	  <url>
-	    <loc>https://blog.neilkuan.dev/posts/</loc>
-	    <lastmod>2020-07-17</lastmod>
-        
-
-        
-	  </url>
-	  
-  
-      
-      
-	  <url>
-	    <loc>https://blog.neilkuan.dev/tags/</loc>
 	    <lastmod>2020-07-17</lastmod>
         
 

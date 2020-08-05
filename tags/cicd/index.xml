@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>DOCKER on Neil Blog</title>
-    <link>https://blog.neilkuan.dev/tags/docker/</link>
-    <description>Recent content in DOCKER on Neil Blog</description>
+    <title>CICD on Neil Blog</title>
+    <link>https://blog.neilkuan.dev/tags/cicd/</link>
+    <description>Recent content in CICD on Neil Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 04 Aug 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://blog.neilkuan.dev/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://blog.neilkuan.dev/tags/cicd/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>https://blog.neilkuan.dev/posts/2020-08-04-building-docker-images-with-kaniko/</guid>
       <description>&lt;h1 id=&#34;kaniko-&#34;&gt;Kaniko ~~&lt;/h1&gt;</description>
-    </item>
-    
-    <item>
-      <title>CDK for Terraform Amazing</title>
-      <link>https://blog.neilkuan.dev/posts/cdk_for_terraform_amazing_docker/</link>
-      <pubDate>Fri, 17 Jul 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.dev/posts/cdk_for_terraform_amazing_docker/</guid>
-      <description>&lt;h1 id=&#34;cdk-for-terraform-&#34;&gt;CDK for Terraform ~~&lt;/h1&gt;</description>
     </item>
     
   </channel>

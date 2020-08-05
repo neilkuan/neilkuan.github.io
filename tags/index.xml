@@ -6,10 +6,37 @@
     <description>Recent content in Tags on Neil Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 17 Jul 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 04 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://blog.neilkuan.dev/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>CICD</title>
+      <link>https://blog.neilkuan.dev/tags/cicd/</link>
+      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/tags/cicd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DOCKER</title>
+      <link>https://blog.neilkuan.dev/tags/docker/</link>
+      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kaniko</title>
+      <link>https://blog.neilkuan.dev/tags/kaniko/</link>
+      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/tags/kaniko/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>CDK</title>
@@ -17,15 +44,6 @@
       <pubDate>Fri, 17 Jul 2020 00:00:00 +0000</pubDate>
       
       <guid>https://blog.neilkuan.dev/tags/cdk/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>DOCKER</title>
-      <link>https://blog.neilkuan.dev/tags/docker/</link>
-      <pubDate>Fri, 17 Jul 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.dev/tags/docker/</guid>
       <description></description>
     </item>
     
