@@ -3,6 +3,17 @@
       
       
 	  <url>
+	    <loc>https://blog.neilkuan.dev/posts/2020-08-04-building-docker-images-with-kaniko/</loc>
+	    <lastmod>2020-08-04</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
 	    <loc>https://blog.neilkuan.dev/tags/cicd/</loc>
 	    <lastmod>2020-08-04</lastmod>
         
@@ -59,17 +70,6 @@
       
 	  <url>
 	    <loc>https://blog.neilkuan.dev/tags/</loc>
-	    <lastmod>2020-08-04</lastmod>
-        
-
-        
-	  </url>
-	  
-  
-      
-      
-	  <url>
-	    <loc>https://blog.neilkuan.dev/posts/2020-08-04-building-docker-images-with-kaniko/</loc>
 	    <lastmod>2020-08-04</lastmod>
         
 
