@@ -27,7 +27,7 @@
 <meta itemprop="description" content="Let’s Encrypt">
 <meta itemprop="datePublished" content="2020-05-17T10:00:00+00:00" />
 <meta itemprop="dateModified" content="2020-05-17T10:00:00+00:00" />
-<meta itemprop="wordCount" content="309">
+<meta itemprop="wordCount" content="307">
 
 
 
@@ -230,7 +230,7 @@ Certbot 提供相當完整的安裝指引，到 <a href="https://certbot.eff.org
 <p>現在假設您的執行環境是 EC2 (ubuntu) , EC2 的 IAM Role 也已 attach 上述的 IAM Policy 。
 # run image and set .aws default config in container</p>
 </blockquote>
-<pre><code>$ docker run -it --rm -v ~ --entrypoint ash certbot/dns-route53
+<pre><code>$ docker run -it --rm  --entrypoint ash certbot/dns-route53
 
 # 將YOUR_DOMAIN 換成您拖管在 route53 的 domain name , YOUR_EMAIL 換成您的 Email。
 # 進入 container 內。
