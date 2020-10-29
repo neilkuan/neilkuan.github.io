@@ -1,33 +1,106 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Neil Blog</title><link>https://blog.neilkuan.dev/posts/</link><description>Recent content in Posts on Neil Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 26 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Introducing GitHub Container Registry !!!</title><link>https://blog.neilkuan.dev/2020/github-container-registry/</link><pubDate>Sat, 26 Sep 2020 00:00:00 +0000</pubDate><guid>https://blog.neilkuan.dev/2020/github-container-registry/</guid><description>Github Container Registry source new : https://github.blog/2020-09-01-introducing-github-container-registry/
-自去年發布GitHub Packages以來，已經從GitHub下載了數億個軟件包，其中Docker是Packages中僅次於npm的第二受歡迎的ecosystem，儘管GitHub Packages已經為團隊提供了更大的軟件供應鏈可追溯性，但如今，GitHub 正在添加新功能，以改善它通過GitHub Container Registry為開發人員提供的體驗和性能。
-Introducing GitHub Container Registry GitHub Container Registry現已作為公共Beta發布，它改進了我們在GitHub Packages中處理容器的方式。通過今天引入的新功能，您可以更好地實施訪問策略，鼓勵使用標準 base image，並通過在整個 organization 中更輕鬆地共享來促進內部使用。並且提供了開源專案可以拜放 container 的地方for free .
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Neil Blog</title>
+    <link>https://blog.neilkuan.dev/posts/</link>
+    <description>Recent content in Posts on Neil Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 26 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introducing GitHub Container Registry !!!</title>
+      <link>https://blog.neilkuan.dev/2020/github-container-registry/</link>
+      <pubDate>Sat, 26 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/2020/github-container-registry/</guid>
+      <description>Github Container Registry source new : https://github.blog/2020-09-01-introducing-github-container-registry/
+ 自去年發布GitHub Packages以來，已經從GitHub下載了數億個軟件包，其中Docker是Packages中僅次於npm的第二受歡迎的ecosystem，儘管GitHub Packages已經為團隊提供了更大的軟件供應鏈可追溯性，但如今，GitHub 正在添加新功能，以改善它通過GitHub Container Registry為開發人員提供的體驗和性能。
+ Introducing GitHub Container Registry GitHub Container Registry現已作為公共Beta發布，它改進了我們在GitHub Packages中處理容器的方式。通過今天引入的新功能，您可以更好地實施訪問策略，鼓勵使用標準 base image，並通過在整個 organization 中更輕鬆地共享來促進內部使用。並且提供了開源專案可以拜放 container 的地方for free .
 廢話結束 ，那麼要怎麼做才能 在 Github Container Registry 上面擺放 Public image 給予他人來下載勒
-首先準備 github access token (以下為需要的權限) Select the read:packages scope to download container images and read their metadata. Select the write:packages scope to download and upload container images and read and write their metadata.</description></item><item><title>Building Docker images with Kaniko !!!</title><link>https://blog.neilkuan.dev/2020/building-docker-images-with-kaniko/</link><pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate><guid>https://blog.neilkuan.dev/2020/building-docker-images-with-kaniko/</guid><description>Kaniko !!! Building Docker images with Kaniko kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster. kaniko solves two problems with using the Docker-in-Docker build method:
-Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow. When building an image with kaniko and CI/CD, you should be aware of a few important details:</description></item><item><title>CDK for Terraform Amazing</title><link>https://blog.neilkuan.dev/2020/cdk_for_terraform_amazing_docker/</link><pubDate>Fri, 17 Jul 2020 00:00:00 +0000</pubDate><guid>https://blog.neilkuan.dev/2020/cdk_for_terraform_amazing_docker/</guid><description>source: https://learn.hashicorp.com/terraform/cdktf/cdktf-install
+ 首先準備 github access token (以下為需要的權限)  Select the read:packages scope to download container images and read their metadata. Select the write:packages scope to download and upload container images and read and write their metadata.</description>
+    </item>
+    
+    <item>
+      <title>Building Docker images with Kaniko !!!</title>
+      <link>https://blog.neilkuan.dev/2020/building-docker-images-with-kaniko/</link>
+      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/2020/building-docker-images-with-kaniko/</guid>
+      <description>Kaniko !!! Building Docker images with Kaniko kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster. kaniko solves two problems with using the Docker-in-Docker build method:
+ Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow.  When building an image with kaniko and CI/CD, you should be aware of a few important details:</description>
+    </item>
+    
+    <item>
+      <title>CDK for Terraform Amazing</title>
+      <link>https://blog.neilkuan.dev/2020/cdk_for_terraform_amazing_docker/</link>
+      <pubDate>Fri, 17 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/2020/cdk_for_terraform_amazing_docker/</guid>
+      <description>source: https://learn.hashicorp.com/terraform/cdktf/cdktf-install
 source: https://www.hashicorp.com/blog/cdk-for-terraform-enabling-python-and-typescript-support/
 On Linux Install Terraform Download package : https://www.terraform.io/downloads.html
-# linux x86 $ wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip $ unzip terraform_0.12.28_linux_amd64.zip $ echo $PATH $ chmod +x terraform $ sudo mv terraform /usr/local/bin/ Install CDK for Terraform
+# linux x86  $ wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip $ unzip terraform_0.12.28_linux_amd64.zip $ echo $PATH $ chmod +x terraform $ sudo mv terraform /usr/local/bin/ Install CDK for Terraform
 https://learn.hashicorp.com/terraform/cdktf/cdktf-install#quick-start-tutorial
-$ npm install --global cdktf-cli $ npm install --global cdktf-cli@next # Test cdktf $ cdktf $ cdktf deploy --help $ mkdir typescript-docker &amp;amp;&amp;amp; cd $_ $ cdktf init --template=typescript --local # modify origin cdktf.</description></item><item><title>超炫砲 LoLBanner ~~</title><link>https://blog.neilkuan.dev/2020/lolbanner/</link><pubDate>Mon, 29 Jun 2020 10:00:00 +0000</pubDate><guid>https://blog.neilkuan.dev/2020/lolbanner/</guid><description>前言： 我的環境是 mac os 如果是其他系統 裝起來應該大同小異 可以參考 https://www.tecmint.com/lolcat-command-to-output-rainbow-of-colors-in-linux-terminal/
-lolcat is a ruby gem hence it is essential to have latest version of RUBY installed on your system.
-首先利用 brew 安裝 必要的套件
-沒有 homebrew 請先安裝 ckick here
-# 如果沒有 ruby 請先安裝 ruby $ brew install ruby $ brew install figlet $ brew install lolcat 創建front 資料夾，並進入
-$ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-fonts 到 https://github.com/xero/figlet-fonts 選取你想要的 主題，我選的是 3d.</description></item><item><title>AWS S3 Private endpoint</title><link>https://blog.neilkuan.dev/2020/aws_s3_private_endpoint/</link><pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate><guid>https://blog.neilkuan.dev/2020/aws_s3_private_endpoint/</guid><description>原文：https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-private-connection-no-authentication/
+$ npm install --global cdktf-cli $ npm install --global cdktf-cli@next # Test cdktf $ cdktf $ cdktf deploy --help $ mkdir typescript-docker &amp;amp;&amp;amp; cd $_ $ cdktf init --template=typescript --local # modify origin cdktf.</description>
+    </item>
+    
+    <item>
+      <title>超炫砲 LoLBanner ~~</title>
+      <link>https://blog.neilkuan.dev/2020/lolbanner/</link>
+      <pubDate>Mon, 29 Jun 2020 10:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/2020/lolbanner/</guid>
+      <description>前言： 我的環境是 mac os 如果是其他系統 裝起來應該大同小異 可以參考 https://www.tecmint.com/lolcat-command-to-output-rainbow-of-colors-in-linux-terminal/
+ lolcat is a ruby gem hence it is essential to have latest version of RUBY installed on your system.
+ 首先利用 brew 安裝 必要的套件
+ 沒有 homebrew 請先安裝 ckick here
+ # 如果沒有 ruby 請先安裝 ruby  $ brew install ruby $ brew install figlet $ brew install lolcat 創建front 資料夾，並進入
+$ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-fonts 到 https://github.com/xero/figlet-fonts 選取你想要的 主題，我選的是 3d.</description>
+    </item>
+    
+    <item>
+      <title>AWS S3 Private endpoint</title>
+      <link>https://blog.neilkuan.dev/2020/aws_s3_private_endpoint/</link>
+      <pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/2020/aws_s3_private_endpoint/</guid>
+      <description>原文：https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-private-connection-no-authentication/
 S3 policy 產生網站:https://awspolicygen.s3.amazonaws.com/policygen.html
 需要大量的 object 頻繁的上傳到 s3 ，又不想走外部網路時做的方式 ＶＰＣ 對S3 的endpoint 傳輸吧！！！
 Need S3 , EC2 , VPC , endpoint , route table.
-Open Amazon VPC console.
-使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。 這邊先幫我記下 VPC 的 ID 等等較好操作。
-Create Endpoint. → Virtual Private Cloud &amp;gt; Endpoints &amp;gt; cretae endpoint 點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID.</description></item><item><title>Let’s Encrypt</title><link>https://blog.neilkuan.dev/2020/certbot_lets_encrypt_create_ca_aws_route53/</link><pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate><guid>https://blog.neilkuan.dev/2020/certbot_lets_encrypt_create_ca_aws_route53/</guid><description>小弟的域名雖然託管在 Route53 上面 ，也知道 AWS 也有提供 ACM 搭配 ELB 憑證託管的免費方案，但有時候申請幾張 憑證來用是相當實用的。
+  Open Amazon VPC console.
+  使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。  這邊先幫我記下 VPC 的 ID 等等較好操作。
+   Create Endpoint. → Virtual Private Cloud &amp;gt; Endpoints &amp;gt; cretae endpoint   點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID.</description>
+    </item>
+    
+    <item>
+      <title>Let’s Encrypt</title>
+      <link>https://blog.neilkuan.dev/2020/certbot_lets_encrypt_create_ca_aws_route53/</link>
+      <pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/2020/certbot_lets_encrypt_create_ca_aws_route53/</guid>
+      <description>小弟的域名雖然託管在 Route53 上面 ，也知道 AWS 也有提供 ACM 搭配 ELB 憑證託管的免費方案，但有時候申請幾張 憑證來用是相當實用的。
 Let’s Encrypt 的數位憑證認證機構（CA）推出免費 SSL/TLS 憑證服務，也在年底正式對外開放。這是什麼呢？簡單來說，以往想為你的網站加入 SSL 加密協定（HTTPS，也就是網址列上的綠色鎖頭圖示），必須支付一筆費用來申請憑證，但有了 Let’s Encrypt 後將能免費申請憑證，且這一過程非常簡單、自動化。
-值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
-並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
+ 值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
+ 並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
 docker hub https://hub.docker.com/r/certbot/dns-route53
 因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 IAM Policy 如下：
-{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Id&amp;#34;: &amp;#34;certbot-dns-route53 sample policy&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;route53:ListHostedZones&amp;#34;, &amp;#34;route53:GetChange&amp;#34; ], &amp;#34;Resource&amp;#34;: [ &amp;#34;*&amp;#34; ] }, { &amp;#34;Effect&amp;#34; : &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34; : [ &amp;#34;route53:ChangeResourceRecordSets&amp;#34; ], &amp;#34;Resource&amp;#34; : [ &amp;#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&amp;#34; &amp;lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53.</description></item><item><title>Least privilege ?! IAM Role For Service Account (IRSA)</title><link>https://blog.neilkuan.dev/2020/aws-iam-role-for-eks-service-account/</link><pubDate>Wed, 22 Apr 2020 18:00:00 +0000</pubDate><guid>https://blog.neilkuan.dev/2020/aws-iam-role-for-eks-service-account/</guid><description>使用Amazon EKS集群上服務帳戶的IAM角色，您可以將IAM角色與Kubernetes服務帳戶關聯。 然後，該服務帳戶可以向使用該服務帳戶的任何 pod 中的 container 提供AWS權限。 使用此功能，您不再需要為工作節點( worker nodes ) IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Id&amp;#34;: &amp;#34;certbot-dns-route53 sample policy&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;route53:ListHostedZones&amp;#34;, &amp;#34;route53:GetChange&amp;#34; ], &amp;#34;Resource&amp;#34;: [ &amp;#34;*&amp;#34; ] }, { &amp;#34;Effect&amp;#34; : &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34; : [ &amp;#34;route53:ChangeResourceRecordSets&amp;#34; ], &amp;#34;Resource&amp;#34; : [ &amp;#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&amp;#34; &amp;lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53.</description>
+    </item>
+    
+    <item>
+      <title>Least privilege ?! IAM Role For Service Account (IRSA)</title>
+      <link>https://blog.neilkuan.dev/2020/aws-iam-role-for-eks-service-account/</link>
+      <pubDate>Wed, 22 Apr 2020 18:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/2020/aws-iam-role-for-eks-service-account/</guid>
+      <description>使用Amazon EKS集群上服務帳戶的IAM角色，您可以將IAM角色與Kubernetes服務帳戶關聯。 然後，該服務帳戶可以向使用該服務帳戶的任何 pod 中的 container 提供AWS權限。 使用此功能，您不再需要為工作節點( worker nodes ) IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。
 應用程序必須使用AWS憑證簽署其AWS API請求。 此功能提供了一種用於管理應用程序憑證的策略，類似於Amazon EC2實例配置文件向Amazon EC2實例提供憑證的方式。 您可以將IAM角色與Kubernetes服務帳戶相關聯，而不必創建AWS憑證並將其分發到容器或使用Amazon EC2實例的角色。 然後，容器容器中的應用程序可以使用AWS SDK或AWS CLI向授權的AWS服務發出API請求。
 服務帳戶的IAM角色功能具有以下優點：
-最低特權 (Least privilege) -通過使用IAM角色提供服務帳戶功能，您不再需要為工作節點IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。 您可以將IAM權限限定在服務帳戶上，只有使用該服務帳戶的Pod才能訪問這些權限。 此功能還消除了對諸如kiam或kube2iam之類的第三方解決方案的需求。 憑證隔離 (Credential isolation ) - 容器只能檢索與其所屬的服務帳戶關聯的IAM角色的憑據。 容器永遠無法訪問用於屬於另一個容器的另一個容器的憑據。 可審核性 ( Auditability ) - 可通過CloudTrail獲得訪問和事件日誌，以幫助確保進行追溯審核。 2014年，AWS Identity and Access Management添加了對使用OpenID Connect（OIDC）的聯合身份的支持。通過此功能，您可以使用受支持的身份提供者對AWS API調用進行身份驗證，並接收有效的OIDC JSON Web令牌（JWT）。您可以將此令牌傳遞給AWS STS AssumeRoleWithWebIdentity API操作，並接收IAM臨時角色憑證。您可以使用這些憑證與任何AWS服務（例如Amazon S3和DynamoDB）進行交互。
+ 最低特權 (Least privilege) -通過使用IAM角色提供服務帳戶功能，您不再需要為工作節點IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。 您可以將IAM權限限定在服務帳戶上，只有使用該服務帳戶的Pod才能訪問這些權限。 此功能還消除了對諸如kiam或kube2iam之類的第三方解決方案的需求。 憑證隔離 (Credential isolation ) - 容器只能檢索與其所屬的服務帳戶關聯的IAM角色的憑據。 容器永遠無法訪問用於屬於另一個容器的另一個容器的憑據。 可審核性 ( Auditability ) - 可通過CloudTrail獲得訪問和事件日誌，以幫助確保進行追溯審核。  2014年，AWS Identity and Access Management添加了對使用OpenID Connect（OIDC）的聯合身份的支持。通過此功能，您可以使用受支持的身份提供者對AWS API調用進行身份驗證，並接收有效的OIDC JSON Web令牌（JWT）。您可以將此令牌傳遞給AWS STS AssumeRoleWithWebIdentity API操作，並接收IAM臨時角色憑證。您可以使用這些憑證與任何AWS服務（例如Amazon S3和DynamoDB）進行交互。
 Kubernetes長期以來一直將服務帳戶用作其內部身份系統。 Pods可以使用僅Kubernetes API服務器可以驗證的自動安裝的令牌（非OIDC JWT）向Kubernetes API服務器進行身份驗證。這些舊版服務帳戶令牌不會過期，並且旋轉簽名密鑰是一個困難的過程。在Kubernetes版本1.12中，添加了對新ProjectedServiceAccountToken功能的支持，該功能是OIDC JSON Web令牌，它還包含服務帳戶標識，並支持可配置的受眾。
-Amazon EKS現在在每個集群上託管一個公共OIDC發現終端節點，其中包含ProjectedServiceAccountToken JSON Web令牌的簽名密鑰，因此外部系統（例如IAM）可以驗證和接受Kubernetes發行的OIDC令牌。</description></item></channel></rss>
+Amazon EKS現在在每個集群上託管一個公共OIDC發現終端節點，其中包含ProjectedServiceAccountToken JSON Web令牌的簽名密鑰，因此外部系統（例如IAM）可以驗證和接受Kubernetes發行的OIDC令牌。</description>
+    </item>
+    
+  </channel>
+</rss>

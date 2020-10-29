@@ -1,6 +1,25 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>FUNNY on Neil Blog</title><link>https://blog.neilkuan.dev/tags/funny/</link><description>Recent content in FUNNY on Neil Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 29 Jun 2020 10:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/funny/index.xml" rel="self" type="application/rss+xml"/><item><title>超炫砲 LoLBanner ~~</title><link>https://blog.neilkuan.dev/2020/lolbanner/</link><pubDate>Mon, 29 Jun 2020 10:00:00 +0000</pubDate><guid>https://blog.neilkuan.dev/2020/lolbanner/</guid><description>前言： 我的環境是 mac os 如果是其他系統 裝起來應該大同小異 可以參考 https://www.tecmint.com/lolcat-command-to-output-rainbow-of-colors-in-linux-terminal/
-lolcat is a ruby gem hence it is essential to have latest version of RUBY installed on your system.
-首先利用 brew 安裝 必要的套件
-沒有 homebrew 請先安裝 ckick here
-# 如果沒有 ruby 請先安裝 ruby $ brew install ruby $ brew install figlet $ brew install lolcat 創建front 資料夾，並進入
-$ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-fonts 到 https://github.com/xero/figlet-fonts 選取你想要的 主題，我選的是 3d.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>FUNNY on Neil Blog</title>
+    <link>https://blog.neilkuan.dev/tags/funny/</link>
+    <description>Recent content in FUNNY on Neil Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 29 Jun 2020 10:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/funny/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>超炫砲 LoLBanner ~~</title>
+      <link>https://blog.neilkuan.dev/2020/lolbanner/</link>
+      <pubDate>Mon, 29 Jun 2020 10:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/2020/lolbanner/</guid>
+      <description>前言： 我的環境是 mac os 如果是其他系統 裝起來應該大同小異 可以參考 https://www.tecmint.com/lolcat-command-to-output-rainbow-of-colors-in-linux-terminal/
+ lolcat is a ruby gem hence it is essential to have latest version of RUBY installed on your system.
+ 首先利用 brew 安裝 必要的套件
+ 沒有 homebrew 請先安裝 ckick here
+ # 如果沒有 ruby 請先安裝 ruby  $ brew install ruby $ brew install figlet $ brew install lolcat 創建front 資料夾，並進入
+$ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-fonts 到 https://github.com/xero/figlet-fonts 選取你想要的 主題，我選的是 3d.</description>
+    </item>
+    
+  </channel>
+</rss>
