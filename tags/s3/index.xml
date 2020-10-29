@@ -9,11 +9,17 @@
     <lastBuildDate>Sun, 17 May 2020 10:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/s3/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWS S3 Private endpoint</title>
-      <link>https://blog.neilkuan.dev/aws/aws_s3_private_endpoint/</link>
+      <link>https://blog.neilkuan.dev/2020/aws_s3_private_endpoint/</link>
       <pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/aws/aws_s3_private_endpoint/</guid>
-      <description>&lt;h1 id=&#34;aws-s3-private-endpoint&#34;&gt;AWS S3 Private endpoint&lt;/h1&gt;</description>
+      <guid>https://blog.neilkuan.dev/2020/aws_s3_private_endpoint/</guid>
+      <description>原文：https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-private-connection-no-authentication/
+S3 policy 產生網站:https://awspolicygen.s3.amazonaws.com/policygen.html
+需要大量的 object 頻繁的上傳到 s3 ，又不想走外部網路時做的方式 ＶＰＣ 對S3 的endpoint 傳輸吧！！！
+Need S3 , EC2 , VPC , endpoint , route table.
+  Open Amazon VPC console.
+  使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。  這邊先幫我記下 VPC 的 ID 等等較好操作。
+   Create Endpoint. → Virtual Private Cloud &amp;gt; Endpoints &amp;gt; cretae endpoint   點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID.</description>
     </item>
     
   </channel>

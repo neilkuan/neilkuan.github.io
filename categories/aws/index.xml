@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>EKS on Neil Blog</title>
-    <link>https://blog.neilkuan.dev/tags/eks/</link>
-    <description>Recent content in EKS on Neil Blog</description>
+    <title>AWS on Neil Blog</title>
+    <link>https://blog.neilkuan.dev/categories/aws/</link>
+    <description>Recent content in AWS on Neil Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 22 Apr 2020 18:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/eks/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 22 Apr 2020 18:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/categories/aws/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Least privilege ?! IAM Role For Service Account (IRSA)</title>
       <link>https://blog.neilkuan.dev/2020/aws-iam-role-for-eks-service-account/</link>
