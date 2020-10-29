@@ -1,25 +1,6 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>CDK on Neil Blog</title>
-    <link>https://blog.neilkuan.dev/tags/cdk/</link>
-    <description>Recent content in CDK on Neil Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 17 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/cdk/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>CDK for Terraform Amazing</title>
-      <link>https://blog.neilkuan.dev/2020/cdk_for_terraform_amazing_docker/</link>
-      <pubDate>Fri, 17 Jul 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.dev/2020/cdk_for_terraform_amazing_docker/</guid>
-      <description>source: https://learn.hashicorp.com/terraform/cdktf/cdktf-install
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CDK on Neil Blog</title><link>https://blog.neilkuan.dev/tags/cdk/</link><description>Recent content in CDK on Neil Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/cdk/index.xml" rel="self" type="application/rss+xml"/><item><title>CDK for Terraform Amazing</title><link>https://blog.neilkuan.dev/2020/cdk_for_terraform_amazing_docker/</link><pubDate>Fri, 17 Jul 2020 00:00:00 +0000</pubDate><guid>https://blog.neilkuan.dev/2020/cdk_for_terraform_amazing_docker/</guid><description>source: https://learn.hashicorp.com/terraform/cdktf/cdktf-install
 source: https://www.hashicorp.com/blog/cdk-for-terraform-enabling-python-and-typescript-support/
 On Linux Install Terraform Download package : https://www.terraform.io/downloads.html
-# linux x86  $ wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip $ unzip terraform_0.12.28_linux_amd64.zip $ echo $PATH $ chmod +x terraform $ sudo mv terraform /usr/local/bin/ Install CDK for Terraform
+# linux x86 $ wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip $ unzip terraform_0.12.28_linux_amd64.zip $ echo $PATH $ chmod +x terraform $ sudo mv terraform /usr/local/bin/ Install CDK for Terraform
 https://learn.hashicorp.com/terraform/cdktf/cdktf-install#quick-start-tutorial
-$ npm install --global cdktf-cli $ npm install --global cdktf-cli@next # Test cdktf $ cdktf $ cdktf deploy --help $ mkdir typescript-docker &amp;amp;&amp;amp; cd $_ $ cdktf init --template=typescript --local # modify origin cdktf.</description>
-    </item>
-    
-  </channel>
-</rss>
+$ npm install --global cdktf-cli $ npm install --global cdktf-cli@next # Test cdktf $ cdktf $ cdktf deploy --help $ mkdir typescript-docker &amp;amp;&amp;amp; cd $_ $ cdktf init --template=typescript --local # modify origin cdktf.</description></item></channel></rss>

@@ -1,26 +1,7 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Route53 on Neil Blog</title>
-    <link>https://blog.neilkuan.dev/tags/route53/</link>
-    <description>Recent content in Route53 on Neil Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sun, 17 May 2020 10:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/route53/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Let’s Encrypt</title>
-      <link>https://blog.neilkuan.dev/2020/certbot_lets_encrypt_create_ca_aws_route53/</link>
-      <pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.dev/2020/certbot_lets_encrypt_create_ca_aws_route53/</guid>
-      <description>小弟的域名雖然託管在 Route53 上面 ，也知道 AWS 也有提供 ACM 搭配 ELB 憑證託管的免費方案，但有時候申請幾張 憑證來用是相當實用的。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Route53 on Neil Blog</title><link>https://blog.neilkuan.dev/tags/route53/</link><description>Recent content in Route53 on Neil Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 17 May 2020 10:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/route53/index.xml" rel="self" type="application/rss+xml"/><item><title>Let’s Encrypt</title><link>https://blog.neilkuan.dev/2020/certbot_lets_encrypt_create_ca_aws_route53/</link><pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate><guid>https://blog.neilkuan.dev/2020/certbot_lets_encrypt_create_ca_aws_route53/</guid><description>小弟的域名雖然託管在 Route53 上面 ，也知道 AWS 也有提供 ACM 搭配 ELB 憑證託管的免費方案，但有時候申請幾張 憑證來用是相當實用的。
 Let’s Encrypt 的數位憑證認證機構（CA）推出免費 SSL/TLS 憑證服務，也在年底正式對外開放。這是什麼呢？簡單來說，以往想為你的網站加入 SSL 加密協定（HTTPS，也就是網址列上的綠色鎖頭圖示），必須支付一筆費用來申請憑證，但有了 Let’s Encrypt 後將能免費申請憑證，且這一過程非常簡單、自動化。
- 值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
- 並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
+值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
+並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
 docker hub https://hub.docker.com/r/certbot/dns-route53
 因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 IAM Policy 如下：
-{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Id&amp;#34;: &amp;#34;certbot-dns-route53 sample policy&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;route53:ListHostedZones&amp;#34;, &amp;#34;route53:GetChange&amp;#34; ], &amp;#34;Resource&amp;#34;: [ &amp;#34;*&amp;#34; ] }, { &amp;#34;Effect&amp;#34; : &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34; : [ &amp;#34;route53:ChangeResourceRecordSets&amp;#34; ], &amp;#34;Resource&amp;#34; : [ &amp;#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&amp;#34; &amp;lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53.</description>
-    </item>
-    
-  </channel>
-</rss>
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Id&amp;#34;: &amp;#34;certbot-dns-route53 sample policy&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;route53:ListHostedZones&amp;#34;, &amp;#34;route53:GetChange&amp;#34; ], &amp;#34;Resource&amp;#34;: [ &amp;#34;*&amp;#34; ] }, { &amp;#34;Effect&amp;#34; : &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34; : [ &amp;#34;route53:ChangeResourceRecordSets&amp;#34; ], &amp;#34;Resource&amp;#34; : [ &amp;#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&amp;#34; &amp;lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53.</description></item></channel></rss>
