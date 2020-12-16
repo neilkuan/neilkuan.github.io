@@ -2,6 +2,66 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
     <url>
+      <loc>https://blog.neilkuan.dev/tags/aws/</loc>
+      
+      <lastmod>2020-12-16T00:00:00+00:00</lastmod>
+      
+      
+      
+      
+    </url>
+  
+    <url>
+      <loc>https://blog.neilkuan.dev/tags/cloudshell/</loc>
+      
+      <lastmod>2020-12-16T00:00:00+00:00</lastmod>
+      
+      
+      
+      
+    </url>
+  
+    <url>
+      <loc>https://blog.neilkuan.dev/2020/2020-12-16-aws_cloudshell/</loc>
+      
+      <lastmod>2020-12-16T00:00:00+00:00</lastmod>
+      
+      
+      
+      
+    </url>
+  
+    <url>
+      <loc>https://blog.neilkuan.dev/</loc>
+      
+      <lastmod>2020-12-16T00:00:00+00:00</lastmod>
+      
+      
+      
+      
+    </url>
+  
+    <url>
+      <loc>https://blog.neilkuan.dev/posts/</loc>
+      
+      <lastmod>2020-12-16T00:00:00+00:00</lastmod>
+      
+      
+      
+      
+    </url>
+  
+    <url>
+      <loc>https://blog.neilkuan.dev/tags/</loc>
+      
+      <lastmod>2020-12-16T00:00:00+00:00</lastmod>
+      
+      
+      
+      
+    </url>
+  
+    <url>
       <loc>https://blog.neilkuan.dev/tags/container/</loc>
       
       <lastmod>2020-09-26T00:00:00+00:00</lastmod>
@@ -33,36 +93,6 @@
   
     <url>
       <loc>https://blog.neilkuan.dev/2020/github-container-registry/</loc>
-      
-      <lastmod>2020-09-26T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/</loc>
-      
-      <lastmod>2020-09-26T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/posts/</loc>
-      
-      <lastmod>2020-09-26T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/</loc>
       
       <lastmod>2020-09-26T00:00:00+00:00</lastmod>
       
@@ -165,16 +195,6 @@
       <loc>https://blog.neilkuan.dev/2020/lolbanner/</loc>
       
       <lastmod>2020-06-29T10:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/aws/</loc>
-      
-      <lastmod>2020-05-17T10:00:00+00:00</lastmod>
       
       
       

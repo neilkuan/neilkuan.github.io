@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cloudshell on Neil Blog</title>
+    <link>https://blog.neilkuan.dev/tags/cloudshell/</link>
+    <description>Recent content in Cloudshell on Neil Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 16 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/cloudshell/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introducing AWS CloudShell !!!</title>
+      <link>https://blog.neilkuan.dev/2020/2020-12-16-aws_cloudshell/</link>
+      <pubDate>Wed, 16 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.dev/2020/2020-12-16-aws_cloudshell/</guid>
+      <description>AWS CloudShell AWS 在 re:Invent 2020 Werner Vogels Keynote 中宣佈了
+AWS CloudShell source blog: https://aws.amazon.com/tw/blogs/aws/aws-cloudshell-command-line-access-to-aws-resources/
+特色如下： Browser-based shell
+ Issue AWS Command Line Interface (AWS CLI) commands, run scripts, access common command line utilities including PowerShell and Bash, and use other popular AWS CLIs, such as the Amazon ECS CLI and the AWS SAM CLI, to interact with your AWS resources – all without leaving your web browser. (只能說繼GCP CloudShell, Azure CloudShell等類似服務後，AWS終於追上？！，你可以透過browser-based shell , 在上面執行 一些日常的維護 ，快速修復生產環境，甚至嘗試一些新的AWS服務或功能，我也有嘗試安裝cdk 並進行deploy) https://twitter.</description>
+    </item>
+    
+  </channel>
+</rss>
