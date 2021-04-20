@@ -1,304 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/aws/</loc>
-      
-      <lastmod>2020-12-16T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/cloudshell/</loc>
-      
-      <lastmod>2020-12-16T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/2020/2020-12-16-aws_cloudshell/</loc>
-      
-      <lastmod>2020-12-16T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/</loc>
-      
-      <lastmod>2020-12-16T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/posts/</loc>
-      
-      <lastmod>2020-12-16T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/</loc>
-      
-      <lastmod>2020-12-16T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/container/</loc>
-      
-      <lastmod>2020-09-26T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/docker/</loc>
-      
-      <lastmod>2020-09-26T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/github/</loc>
-      
-      <lastmod>2020-09-26T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/2020/github-container-registry/</loc>
-      
-      <lastmod>2020-09-26T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/about/</loc>
-      
-      <lastmod>2020-09-12T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/2020/building-docker-images-with-kaniko/</loc>
-      
-      <lastmod>2020-08-04T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/cicd/</loc>
-      
-      <lastmod>2020-08-04T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/kaniko/</loc>
-      
-      <lastmod>2020-08-04T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/cdk/</loc>
-      
-      <lastmod>2020-07-17T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/2020/cdk_for_terraform_amazing_docker/</loc>
-      
-      <lastmod>2020-07-17T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/terraform/</loc>
-      
-      <lastmod>2020-07-17T00:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/bash/</loc>
-      
-      <lastmod>2020-06-29T10:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/funny/</loc>
-      
-      <lastmod>2020-06-29T10:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/2020/lolbanner/</loc>
-      
-      <lastmod>2020-06-29T10:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/2020/aws_s3_private_endpoint/</loc>
-      
-      <lastmod>2020-05-17T10:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/ca/</loc>
-      
-      <lastmod>2020-05-17T10:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/2020/certbot_lets_encrypt_create_ca_aws_route53/</loc>
-      
-      <lastmod>2020-05-17T10:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/route53/</loc>
-      
-      <lastmod>2020-05-17T10:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/s3/</loc>
-      
-      <lastmod>2020-05-17T10:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/categories/aws/</loc>
-      
-      <lastmod>2020-04-22T18:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/categories/</loc>
-      
-      <lastmod>2020-04-22T18:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/eks/</loc>
-      
-      <lastmod>2020-04-22T18:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/tags/iam/</loc>
-      
-      <lastmod>2020-04-22T18:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://blog.neilkuan.dev/2020/aws-iam-role-for-eks-service-account/</loc>
-      
-      <lastmod>2020-04-22T18:00:00+00:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
+  <url>
+    <loc>https://blog.neilkuan.dev/tags/aws/</loc>
+    <lastmod>2020-12-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/cloudshell/</loc>
+    <lastmod>2020-12-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/posts/2020-12-16-aws_cloudshell/</loc>
+    <lastmod>2020-12-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/</loc>
+    <lastmod>2020-12-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/posts/</loc>
+    <lastmod>2020-12-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/</loc>
+    <lastmod>2020-12-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/container/</loc>
+    <lastmod>2020-09-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/docker/</loc>
+    <lastmod>2020-09-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/github/</loc>
+    <lastmod>2020-09-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/posts/github-container-registry/</loc>
+    <lastmod>2020-09-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/about/</loc>
+    <lastmod>2020-09-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/posts/building-docker-images-with-kaniko/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/cicd/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/kaniko/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/cdk/</loc>
+    <lastmod>2020-07-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/posts/cdk_for_terraform_amazing_docker/</loc>
+    <lastmod>2020-07-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/terraform/</loc>
+    <lastmod>2020-07-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/bash/</loc>
+    <lastmod>2020-06-29T10:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/funny/</loc>
+    <lastmod>2020-06-29T10:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/posts/lolbanner/</loc>
+    <lastmod>2020-06-29T10:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/posts/aws_s3_private_endpoint/</loc>
+    <lastmod>2020-05-17T10:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/ca/</loc>
+    <lastmod>2020-05-17T10:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/posts/certbot_lets_encrypt_create_ca_aws_route53/</loc>
+    <lastmod>2020-05-17T10:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/route53/</loc>
+    <lastmod>2020-05-17T10:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/s3/</loc>
+    <lastmod>2020-05-17T10:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/eks/</loc>
+    <lastmod>2020-04-22T18:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/tags/iam/</loc>
+    <lastmod>2020-04-22T18:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.neilkuan.dev/posts/aws-iam-role-for-eks-service-account/</loc>
+    <lastmod>2020-04-22T18:00:00+00:00</lastmod>
+  </url>
 </urlset>

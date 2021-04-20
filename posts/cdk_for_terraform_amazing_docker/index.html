@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="CDK for Terraform Amazing">
+<meta itemprop="description" content="source: https://learn.hashicorp.com/terraform/cdktf/cdktf-install
+source: https://www.hashicorp.com/blog/cdk-for-terraform-enabling-python-and-typescript-support/
+On Linux Install Terraform Download package : https://www.terraform.io/downloads.html
+# linux x86  $ wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip $ unzip terraform_0.12.28_linux_amd64.zip $ echo $PATH $ chmod &#43;x terraform $ sudo mv terraform /usr/local/bin/ Install CDK for Terraform
+https://learn.hashicorp.com/terraform/cdktf/cdktf-install#quick-start-tutorial
+$ npm install --global cdktf-cli $ npm install --global cdktf-cli@next # Test cdktf $ cdktf $ cdktf deploy --help $ mkdir typescript-docker &amp;&amp; cd $_ $ cdktf init --template=typescript --local # modify origin cdktf."><meta itemprop="datePublished" content="2020-07-17T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-07-17T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="204">
+<meta itemprop="keywords" content="TERRAFORM,CDK,DOCKER," /><meta property="og:title" content="CDK for Terraform Amazing" />
+<meta property="og:description" content="source: https://learn.hashicorp.com/terraform/cdktf/cdktf-install
+source: https://www.hashicorp.com/blog/cdk-for-terraform-enabling-python-and-typescript-support/
+On Linux Install Terraform Download package : https://www.terraform.io/downloads.html
+# linux x86  $ wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip $ unzip terraform_0.12.28_linux_amd64.zip $ echo $PATH $ chmod &#43;x terraform $ sudo mv terraform /usr/local/bin/ Install CDK for Terraform
+https://learn.hashicorp.com/terraform/cdktf/cdktf-install#quick-start-tutorial
+$ npm install --global cdktf-cli $ npm install --global cdktf-cli@next # Test cdktf $ cdktf $ cdktf deploy --help $ mkdir typescript-docker &amp;&amp; cd $_ $ cdktf init --template=typescript --local # modify origin cdktf." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.neilkuan.dev/posts/cdk_for_terraform_amazing_docker/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-07-17T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2020-07-17T00:00:00&#43;00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CDK for Terraform Amazing"/>
+<meta name="twitter:description" content="source: https://learn.hashicorp.com/terraform/cdktf/cdktf-install
+source: https://www.hashicorp.com/blog/cdk-for-terraform-enabling-python-and-typescript-support/
+On Linux Install Terraform Download package : https://www.terraform.io/downloads.html
+# linux x86  $ wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip $ unzip terraform_0.12.28_linux_amd64.zip $ echo $PATH $ chmod &#43;x terraform $ sudo mv terraform /usr/local/bin/ Install CDK for Terraform
+https://learn.hashicorp.com/terraform/cdktf/cdktf-install#quick-start-tutorial
+$ npm install --global cdktf-cli $ npm install --global cdktf-cli@next # Test cdktf $ cdktf $ cdktf deploy --help $ mkdir typescript-docker &amp;&amp; cd $_ $ cdktf init --template=typescript --local # modify origin cdktf."/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>CDK for Terraform Amazing</title>
+	<link rel="stylesheet" href="https://blog.neilkuan.dev/css/style.min.f74778e3020c87c304fb5982e09b92ba63a5c7f202996d4c7283d6057acfe9c1.css" integrity="sha256-90d44wIMh8ME+1mC4JuSumOlx/ICmW1McoPWBXrP6cE=" crossorigin="anonymous">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://blog.neilkuan.dev/">Neil Blog</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					
+				<a href="https://blog.neilkuan.dev/posts/">Posts</a>
+				<a href="https://blog.neilkuan.dev/about-hugo/">About</a>
+
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://twitter.com/neil_kuab" target="_blank" rel="noopener me" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://instagram.com/neil_kuan" target="_blank" rel="noopener me" title="Instagram"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg></a><a href="https://github.com/guan840912" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://blog.neilkuan.dev/posts/">Posts</a></li>
+			<li><a href="https://blog.neilkuan.dev/about-hugo/">About</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jul 17, 2020</span></div>
+				<h1>CDK for Terraform Amazing</h1>
+			</header>
+			<div class="content">
+				<p>source:
+<a href="https://learn.hashicorp.com/terraform/cdktf/cdktf-install">https://learn.hashicorp.com/terraform/cdktf/cdktf-install</a></p>
+<p>source:
+<a href="https://www.hashicorp.com/blog/cdk-for-terraform-enabling-python-and-typescript-support/">https://www.hashicorp.com/blog/cdk-for-terraform-enabling-python-and-typescript-support/</a></p>
+<h2 id="on-linux-install-terraform">On Linux Install Terraform<a href="#on-linux-install-terraform" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>Download package : <a href="https://www.terraform.io/downloads.html">https://www.terraform.io/downloads.html</a></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># linux x86 </span>
+$ wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
+
+$ unzip terraform_0.12.28_linux_amd64.zip 
+
+$ <span class="nb">echo</span> <span class="nv">$PATH</span>
+
+$ chmod +x terraform 
+
+$ sudo mv terraform /usr/local/bin/
+</code></pre></div><p><strong>Install CDK for Terraform</strong></p>
+<p><a href="https://learn.hashicorp.com/terraform/cdktf/cdktf-install#quick-start-tutorial">https://learn.hashicorp.com/terraform/cdktf/cdktf-install#quick-start-tutorial</a></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ npm install --global cdktf-cli
+
+$ npm install --global cdktf-cli@next
+
+<span class="c1"># Test cdktf</span>
+$ cdktf
+
+$ cdktf deploy --help
+
+$ mkdir typescript-docker <span class="o">&amp;&amp;</span> <span class="nb">cd</span> <span class="nv">$_</span>
+
+$ cdktf init --template<span class="o">=</span>typescript --local
+</code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_D9888AA049A6B324D337D9AABA35BD93839DA958770902331B9E7165DF376B79_1594944009743_+2020-07-17+8.00.04.png" alt=""></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># modify origin cdktf.json</span>
+<span class="o">{</span>
+  <span class="s2">&#34;language&#34;</span>: <span class="s2">&#34;typescript&#34;</span>,
+  <span class="s2">&#34;app&#34;</span>: <span class="s2">&#34;npm run --silent compile &amp;&amp; node main.js&#34;</span>,
+  <span class="s2">&#34;terraformProviders&#34;</span>: <span class="o">[</span>
+    <span class="s2">&#34;aws@~&gt; 2.0&#34;</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+<span class="c1"># &#34;aws@~&gt; 2.0&#34; to &#34;docker&#34;</span>
+<span class="o">{</span>
+  <span class="s2">&#34;language&#34;</span>: <span class="s2">&#34;typescript&#34;</span>,
+  <span class="s2">&#34;app&#34;</span>: <span class="s2">&#34;npm run --silent compile &amp;&amp; node main.js&#34;</span>,
+  <span class="s2">&#34;terraformProviders&#34;</span>: <span class="o">[</span>
+    <span class="s2">&#34;docker&#34;</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_D9888AA049A6B324D337D9AABA35BD93839DA958770902331B9E7165DF376B79_1594944036320_+2020-07-17+8.00.31.png" alt=""></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#main.ts</span>
+import <span class="o">{</span> Construct <span class="o">}</span> from <span class="s1">&#39;constructs&#39;</span>
+import <span class="o">{</span> App, TerraformStack <span class="o">}</span> from <span class="s1">&#39;cdktf&#39;</span>
+import <span class="o">{</span> Container, Image <span class="o">}</span> from <span class="s1">&#39;./.gen/providers/docker&#39;</span>
+
+class MyStack extends TerraformStack <span class="o">{</span>
+  constructor<span class="o">(</span>scope: Construct, name: string<span class="o">)</span> <span class="o">{</span>
+    super<span class="o">(</span>scope, name<span class="o">)</span>
+
+    const <span class="nv">dockerImage</span> <span class="o">=</span> new Image<span class="o">(</span>this, <span class="s1">&#39;nginxImage&#39;</span>, <span class="o">{</span>
+      name: <span class="s1">&#39;nginx:latest&#39;</span>,
+      keepLocally: false,
+    <span class="o">})</span>
+
+    new Container<span class="o">(</span>this, <span class="s1">&#39;nginxContainer&#39;</span>, <span class="o">{</span>
+      image: dockerImage.latest,
+      name: <span class="s1">&#39;tutorial&#39;</span>,
+      ports: <span class="o">[</span>
+        <span class="o">{</span>
+          internal: 80,
+          external: 8000,
+        <span class="o">}</span>,
+      <span class="o">]</span>,
+    <span class="o">})</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+    
+const <span class="nv">app</span> <span class="o">=</span> new App<span class="o">()</span>
+new MyStack<span class="o">(</span>app, <span class="s1">&#39;typescript-docker&#39;</span><span class="o">)</span>
+app.synth<span class="o">()</span>
+</code></pre></div><p><strong>Install dependencies and deploy</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ cdktf get
+
+$ cdktf deploy --auto-approve <span class="nb">true</span>
+</code></pre></div><p><strong>Delete</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">cdktf destroy --auto-approve <span class="nb">true</span>
+</code></pre></div><p><img src="/posts/cdk_for_terraform.gif" alt=""></p>
+<p>202007028 Neil Kuan</p>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>NeilKuan</p>
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://blog.neilkuan.dev/tags/terraform">TERRAFORM</a></span><span class="tag"><a href="https://blog.neilkuan.dev/tags/cdk">CDK</a></span><span class="tag"><a href="https://blog.neilkuan.dev/tags/docker">DOCKER</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>204 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-07-17 00:00 &#43;0000</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://blog.neilkuan.dev/posts/building-docker-images-with-kaniko/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Building Docker images with Kaniko !!!</span>
+			</a>
+			<a class="prev-post" href="https://blog.neilkuan.dev/posts/lolbanner/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>超炫砲 LoLBanner ~~</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2021 <a href="https://blog.neilkuan.dev/">Neil Blog</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://blog.neilkuan.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+
+	<script src="https://blog.neilkuan.dev/js/bundle.min.7d8545daa55d62427355498dd8da13f98ff79a7938ce7d2a5e2ae1ec0de3beb8.js" integrity="sha256-fYVF2qVdYkJzVUmN2NoT+Y/3mnk4zn0qXirh7A3jvrg=" crossorigin="anonymous"></script>
+	
+
+</body>
+
+</html>

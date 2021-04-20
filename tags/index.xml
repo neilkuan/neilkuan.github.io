@@ -6,6 +6,7 @@
     <description>Recent content in Tags on Neil Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Wed, 16 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWS</title>
@@ -94,60 +95,6 @@
       <pubDate>Mon, 29 Jun 2020 10:00:00 +0000</pubDate>
       
       <guid>https://blog.neilkuan.dev/tags/bash/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>FUNNY</title>
-      <link>https://blog.neilkuan.dev/tags/funny/</link>
-      <pubDate>Mon, 29 Jun 2020 10:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.dev/tags/funny/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>CA</title>
-      <link>https://blog.neilkuan.dev/tags/ca/</link>
-      <pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.dev/tags/ca/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Route53</title>
-      <link>https://blog.neilkuan.dev/tags/route53/</link>
-      <pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.dev/tags/route53/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>S3</title>
-      <link>https://blog.neilkuan.dev/tags/s3/</link>
-      <pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.dev/tags/s3/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>EKS</title>
-      <link>https://blog.neilkuan.dev/tags/eks/</link>
-      <pubDate>Wed, 22 Apr 2020 18:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.dev/tags/eks/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>IAM</title>
-      <link>https://blog.neilkuan.dev/tags/iam/</link>
-      <pubDate>Wed, 22 Apr 2020 18:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.dev/tags/iam/</guid>
       <description></description>
     </item>
     

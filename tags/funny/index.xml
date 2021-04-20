@@ -6,13 +6,14 @@
     <description>Recent content in FUNNY on Neil Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Mon, 29 Jun 2020 10:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/funny/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>超炫砲 LoLBanner ~~</title>
-      <link>https://blog.neilkuan.dev/2020/lolbanner/</link>
+      <link>https://blog.neilkuan.dev/posts/lolbanner/</link>
       <pubDate>Mon, 29 Jun 2020 10:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/2020/lolbanner/</guid>
+      <guid>https://blog.neilkuan.dev/posts/lolbanner/</guid>
       <description>前言： 我的環境是 mac os 如果是其他系統 裝起來應該大同小異 可以參考 https://www.tecmint.com/lolcat-command-to-output-rainbow-of-colors-in-linux-terminal/
  lolcat is a ruby gem hence it is essential to have latest version of RUBY installed on your system.
  首先利用 brew 安裝 必要的套件

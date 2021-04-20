@@ -6,13 +6,14 @@
     <description>Recent content in Container on Neil Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Sat, 26 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/container/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Introducing GitHub Container Registry !!!</title>
-      <link>https://blog.neilkuan.dev/2020/github-container-registry/</link>
+      <link>https://blog.neilkuan.dev/posts/github-container-registry/</link>
       <pubDate>Sat, 26 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/2020/github-container-registry/</guid>
+      <guid>https://blog.neilkuan.dev/posts/github-container-registry/</guid>
       <description>Github Container Registry source new : https://github.blog/2020-09-01-introducing-github-container-registry/
  自去年發布GitHub Packages以來，已經從GitHub下載了數億個軟件包，其中Docker是Packages中僅次於npm的第二受歡迎的ecosystem，儘管GitHub Packages已經為團隊提供了更大的軟件供應鏈可追溯性，但如今，GitHub 正在添加新功能，以改善它通過GitHub Container Registry為開發人員提供的體驗和性能。
  Introducing GitHub Container Registry GitHub Container Registry現已作為公共Beta發布，它改進了我們在GitHub Packages中處理容器的方式。通過今天引入的新功能，您可以更好地實施訪問策略，鼓勵使用標準 base image，並通過在整個 organization 中更輕鬆地共享來促進內部使用。並且提供了開源專案可以拜放 container 的地方for free .

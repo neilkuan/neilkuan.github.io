@@ -6,13 +6,14 @@
     <description>Recent content in Route53 on Neil Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Sun, 17 May 2020 10:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/route53/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Let’s Encrypt</title>
-      <link>https://blog.neilkuan.dev/2020/certbot_lets_encrypt_create_ca_aws_route53/</link>
+      <link>https://blog.neilkuan.dev/posts/certbot_lets_encrypt_create_ca_aws_route53/</link>
       <pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/2020/certbot_lets_encrypt_create_ca_aws_route53/</guid>
+      <guid>https://blog.neilkuan.dev/posts/certbot_lets_encrypt_create_ca_aws_route53/</guid>
       <description>小弟的域名雖然託管在 Route53 上面 ，也知道 AWS 也有提供 ACM 搭配 ELB 憑證託管的免費方案，但有時候申請幾張 憑證來用是相當實用的。
 Let’s Encrypt 的數位憑證認證機構（CA）推出免費 SSL/TLS 憑證服務，也在年底正式對外開放。這是什麼呢？簡單來說，以往想為你的網站加入 SSL 加密協定（HTTPS，也就是網址列上的綠色鎖頭圖示），必須支付一筆費用來申請憑證，但有了 Let’s Encrypt 後將能免費申請憑證，且這一過程非常簡單、自動化。
  值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
