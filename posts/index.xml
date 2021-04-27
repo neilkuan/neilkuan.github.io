@@ -75,7 +75,7 @@ Amazon Linux 2 為基底 這意味著你可以 sudo yum 安裝套件&hellip;</p>
 <h2 id="是不是相當快速簡單啊">是不是相當快速簡單啊</h2>
 <hr>
 <p>說了這麼多 來試一下我寫的 shell script 讓你裝一下 炫炫的特效</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ curl -s https://gist.githubusercontent.com/guan840912/f48394a1e68dcebe99272889753a5d06/raw/fc91a6f2d97bf9b13a4185d74a925870c22ba9c9/cloudshell-lolbanner.sh <span class="p">|</span> bash
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ curl -s https://gist.githubusercontent.com/neilkuan/f48394a1e68dcebe99272889753a5d06/raw/fc91a6f2d97bf9b13a4185d74a925870c22ba9c9/cloudshell-lolbanner.sh <span class="p">|</span> bash
 https://gist.github.com/f48394a1e68dcebe99272889753a5d06.git
 </code></pre></div><p><img src="/posts/cloudshell/7.png" alt=""></p>
 <p><img src="/posts/cloudshell/8.png" alt=""></p>
