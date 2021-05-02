@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>S3 on Neil Blog</title>
-    <link>https://blog.neilkuan.dev/tags/s3/</link>
+    <link>https://blog.neilkuan.net/tags/s3/</link>
     <description>Recent content in S3 on Neil Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 17 May 2020 10:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/s3/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 17 May 2020 10:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/tags/s3/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWS S3 Private endpoint</title>
-      <link>https://blog.neilkuan.dev/posts/aws_s3_private_endpoint/</link>
+      <link>https://blog.neilkuan.net/posts/aws_s3_private_endpoint/</link>
       <pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/posts/aws_s3_private_endpoint/</guid>
+      <guid>https://blog.neilkuan.net/posts/aws_s3_private_endpoint/</guid>
       <description>原文：https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-private-connection-no-authentication/
 S3 policy 產生網站:https://awspolicygen.s3.amazonaws.com/policygen.html
 需要大量的 object 頻繁的上傳到 s3 ，又不想走外部網路時做的方式 ＶＰＣ 對S3 的endpoint 傳輸吧！！！

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Kaniko on Neil Blog</title>
-    <link>https://blog.neilkuan.dev/tags/kaniko/</link>
+    <link>https://blog.neilkuan.net/tags/kaniko/</link>
     <description>Recent content in Kaniko on Neil Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Tue, 04 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/kaniko/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 04 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/tags/kaniko/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Building Docker images with Kaniko !!!</title>
-      <link>https://blog.neilkuan.dev/posts/building-docker-images-with-kaniko/</link>
+      <link>https://blog.neilkuan.net/posts/building-docker-images-with-kaniko/</link>
       <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/posts/building-docker-images-with-kaniko/</guid>
+      <guid>https://blog.neilkuan.net/posts/building-docker-images-with-kaniko/</guid>
       <description>Kaniko !!! Building Docker images with Kaniko kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster. kaniko solves two problems with using the Docker-in-Docker build method:
  Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow.  When building an image with kaniko and CI/CD, you should be aware of a few important details:</description>
     </item>

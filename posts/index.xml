@@ -1,20 +1,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
 		<title>Posts on Neil Blog</title>
-		<link>https://blog.neilkuan.dev/posts/</link>
+		<link>https://blog.neilkuan.net/posts/</link>
 		<description>Recent content in Posts on Neil Blog</description>
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
 		<lastBuildDate>Wed, 16 Dec 2020 00:00:00 +0000</lastBuildDate>
-		<atom:link href="https://blog.neilkuan.dev/posts/index.xml" rel="self" type="application/rss+xml" />
+		<atom:link href="https://blog.neilkuan.net/posts/index.xml" rel="self" type="application/rss+xml" />
 		
 		<item>
 			<title>Introducing AWS CloudShell !!!</title>
-			<link>https://blog.neilkuan.dev/posts/2020-12-16-aws_cloudshell/</link>
+			<link>https://blog.neilkuan.net/posts/2020-12-16-aws_cloudshell/</link>
 			<pubDate>Wed, 16 Dec 2020 00:00:00 +0000</pubDate>
 			
-			<guid>https://blog.neilkuan.dev/posts/2020-12-16-aws_cloudshell/</guid>
+			<guid>https://blog.neilkuan.net/posts/2020-12-16-aws_cloudshell/</guid>
 			<description>AWS CloudShell AWS 在 re:Invent 2020 Werner Vogels Keynote 中宣佈了
 AWS CloudShell source blog: https://aws.amazon.com/tw/blogs/aws/aws-cloudshell-command-line-access-to-aws-resources/
 特色如下： Browser-based shell
@@ -87,10 +87,10 @@ cloudshell docs: <a href="https://docs.aws.amazon.com/cloudshell/latest/userguid
 		
 		<item>
 			<title>Introducing GitHub Container Registry !!!</title>
-			<link>https://blog.neilkuan.dev/posts/github-container-registry/</link>
+			<link>https://blog.neilkuan.net/posts/github-container-registry/</link>
 			<pubDate>Sat, 26 Sep 2020 00:00:00 +0000</pubDate>
 			
-			<guid>https://blog.neilkuan.dev/posts/github-container-registry/</guid>
+			<guid>https://blog.neilkuan.net/posts/github-container-registry/</guid>
 			<description>Github Container Registry source new : https://github.blog/2020-09-01-introducing-github-container-registry/
  自去年發布GitHub Packages以來，已經從GitHub下載了數億個軟件包，其中Docker是Packages中僅次於npm的第二受歡迎的ecosystem，儘管GitHub Packages已經為團隊提供了更大的軟件供應鏈可追溯性，但如今，GitHub 正在添加新功能，以改善它通過GitHub Container Registry為開發人員提供的體驗和性能。
  Introducing GitHub Container Registry GitHub Container Registry現已作為公共Beta發布，它改進了我們在GitHub Packages中處理容器的方式。通過今天引入的新功能，您可以更好地實施訪問策略，鼓勵使用標準 base image，並通過在整個 organization 中更輕鬆地共享來促進內部使用。並且提供了開源專案可以拜放 container 的地方for free .
@@ -160,10 +160,10 @@ docker push ghcr.io/<span class="nv">$USERNAME</span>/test-ghcr:test
 		
 		<item>
 			<title>Building Docker images with Kaniko !!!</title>
-			<link>https://blog.neilkuan.dev/posts/building-docker-images-with-kaniko/</link>
+			<link>https://blog.neilkuan.net/posts/building-docker-images-with-kaniko/</link>
 			<pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
 			
-			<guid>https://blog.neilkuan.dev/posts/building-docker-images-with-kaniko/</guid>
+			<guid>https://blog.neilkuan.net/posts/building-docker-images-with-kaniko/</guid>
 			<description>Kaniko !!! Building Docker images with Kaniko kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster. kaniko solves two problems with using the Docker-in-Docker build method:
  Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow.  When building an image with kaniko and CI/CD, you should be aware of a few important details:</description>
 			<content type="html"><![CDATA[<h1 id="kaniko-">Kaniko !!!</h1>
@@ -276,10 +276,10 @@ gitlab 已有很好的 example</p>
 		
 		<item>
 			<title>CDK for Terraform Amazing</title>
-			<link>https://blog.neilkuan.dev/posts/cdk_for_terraform_amazing_docker/</link>
+			<link>https://blog.neilkuan.net/posts/cdk_for_terraform_amazing_docker/</link>
 			<pubDate>Fri, 17 Jul 2020 00:00:00 +0000</pubDate>
 			
-			<guid>https://blog.neilkuan.dev/posts/cdk_for_terraform_amazing_docker/</guid>
+			<guid>https://blog.neilkuan.net/posts/cdk_for_terraform_amazing_docker/</guid>
 			<description>source: https://learn.hashicorp.com/terraform/cdktf/cdktf-install
 source: https://www.hashicorp.com/blog/cdk-for-terraform-enabling-python-and-typescript-support/
 On Linux Install Terraform Download package : https://www.terraform.io/downloads.html
@@ -377,10 +377,10 @@ $ cdktf deploy --auto-approve <span class="nb">true</span>
 		
 		<item>
 			<title>超炫砲 LoLBanner ~~</title>
-			<link>https://blog.neilkuan.dev/posts/lolbanner/</link>
+			<link>https://blog.neilkuan.net/posts/lolbanner/</link>
 			<pubDate>Mon, 29 Jun 2020 10:00:00 +0000</pubDate>
 			
-			<guid>https://blog.neilkuan.dev/posts/lolbanner/</guid>
+			<guid>https://blog.neilkuan.net/posts/lolbanner/</guid>
 			<description>前言： 我的環境是 mac os 如果是其他系統 裝起來應該大同小異 可以參考 https://www.tecmint.com/lolcat-command-to-output-rainbow-of-colors-in-linux-terminal/
  lolcat is a ruby gem hence it is essential to have latest version of RUBY installed on your system.
  首先利用 brew 安裝 必要的套件
@@ -441,10 +441,10 @@ $ chmod +x ~/lolbanner
 		
 		<item>
 			<title>AWS S3 Private endpoint</title>
-			<link>https://blog.neilkuan.dev/posts/aws_s3_private_endpoint/</link>
+			<link>https://blog.neilkuan.net/posts/aws_s3_private_endpoint/</link>
 			<pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
 			
-			<guid>https://blog.neilkuan.dev/posts/aws_s3_private_endpoint/</guid>
+			<guid>https://blog.neilkuan.net/posts/aws_s3_private_endpoint/</guid>
 			<description>原文：https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-private-connection-no-authentication/
 S3 policy 產生網站:https://awspolicygen.s3.amazonaws.com/policygen.html
 需要大量的 object 頻繁的上傳到 s3 ，又不想走外部網路時做的方式 ＶＰＣ 對S3 的endpoint 傳輸吧！！！
@@ -550,10 +550,10 @@ aws s3 cp  s3://<span class="nv">$your</span>-bucket-name/<span class="nv">$obje
 		
 		<item>
 			<title>Let’s Encrypt</title>
-			<link>https://blog.neilkuan.dev/posts/certbot_lets_encrypt_create_ca_aws_route53/</link>
+			<link>https://blog.neilkuan.net/posts/certbot_lets_encrypt_create_ca_aws_route53/</link>
 			<pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
 			
-			<guid>https://blog.neilkuan.dev/posts/certbot_lets_encrypt_create_ca_aws_route53/</guid>
+			<guid>https://blog.neilkuan.net/posts/certbot_lets_encrypt_create_ca_aws_route53/</guid>
 			<description>小弟的域名雖然託管在 Route53 上面 ，也知道 AWS 也有提供 ACM 搭配 ELB 憑證託管的免費方案，但有時候申請幾張 憑證來用是相當實用的。
 Let’s Encrypt 的數位憑證認證機構（CA）推出免費 SSL/TLS 憑證服務，也在年底正式對外開放。這是什麼呢？簡單來說，以往想為你的網站加入 SSL 加密協定（HTTPS，也就是網址列上的綠色鎖頭圖示），必須支付一筆費用來申請憑證，但有了 Let’s Encrypt 後將能免費申請憑證，且這一過程非常簡單、自動化。
  值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
@@ -644,10 +644,10 @@ Your key file has been saved at:
 		
 		<item>
 			<title>Least privilege ?! IAM Role For Service Account (IRSA)</title>
-			<link>https://blog.neilkuan.dev/posts/aws-iam-role-for-eks-service-account/</link>
+			<link>https://blog.neilkuan.net/posts/aws-iam-role-for-eks-service-account/</link>
 			<pubDate>Wed, 22 Apr 2020 18:00:00 +0000</pubDate>
 			
-			<guid>https://blog.neilkuan.dev/posts/aws-iam-role-for-eks-service-account/</guid>
+			<guid>https://blog.neilkuan.net/posts/aws-iam-role-for-eks-service-account/</guid>
 			<description>使用Amazon EKS集群上服務帳戶的IAM角色，您可以將IAM角色與Kubernetes服務帳戶關聯。 然後，該服務帳戶可以向使用該服務帳戶的任何 pod 中的 container 提供AWS權限。 使用此功能，您不再需要為工作節點( worker nodes ) IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。
 應用程序必須使用AWS憑證簽署其AWS API請求。 此功能提供了一種用於管理應用程序憑證的策略，類似於Amazon EC2實例配置文件向Amazon EC2實例提供憑證的方式。 您可以將IAM角色與Kubernetes服務帳戶相關聯，而不必創建AWS憑證並將其分發到容器或使用Amazon EC2實例的角色。 然後，容器容器中的應用程序可以使用AWS SDK或AWS CLI向授權的AWS服務發出API請求。
 服務帳戶的IAM角色功能具有以下優點：

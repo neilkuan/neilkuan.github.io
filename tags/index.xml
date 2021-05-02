@@ -2,99 +2,99 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Neil Blog</title>
-    <link>https://blog.neilkuan.dev/tags/</link>
+    <link>https://blog.neilkuan.net/tags/</link>
     <description>Recent content in Tags on Neil Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 16 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.dev/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 16 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWS</title>
-      <link>https://blog.neilkuan.dev/tags/aws/</link>
+      <link>https://blog.neilkuan.net/tags/aws/</link>
       <pubDate>Wed, 16 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/tags/aws/</guid>
+      <guid>https://blog.neilkuan.net/tags/aws/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Cloudshell</title>
-      <link>https://blog.neilkuan.dev/tags/cloudshell/</link>
+      <link>https://blog.neilkuan.net/tags/cloudshell/</link>
       <pubDate>Wed, 16 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/tags/cloudshell/</guid>
+      <guid>https://blog.neilkuan.net/tags/cloudshell/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Container</title>
-      <link>https://blog.neilkuan.dev/tags/container/</link>
+      <link>https://blog.neilkuan.net/tags/container/</link>
       <pubDate>Sat, 26 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/tags/container/</guid>
+      <guid>https://blog.neilkuan.net/tags/container/</guid>
       <description></description>
     </item>
     
     <item>
       <title>DOCKER</title>
-      <link>https://blog.neilkuan.dev/tags/docker/</link>
+      <link>https://blog.neilkuan.net/tags/docker/</link>
       <pubDate>Sat, 26 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/tags/docker/</guid>
+      <guid>https://blog.neilkuan.net/tags/docker/</guid>
       <description></description>
     </item>
     
     <item>
       <title>github</title>
-      <link>https://blog.neilkuan.dev/tags/github/</link>
+      <link>https://blog.neilkuan.net/tags/github/</link>
       <pubDate>Sat, 26 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/tags/github/</guid>
+      <guid>https://blog.neilkuan.net/tags/github/</guid>
       <description></description>
     </item>
     
     <item>
       <title>CICD</title>
-      <link>https://blog.neilkuan.dev/tags/cicd/</link>
+      <link>https://blog.neilkuan.net/tags/cicd/</link>
       <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/tags/cicd/</guid>
+      <guid>https://blog.neilkuan.net/tags/cicd/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Kaniko</title>
-      <link>https://blog.neilkuan.dev/tags/kaniko/</link>
+      <link>https://blog.neilkuan.net/tags/kaniko/</link>
       <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/tags/kaniko/</guid>
+      <guid>https://blog.neilkuan.net/tags/kaniko/</guid>
       <description></description>
     </item>
     
     <item>
       <title>CDK</title>
-      <link>https://blog.neilkuan.dev/tags/cdk/</link>
+      <link>https://blog.neilkuan.net/tags/cdk/</link>
       <pubDate>Fri, 17 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/tags/cdk/</guid>
+      <guid>https://blog.neilkuan.net/tags/cdk/</guid>
       <description></description>
     </item>
     
     <item>
       <title>TERRAFORM</title>
-      <link>https://blog.neilkuan.dev/tags/terraform/</link>
+      <link>https://blog.neilkuan.net/tags/terraform/</link>
       <pubDate>Fri, 17 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/tags/terraform/</guid>
+      <guid>https://blog.neilkuan.net/tags/terraform/</guid>
       <description></description>
     </item>
     
     <item>
       <title>BASH</title>
-      <link>https://blog.neilkuan.dev/tags/bash/</link>
+      <link>https://blog.neilkuan.net/tags/bash/</link>
       <pubDate>Mon, 29 Jun 2020 10:00:00 +0000</pubDate>
       
-      <guid>https://blog.neilkuan.dev/tags/bash/</guid>
+      <guid>https://blog.neilkuan.net/tags/bash/</guid>
       <description></description>
     </item>
     
