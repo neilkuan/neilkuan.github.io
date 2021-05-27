@@ -104,39 +104,39 @@ iamlive  source github: https://github.com/iann0036/iamlive
 <h3 id="打開兩個視窗">打開兩個視窗<a href="#打開兩個視窗" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <ol>
 <li>第一個視窗輸入 <code>iamlive --set-ini --profile [aws_profile]</code> 指定 aws profile.</li>
-<li>第二個視窗先 一個檔案 <code>touch a.txt</code> file
-<img src="/posts/iamlive/2021-05-27-01.png" alt=""></li>
+<li>第二個視窗先 一個檔案 <code>touch a.txt</code> file</li>
 </ol>
+<p><img src="/posts/iamlive/2021-05-27-01.png" alt=""></p>
 <h3 id="嘗試-list-s3-bucket">嘗試 list s3 bucket<a href="#嘗試-list-s3-bucket" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <ol>
 <li>第一個視窗 已經被 iamlive process 吃住</li>
 <li>第二個視窗先 嘗試 <code>aws s3 ls --profile [aws_profile]</code>
-你會發現第一個視窗會發現你下了 list bucket 的指令，並立即產生<code>s3:ListAllMyBuckets</code> iam policy 給你。
-<img src="/posts/iamlive/2021-05-27-s3-ls.png" alt=""></li>
+你會發現第一個視窗會發現你下了 list bucket 的指令，並立即產生<code>s3:ListAllMyBuckets</code> iam policy 給你。</li>
 </ol>
+<p><img src="/posts/iamlive/2021-05-27-s3-ls.png" alt=""></p>
 <h3 id="嘗試-put-object-to-s3-bucket">嘗試 put object to s3 bucket<a href="#嘗試-put-object-to-s3-bucket" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <ol>
 <li>第一個視窗 已經被 iamlive process 吃住</li>
 <li>第二個視窗先 嘗試 <code>aws s3 cp a.txt s3://[your_bucket_name]/ --profile [aws_profile]</code>
-你會發現第一個視窗會發現你下了 s3 cp 的指令，並立即產生 <code>s3:PutObject</code> iam policy 給你。
-<img src="/posts/iamlive/2021-05-27-s3-put.png" alt=""></li>
+你會發現第一個視窗會發現你下了 s3 cp 的指令，並立即產生 <code>s3:PutObject</code> iam policy 給你。</li>
 </ol>
+<p><img src="/posts/iamlive/2021-05-27-s3-put.png" alt=""></p>
 <h3 id="嘗試-rm-object-on-s3-bucket">嘗試 rm object on s3 bucket<a href="#嘗試-rm-object-on-s3-bucket" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <ol>
 <li>第一個視窗 已經被 iamlive process 吃住</li>
 <li>第二個視窗先 嘗試 <code>aws s3 rm s3://[your_bucket_name]/a.txt --profile [aws_profile]</code>
-你會發現第一個視窗會發現你下了 s3 rm 的指令，並立即產生 <code>s3:DeleteObject</code> iam policy 給你。
-<img src="/posts/iamlive/2021-05-27-s3-del.png" alt=""></li>
+你會發現第一個視窗會發現你下了 s3 rm 的指令，並立即產生 <code>s3:DeleteObject</code> iam policy 給你。</li>
 </ol>
+<p><img src="/posts/iamlive/2021-05-27-s3-del.png" alt=""></p>
 <h3 id="發現-support-sdk-所以就手癢來試試看">發現 support SDK ，所以就手癢來試試看。<a href="#發現-support-sdk-所以就手癢來試試看" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-<p><img src="/posts/iamlive/2021-05-27-IAM-LIVE01.png" alt="">
-有興趣的歡迎參考一下 我的 demo repo for python boto3 sdk.</p>
+<p><img src="/posts/iamlive/2021-05-27-IAM-LIVE01.png" alt=""></p>
+<p>有興趣的歡迎參考一下 我的 demo repo for python boto3 sdk.</p>
 <blockquote>
 <p>demo github repo : <a href="https://github.com/neilkuan/iamlive-for-python-boto3">https://github.com/neilkuan/iamlive-for-python-boto3</a></p>
 </blockquote>
 <p>以及 大家如果有興趣 可以多多 follow 這位來自 澳洲 雪梨的 AWS Hero.
-他的 <a href="https://github.com/iann0036">github</a> 裡面真的有很多令人驚豔的 open source like <a href="https://github.com/iann0036/AWSConsoleRecorder">AWSConsoleRecorder</a> 、<a href="https://github.com/iann0036/former2">former2</a> etc&hellip;
-<img src="/posts/2021-05-27-ian.png" alt=""></p>
+他的 <a href="https://github.com/iann0036">github</a> 裡面真的有很多令人驚豔的 open source like <a href="https://github.com/iann0036/AWSConsoleRecorder">AWSConsoleRecorder</a> 、<a href="https://github.com/iann0036/former2">former2</a> etc&hellip;</p>
+<p><img src="/posts/iamlive/2021-05-27-ian.png" alt=""></p>
 <h2 id="20210527-neil-kuan">20210527 Neil Kuan<a href="#20210527-neil-kuan" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
 			</div>
