@@ -35,44 +35,44 @@ iamlive  source github: https://github.com/iann0036/iamlive
 <p><img src="https://raw.githubusercontent.com/iann0036/iamlive/assets/iamlive.gif" alt=""></p>
 <h2 id="到-release-page-下載與執行環境可運行的binary">到 release page 下載與執行環境可運行的binary</h2>
 <p><a href="https://github.com/iann0036/iamlive/releases">https://github.com/iann0036/iamlive/releases</a>
-<img src="./iamlive/2021-05-27-release.png" alt="">
+<img src="/posts/iamlive/2021-05-27-release.png" alt="">
 像我就選擇 <code>iamlive-v0.36.0-darwin-amd64.dmg</code> 並將 binary 放入您的 <code>$PATH</code> 路徑中。</p>
 <h3 id="打開兩個視窗">打開兩個視窗</h3>
 <ol>
 <li>第一個視窗輸入 <code>iamlive --set-ini --profile [aws_profile]</code> 指定 aws profile.</li>
 <li>第二個視窗先 一個檔案 <code>touch a.txt</code> file
-<img src="./iamlive/2021-05-27-01.png" alt=""></li>
+<img src="/posts/iamlive/2021-05-27-01.png" alt=""></li>
 </ol>
 <h3 id="嘗試-list-s3-bucket">嘗試 list s3 bucket</h3>
 <ol>
 <li>第一個視窗 已經被 iamlive process 吃住</li>
 <li>第二個視窗先 嘗試 <code>aws s3 ls --profile [aws_profile]</code>
 你會發現第一個視窗會發現你下了 list bucket 的指令，並立即產生<code>s3:ListAllMyBuckets</code> iam policy 給你。
-<img src="./iamlive/2021-05-27-s3-ls.png" alt=""></li>
+<img src="/posts/iamlive/2021-05-27-s3-ls.png" alt=""></li>
 </ol>
 <h3 id="嘗試-put-object-to-s3-bucket">嘗試 put object to s3 bucket</h3>
 <ol>
 <li>第一個視窗 已經被 iamlive process 吃住</li>
 <li>第二個視窗先 嘗試 <code>aws s3 cp a.txt s3://[your_bucket_name]/ --profile [aws_profile]</code>
 你會發現第一個視窗會發現你下了 s3 cp 的指令，並立即產生 <code>s3:PutObject</code> iam policy 給你。
-<img src="./iamlive/2021-05-27-s3-put.png" alt=""></li>
+<img src="/posts/iamlive/2021-05-27-s3-put.png" alt=""></li>
 </ol>
 <h3 id="嘗試-rm-object-on-s3-bucket">嘗試 rm object on s3 bucket</h3>
 <ol>
 <li>第一個視窗 已經被 iamlive process 吃住</li>
 <li>第二個視窗先 嘗試 <code>aws s3 rm s3://[your_bucket_name]/a.txt --profile [aws_profile]</code>
 你會發現第一個視窗會發現你下了 s3 rm 的指令，並立即產生 <code>s3:DeleteObject</code> iam policy 給你。
-<img src="./iamlive/2021-05-27-s3-del.png" alt=""></li>
+<img src="/posts/iamlive/2021-05-27-s3-del.png" alt=""></li>
 </ol>
 <h3 id="發現-support-sdk-所以就手癢來試試看">發現 support SDK ，所以就手癢來試試看。</h3>
-<p><img src="./iamlive/2021-05-27-IAM-LIVE01.png" alt="">
+<p><img src="/posts/iamlive/2021-05-27-IAM-LIVE01.png" alt="">
 有興趣的歡迎參考一下 我的 demo repo for python boto3 sdk.</p>
 <blockquote>
 <p>demo github repo : <a href="https://github.com/neilkuan/iamlive-for-python-boto3">https://github.com/neilkuan/iamlive-for-python-boto3</a></p>
 </blockquote>
 <p>以及 大家如果有興趣 可以多多 follow 這位來自 澳洲 雪梨的 AWS Hero.
 他的 <a href="https://github.com/iann0036">github</a> 裡面真的有很多令人驚豔的 open source like <a href="https://github.com/iann0036/AWSConsoleRecorder">AWSConsoleRecorder</a> 、<a href="https://github.com/iann0036/former2">former2</a> etc&hellip;
-<img src="./2021-05-27-ian.png" alt=""></p>
+<img src="/posts/2021-05-27-ian.png" alt=""></p>
 <h2 id="20210527-neil-kuan">20210527 Neil Kuan</h2>
 ]]></content>
 		</item>
