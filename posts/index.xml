@@ -64,6 +64,8 @@ iamlive  source github: https://github.com/iann0036/iamlive
 你會發現第一個視窗會發現你下了 s3 rm 的指令，並立即產生 <code>s3:DeleteObject</code> iam policy 給你。</li>
 </ol>
 <p><img src="/posts/iamlive/2021-05-27-s3-del.png" alt=""></p>
+<p>雖然目前只能偵測到 <code>Action</code> 沒辦法細微的偵測到什麼樣的  <code>resource</code> (目前為 &ldquo;*&quot;) 但我認為已經相當實用了，
+推薦給大家。</p>
 <h3 id="發現-support-sdk-所以就手癢來試試看">發現 support SDK ，所以就手癢來試試看。</h3>
 <p><img src="/posts/iamlive/2021-05-27-IAM-LIVE01.png" alt=""></p>
 <p>有興趣的歡迎參考一下 我的 demo repo for python boto3 sdk.</p>
