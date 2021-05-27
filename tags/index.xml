@@ -7,13 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 16 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 27 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWS</title>
       <link>https://blog.neilkuan.net/tags/aws/</link>
-      <pubDate>Wed, 16 Dec 2020 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate>
       
       <guid>https://blog.neilkuan.net/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>IAMLIVE</title>
+      <link>https://blog.neilkuan.net/tags/iamlive/</link>
+      <pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/tags/iamlive/</guid>
       <description></description>
     </item>
     
@@ -86,15 +95,6 @@
       <pubDate>Fri, 17 Jul 2020 00:00:00 +0000</pubDate>
       
       <guid>https://blog.neilkuan.net/tags/terraform/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>BASH</title>
-      <link>https://blog.neilkuan.net/tags/bash/</link>
-      <pubDate>Mon, 29 Jun 2020 10:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.net/tags/bash/</guid>
       <description></description>
     </item>
     

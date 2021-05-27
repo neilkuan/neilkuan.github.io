@@ -6,8 +6,76 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Wed, 16 Dec 2020 00:00:00 +0000</lastBuildDate>
+		<lastBuildDate>Thu, 27 May 2021 00:00:00 +0000</lastBuildDate>
 		<atom:link href="https://blog.neilkuan.net/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>AWS IAM Policy Generater with iamlive</title>
+			<link>https://blog.neilkuan.net/posts/2021-05-27-iam-live/</link>
+			<pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate>
+			
+			<guid>https://blog.neilkuan.net/posts/2021-05-27-iam-live/</guid>
+			<description>前言 踏入 IT界 也快2年了，時代快速發展，為了因應快速發展，許多企業都開始擁抱雲端計算，當然目前小弟在的公司也不例外，而我比較常接觸的雲端計算平台為AWS，在使用了AWS 這麼久，身為 IT 最重要的就是如何為 application 配予適當的 iam 權限(policy)，以達到 zero trust，給 application 越是剛剛好的權限越是好，而不是每個 application 要調用 s3 時，你就給他 arn:aws:iam::aws:policy/AmazonS3FullAccess，application 要調用 sqs 時，你就給他 arn:aws:iam::aws:policy/AmazonSQSFullAccess。
+iamlive  source github: https://github.com/iann0036/iamlive
+ 有一天我在逛 github 的時候，突然發現一位AWS Hore 寫了一個 相當令我感興趣的 open source，那就是 iamlive，我們來看看他的說明簡介
+ Generate an IAM policy from AWS calls using client-side monitoring (CSM) or embedded proxy。 透過監控 用戶端對 AWS 調用資源的 api 來持續幫你，產生 iam policay，來幫助您知道您調用的api 是需要多少權限。
+ 到 release page 下載與執行環境可運行的binary https://github.com/iann0036/iamlive/releases 像我就選擇 iamlive-v0.</description>
+			<content type="html"><![CDATA[<h2 id="前言">前言</h2>
+<p>踏入 IT界 也快2年了，時代快速發展，為了因應快速發展，許多企業都開始擁抱雲端計算，當然目前小弟在的公司也不例外，而我比較常接觸的雲端計算平台為AWS，在使用了AWS 這麼久，身為 IT 最重要的就是如何為 <code>application</code> 配予適當的 iam 權限(policy)，以達到 <code>zero trust</code>，給 <code>application</code> 越是剛剛好的權限越是好，而不是每個 <code>application</code> 要調用 s3 時，你就給他 <code>arn:aws:iam::aws:policy/AmazonS3FullAccess</code>，<code>application</code> 要調用 sqs 時，你就給他 <code>arn:aws:iam::aws:policy/AmazonSQSFullAccess</code>。</p>
+<h2 id="iamlive"><code>iamlive</code></h2>
+<blockquote>
+<p>source github: <a href="https://github.com/iann0036/iamlive">https://github.com/iann0036/iamlive</a></p>
+</blockquote>
+<p>有一天我在逛 github 的時候，突然發現一位AWS Hore 寫了一個 相當令我感興趣的 open source，那就是
+<a href="https://github.com/iann0036/iamlive">iamlive</a>，我們來看看他的說明簡介</p>
+<blockquote>
+<p>Generate an IAM policy from AWS calls using client-side monitoring (CSM) or embedded proxy。
+透過監控 用戶端對 AWS 調用資源的 api 來持續幫你，產生 iam policay，來幫助您知道您調用的api 是需要多少權限。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/iann0036/iamlive/assets/iamlive.gif" alt=""></p>
+<h2 id="到-release-page-下載與執行環境可運行的binary">到 release page 下載與執行環境可運行的binary</h2>
+<p><a href="https://github.com/iann0036/iamlive/releases">https://github.com/iann0036/iamlive/releases</a>
+<img src="./iamlive/2021-05-27-release.png" alt="">
+像我就選擇 <code>iamlive-v0.36.0-darwin-amd64.dmg</code> 並將 binary 放入您的 <code>$PATH</code> 路徑中。</p>
+<h3 id="打開兩個視窗">打開兩個視窗</h3>
+<ol>
+<li>第一個視窗輸入 <code>iamlive --set-ini --profile [aws_profile]</code> 指定 aws profile.</li>
+<li>第二個視窗先 一個檔案 <code>touch a.txt</code> file
+<img src="./iamlive/2021-05-27-01.png" alt=""></li>
+</ol>
+<h3 id="嘗試-list-s3-bucket">嘗試 list s3 bucket</h3>
+<ol>
+<li>第一個視窗 已經被 iamlive process 吃住</li>
+<li>第二個視窗先 嘗試 <code>aws s3 ls --profile [aws_profile]</code>
+你會發現第一個視窗會發現你下了 list bucket 的指令，並立即產生<code>s3:ListAllMyBuckets</code> iam policy 給你。
+<img src="./iamlive/2021-05-27-s3-ls.png" alt=""></li>
+</ol>
+<h3 id="嘗試-put-object-to-s3-bucket">嘗試 put object to s3 bucket</h3>
+<ol>
+<li>第一個視窗 已經被 iamlive process 吃住</li>
+<li>第二個視窗先 嘗試 <code>aws s3 cp a.txt s3://[your_bucket_name]/ --profile [aws_profile]</code>
+你會發現第一個視窗會發現你下了 s3 cp 的指令，並立即產生 <code>s3:PutObject</code> iam policy 給你。
+<img src="./iamlive/2021-05-27-s3-put.png" alt=""></li>
+</ol>
+<h3 id="嘗試-rm-object-on-s3-bucket">嘗試 rm object on s3 bucket</h3>
+<ol>
+<li>第一個視窗 已經被 iamlive process 吃住</li>
+<li>第二個視窗先 嘗試 <code>aws s3 rm s3://[your_bucket_name]/a.txt --profile [aws_profile]</code>
+你會發現第一個視窗會發現你下了 s3 rm 的指令，並立即產生 <code>s3:DeleteObject</code> iam policy 給你。
+<img src="./iamlive/2021-05-27-s3-del.png" alt=""></li>
+</ol>
+<h3 id="發現-support-sdk-所以就手癢來試試看">發現 support SDK ，所以就手癢來試試看。</h3>
+<p><img src="./iamlive/2021-05-27-IAM-LIVE01.png" alt="">
+有興趣的歡迎參考一下 我的 demo repo for python boto3 sdk.</p>
+<blockquote>
+<p>demo github repo : <a href="https://github.com/neilkuan/iamlive-for-python-boto3">https://github.com/neilkuan/iamlive-for-python-boto3</a></p>
+</blockquote>
+<p>以及 大家如果有興趣 可以多多 follow 這位來自 澳洲 雪梨的 AWS Hero.
+他的 <a href="https://github.com/iann0036">github</a> 裡面真的有很多令人驚豔的 open source like <a href="https://github.com/iann0036/AWSConsoleRecorder">AWSConsoleRecorder</a> 、<a href="https://github.com/iann0036/former2">former2</a> etc&hellip;
+<img src="./2021-05-27-ian.png" alt=""></p>
+<h2 id="20210527-neil-kuan">20210527 Neil Kuan</h2>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Introducing AWS CloudShell !!!</title>
