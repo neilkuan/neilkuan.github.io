@@ -13,8 +13,8 @@
 服務帳戶的IAM角色功能具有以下優點：
  最低特權 (Least privilege) -通過使用IAM角色提供服務帳戶功能，您不再需要為工作節點IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。 您可以將IAM權限限定在服務帳戶上，只有使用該服務帳戶的Pod才能訪問這些權限。 此功能還消除了對諸如kiam或kube2iam之類的第三方解決方案的需求。 憑證隔離 (Credential isolation ) - 容器只能檢索與其所屬的服務帳戶關聯的IAM角色的憑據。 容器永遠無法訪問用於屬於另一個容器的另一個容器的憑據。 可審核性 ( Auditability ) - 可通過CloudTrail獲得訪問和事件日誌，以幫助確保進行追溯審核。  2014年，AWS Identity and Access Management添加了對使用OpenID Connect（OIDC）的聯合身份的支持。通過此功能，您可以使用受支持的身份提供者對AWS API調用進行身份驗證，並接收有效的OIDC JSON Web令牌（JWT）。您可以將此令牌傳遞給AWS STS AssumeRoleWithWebIdentity API操作，並接收IAM臨時角色憑證。您可以使用這些憑證與任何AWS服務（例如Amazon S3和DynamoDB）進行交互。
 Kubernetes長期以來一直將服務帳戶用作其內部身份系統。 Pods可以使用僅Kubernetes API服務器可以驗證的自動安裝的令牌（非OIDC JWT）向Kubernetes API服務器進行身份驗證。這些舊版服務帳戶令牌不會過期，並且旋轉簽名密鑰是一個困難的過程。在Kubernetes版本1.12中，添加了對新ProjectedServiceAccountToken功能的支持，該功能是OIDC JSON Web令牌，它還包含服務帳戶標識，並支持可配置的受眾。
-Amazon EKS現在在每個集群上託管一個公共OIDC發現終端節點，其中包含ProjectedServiceAccountToken JSON Web令牌的簽名密鑰，因此外部系統（例如IAM）可以驗證和接受Kubernetes發行的OIDC令牌。"><meta itemprop="datePublished" content="2020-04-22T18:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2020-04-22T18:00:00&#43;00:00" />
+Amazon EKS現在在每個集群上託管一個公共OIDC發現終端節點，其中包含ProjectedServiceAccountToken JSON Web令牌的簽名密鑰，因此外部系統（例如IAM）可以驗證和接受Kubernetes發行的OIDC令牌。"><meta itemprop="datePublished" content="2020-04-22T18:00:00+00:00" />
+<meta itemprop="dateModified" content="2020-04-22T18:00:00+00:00" />
 <meta itemprop="wordCount" content="1063"><meta itemprop="image" content="https://blog.neilkuan.net/posts/2020-04-22-AWS-IAM-Role-For-EKS-Service-Account.png">
 <meta itemprop="keywords" content="AWS,EKS,IAM," /><meta property="og:title" content="Least privilege ?! IAM Role For Service Account (IRSA)" />
 <meta property="og:description" content="使用Amazon EKS集群上服務帳戶的IAM角色，您可以將IAM角色與Kubernetes服務帳戶關聯。 然後，該服務帳戶可以向使用該服務帳戶的任何 pod 中的 container 提供AWS權限。 使用此功能，您不再需要為工作節點( worker nodes ) IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。
@@ -25,8 +25,8 @@ Kubernetes長期以來一直將服務帳戶用作其內部身份系統。 Pods�
 Amazon EKS現在在每個集群上託管一個公共OIDC發現終端節點，其中包含ProjectedServiceAccountToken JSON Web令牌的簽名密鑰，因此外部系統（例如IAM）可以驗證和接受Kubernetes發行的OIDC令牌。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.neilkuan.net/posts/aws-iam-role-for-eks-service-account/" /><meta property="og:image" content="https://blog.neilkuan.net/posts/2020-04-22-AWS-IAM-Role-For-EKS-Service-Account.png" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-04-22T18:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2020-04-22T18:00:00&#43;00:00" />
+<meta property="article:published_time" content="2020-04-22T18:00:00+00:00" />
+<meta property="article:modified_time" content="2020-04-22T18:00:00+00:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://blog.neilkuan.net/posts/2020-04-22-AWS-IAM-Role-For-EKS-Service-Account.png"/>
@@ -123,7 +123,7 @@ The containers in your pods must use an AWS SDK version that supports assuming a
 <li>The IAM roles for service accounts feature is available on new Amazon EKS Kubernetes version 1.14 clusters, and clusters that were updated to versions 1.14 or 1.13 on or after September 3rd, 2019.</li>
 </ul>
 <h2 id="need-tools-in-your-workspaces">Need tools in your workspaces<a href="#need-tools-in-your-workspaces" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># You must use at least version 1.18.15 of the AWS CLI to receive the proper output from this command:</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># You must use at least version 1.18.15 of the AWS CLI to receive the proper output from this command:</span>
 
 -- aws cli version 1.18.15
 
@@ -138,7 +138,7 @@ Check your <code>eksctl</code> version that your <code>eksctl</code> version is 
 <h3 id="eks_cluster_name-is-your-eks-cluster-name-like-pic1">$EKS_CLUSTER_NAME is your EKS cluster name like pic1<a href="#eks_cluster_name-is-your-eks-cluster-name-like-pic1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <p><img src="https://paper-attachments.dropbox.com/s_BA713D821AD3EE4DD10F9D6A0B6FF7A0B882B9995A0025F4B6E008CC62EA297B_1587539609827_+2020-04-22+3.12.34.png" alt="pic1"></p>
 <p><strong>Create your OIDC identity provider for your cluster</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ eksctl utils associate-iam-oidc-provider --cluster <span class="nv">$EKS_CLUSTER_NAME</span> --approve
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ eksctl utils associate-iam-oidc-provider --cluster <span class="nv">$EKS_CLUSTER_NAME</span> --approve
 ---output
 <span class="o">[</span>ℹ<span class="o">]</span>  using region <span class="o">{</span>AWS_REGION<span class="o">}</span>
 <span class="o">[</span>ℹ<span class="o">]</span>  will create IAM Open ID Connect provider <span class="k">for</span> cluster <span class="s2">&#34;</span><span class="nv">$EKS_CLUSTER_NAME</span><span class="s2">&#34;</span> in <span class="s2">&#34;{AWS_REGION}&#34;</span>
@@ -150,7 +150,7 @@ Check your <code>eksctl</code> version that your <code>eksctl</code> version is 
 You must create an IAM policy that specifies the permissions that you would like the containers in your pods to have. In this workshop we will use AWS managed policy named “<strong>AmazonS3ReadOnlyAccess</strong>” which allow get and list for all S3 resources.
 You must also create a role for your service accounts to use before you associate it with a service account. Then you can then attach a specific IAM policy to the role that gives the containers in your pods the permissions you desire.
 <strong>Get ARN for AmazonS3ReadOnlyAccess:</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># Get aws manged policy</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># Get aws manged policy</span>
 $ aws iam list-policies --query <span class="s1">&#39;Policies[?PolicyName==`AmazonS3ReadOnlyAccess`].Arn&#39;</span>
 --- output
 <span class="s2">&#34;arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess&#34;</span>
@@ -158,7 +158,7 @@ $ aws iam list-policies --query <span class="s1">&#39;Policies[?PolicyName==`Ama
 <span class="c1"># This policy like this pic2</span>
 </code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_BA713D821AD3EE4DD10F9D6A0B6FF7A0B882B9995A0025F4B6E008CC62EA297B_1587540436402_+2020-04-22+3.27.04.png" alt="pic 2"></p>
 <p><strong>Create an IAM role for your service accounts:</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># $SA_NAME is your k8s service account name .</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># $SA_NAME is your k8s service account name .</span>
 <span class="c1"># $NAMESPACE is your service account in which namespaces .</span>
 <span class="c1"># $POLICY_ARN is your want to give your service account that role can do .</span>
 <span class="c1"># $EKS_CLUSTER_NAME is your EKS Cluster Name .</span>
@@ -179,12 +179,12 @@ eksctl create iamserviceaccount --name iam-test --namespace default --cluster <s
 <h2 id="specifying-an-iam-role-for-your-service-account">Specifying an IAM Role for your Service Account<a href="#specifying-an-iam-role-for-your-service-account" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p>In the previous step, we created the IAM role that associated with a service account named <strong>iam-test</strong> in the cluster and this has already been done for you with the service account you specified when creating the role.
 <strong>Be sure your service account iam-test is exist:</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ kubectl get sa
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ kubectl get sa
 NAME               SECRETS   AGE
 default            <span class="m">1</span>         25h
 iam-test           <span class="m">1</span>         24m
 </code></pre></div><p><strong>Make sure your service account with the ARN of the IAM role is annotated:</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ kubectl describe sa iam-test
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ kubectl describe sa iam-test
 --- output
 Name:                iam-test
 Namespace:           default
@@ -196,7 +196,7 @@ Tokens:              iam-test-token-5n9cb
 Events:              &lt;none&gt;
 </code></pre></div><h1 id="deploy-sample-pod">DEPLOY SAMPLE POD<a href="#deploy-sample-pod" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 <p>Now that we have completed all the necessary configuration to run a Pod with IAM role. We will deploy sample Pod to the cluster, and run a test command to see whether it works correctly or not.</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ curl -LO https://eksworkshop.com/beginner/110_irsa/deploy.files/iam-pod.yaml
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ curl -LO https://eksworkshop.com/beginner/110_irsa/deploy.files/iam-pod.yaml
 --- inside
 apiVersion: apps/v1
 kind: Deployment
@@ -221,7 +221,7 @@ spec:
 
 $ kubectl apply -f iam-pod.yaml
 </code></pre></div><h2 id="exec-to-pod-check-iam-role-from-service-account">Exec to pod check iam role from service account<a href="#exec-to-pod-check-iam-role-from-service-account" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ kubectl get pods
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ kubectl get pods
 NAME                        READY   STATUS    RESTARTS   AGE
 iam-test-xxxxxxxxxxx  1/1     Running   <span class="m">0</span>          4m44s
 
@@ -243,9 +243,9 @@ root@iam-test-5f46bfb788-9fhcr:/# cat /var/run/secrets/eks.amazonaws.com/service
 root@iam-test-5f46bfb788-9fhcr:/# aws s3 cp s3://your-bucket-name/hello.txt
 </code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_BA713D821AD3EE4DD10F9D6A0B6FF7A0B882B9995A0025F4B6E008CC62EA297B_1587547919673_+2020-04-22+5.30.55.png" alt=""></p>
 <p><strong>To remove sample application</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ kubectl delete -f iam-pod.yaml
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ kubectl delete -f iam-pod.yaml
 </code></pre></div><p><strong>To remove IAM role and Service Account stack from cloudformation</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ eksctl delete iamserviceaccount --name iam-test --namespace default --cluster <span class="nv">$EKS_CLUSTER_NAME</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ eksctl delete iamserviceaccount --name iam-test --namespace default --cluster <span class="nv">$EKS_CLUSTER_NAME</span>
 </code></pre></div><p>總結：我們知道如何不使用 worker node IAM role 的權限，限制我們的服務(pod)給與相對應的權限，也代表著 IAM policy 設計的重要性，可以給予最剛好的權限到我們的服務中。</p>
 <p>source: <a href="https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html">https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html</a> , <a href="https://eksworkshop.com/beginner/110_irsa/">https://eksworkshop.com/beginner/110_irsa/</a></p>
 <p>2020年4月22日  Neil Kuan</p>

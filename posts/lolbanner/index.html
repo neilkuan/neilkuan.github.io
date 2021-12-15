@@ -13,8 +13,8 @@
  首先利用 brew 安裝 必要的套件
  沒有 homebrew 請先安裝 ckick here
  # 如果沒有 ruby 請先安裝 ruby  $ brew install ruby $ brew install figlet $ brew install lolcat 創建front 資料夾，並進入
-$ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-fonts 到 https://github.com/xero/figlet-fonts 選取你想要的 主題，我選的是 3d."><meta itemprop="datePublished" content="2020-06-29T10:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2020-06-29T10:00:00&#43;00:00" />
+$ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-fonts 到 https://github.com/xero/figlet-fonts 選取你想要的 主題，我選的是 3d."><meta itemprop="datePublished" content="2020-06-29T10:00:00+00:00" />
+<meta itemprop="dateModified" content="2020-06-29T10:00:00+00:00" />
 <meta itemprop="wordCount" content="139"><meta itemprop="image" content="https://blog.neilkuan.net/posts/lolbanner-01.png">
 <meta itemprop="keywords" content="FUNNY,BASH," /><meta property="og:title" content="超炫砲 LoLBanner ~~" />
 <meta property="og:description" content="前言： 我的環境是 mac os 如果是其他系統 裝起來應該大同小異 可以參考 https://www.tecmint.com/lolcat-command-to-output-rainbow-of-colors-in-linux-terminal/
@@ -25,8 +25,8 @@ $ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-f
 $ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-fonts 到 https://github.com/xero/figlet-fonts 選取你想要的 主題，我選的是 3d." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.neilkuan.net/posts/lolbanner/" /><meta property="og:image" content="https://blog.neilkuan.net/posts/lolbanner-01.png" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-06-29T10:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2020-06-29T10:00:00&#43;00:00" />
+<meta property="article:published_time" content="2020-06-29T10:00:00+00:00" />
+<meta property="article:modified_time" content="2020-06-29T10:00:00+00:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://blog.neilkuan.net/posts/lolbanner-01.png"/>
@@ -99,22 +99,22 @@ $ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-f
 <blockquote>
 <p>沒有 homebrew 請先安裝 <a href="https://brew.sh/index_zh-tw">ckick here</a></p>
 </blockquote>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 如果沒有 ruby 請先安裝 ruby </span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 如果沒有 ruby 請先安裝 ruby </span>
 $ brew install ruby
 $ brew install figlet
 $ brew install lolcat
 </code></pre></div><p>創建front 資料夾，並進入</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ mkdir -p ~/.local/share/fonts/figlet-fonts/
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ mkdir -p ~/.local/share/fonts/figlet-fonts/
 $ <span class="nb">cd</span> ~/.local/share/fonts/figlet-fonts
 </code></pre></div><p>到 <a href="https://github.com/xero/figlet-fonts">https://github.com/xero/figlet-fonts</a> 選取你想要的 主題，我選的是  3d.flf</p>
 <p><img src="https://paper-attachments.dropbox.com/s_793C9F574C826051E8CEA1C98F67BB1594B6A14892CAE635880BE7E2D3EFA987_1593482022208_+2020-06-30+9.53.38.png" alt=""></p>
 <p>下載 文字格式</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">cd</span> ~/.local/share/fonts/figlet-fonts
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">cd</span> ~/.local/share/fonts/figlet-fonts
 $ wget https://raw.githubusercontent.com/xero/figlet-fonts/master/3d.flf
 $ ls ~/.local/share/fonts/figlet-fonts
 3d.flf
 </code></pre></div><p>撰寫 Shell Script Function &lt;放在家目錄即可&gt;</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">cd</span> ~
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">cd</span> ~
 $ vi <span class="nv">lolbanner</span>
 <span class="o">===============================================</span>
 <span class="c1">#!/bin/bash</span>
@@ -129,11 +129,11 @@ $ vi <span class="nv">lolbanner</span>
 <span class="c1"># 給予執行權限</span>
 $ chmod +x ~/lolbanner
 </code></pre></div><p><strong>alias  command</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">echo</span> <span class="s1">&#39;alias lolbanner=&#39;</span><span class="nv">$HOME</span>/lolbanner<span class="s1">&#39;&#39;</span> &gt;&gt; ~/.bash_profile
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">echo</span> <span class="s1">&#39;alias lolbanner=&#39;</span><span class="nv">$HOME</span>/lolbanner<span class="s1">&#39;&#39;</span> &gt;&gt; ~/.bash_profile
 </code></pre></div><p>再次讀取 <code>.bash_profile</code>  &lt;下次 login terminal 時會自動讀取&gt;</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">source</span> ~/.bash_profile
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">source</span> ~/.bash_profile
 </code></pre></div><h1 id="大功告成"><strong>大功告成</strong><a href="#大功告成" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">    $ lolbanner Let<span class="se">\&#39;</span>s LolBanner
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">    $ lolbanner Let<span class="se">\&#39;</span>s LolBanner
 </code></pre></div><p><img src="/posts/2020-06-30-lolbanner-02.png" alt=""></p>
 <p>2020年6月29日  Neil Kuan</p>
 

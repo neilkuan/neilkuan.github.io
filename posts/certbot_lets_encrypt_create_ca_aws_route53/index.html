@@ -14,8 +14,8 @@ Let’s Encrypt 的數位憑證認證機構（CA）推出免費 SSL/TLS 憑證�
  並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
 docker hub https://hub.docker.com/r/certbot/dns-route53
 因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 IAM Policy 如下：
-{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Id&#34;: &#34;certbot-dns-route53 sample policy&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;route53:ListHostedZones&#34;, &#34;route53:GetChange&#34; ], &#34;Resource&#34;: [ &#34;*&#34; ] }, { &#34;Effect&#34; : &#34;Allow&#34;, &#34;Action&#34; : [ &#34;route53:ChangeResourceRecordSets&#34; ], &#34;Resource&#34; : [ &#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&#34; &lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53."><meta itemprop="datePublished" content="2020-05-17T10:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2020-05-17T10:00:00&#43;00:00" />
+{ &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Id&#34;: &#34;certbot-dns-route53 sample policy&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;route53:ListHostedZones&#34;, &#34;route53:GetChange&#34; ], &#34;Resource&#34;: [ &#34;*&#34; ] }, { &#34;Effect&#34; : &#34;Allow&#34;, &#34;Action&#34; : [ &#34;route53:ChangeResourceRecordSets&#34; ], &#34;Resource&#34; : [ &#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&#34; &lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53."><meta itemprop="datePublished" content="2020-05-17T10:00:00+00:00" />
+<meta itemprop="dateModified" content="2020-05-17T10:00:00+00:00" />
 <meta itemprop="wordCount" content="305"><meta itemprop="image" content="https://blog.neilkuan.net/posts/ca-01.png">
 <meta itemprop="keywords" content="CA,AWS,Route53," /><meta property="og:title" content="Let’s Encrypt" />
 <meta property="og:description" content="小弟的域名雖然託管在 Route53 上面 ，也知道 AWS 也有提供 ACM 搭配 ELB 憑證託管的免費方案，但有時候申請幾張 憑證來用是相當實用的。
@@ -27,8 +27,8 @@ docker hub https://hub.docker.com/r/certbot/dns-route53
 { &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Id&#34;: &#34;certbot-dns-route53 sample policy&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;route53:ListHostedZones&#34;, &#34;route53:GetChange&#34; ], &#34;Resource&#34;: [ &#34;*&#34; ] }, { &#34;Effect&#34; : &#34;Allow&#34;, &#34;Action&#34; : [ &#34;route53:ChangeResourceRecordSets&#34; ], &#34;Resource&#34; : [ &#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&#34; &lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.neilkuan.net/posts/certbot_lets_encrypt_create_ca_aws_route53/" /><meta property="og:image" content="https://blog.neilkuan.net/posts/ca-01.png" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-05-17T10:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2020-05-17T10:00:00&#43;00:00" />
+<meta property="article:published_time" content="2020-05-17T10:00:00+00:00" />
+<meta property="article:modified_time" content="2020-05-17T10:00:00+00:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://blog.neilkuan.net/posts/ca-01.png"/>
@@ -100,7 +100,7 @@ Certbot 提供相當完整的安裝指引，到 <a href="https://certbot.eff.org
 <h2 id="docker-hub">docker hub<a href="#docker-hub" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p><a href="https://hub.docker.com/r/certbot/dns-route53">https://hub.docker.com/r/certbot/dns-route53</a></p>
 <p>因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 <strong>IAM Policy</strong> 如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span>
     <span class="s2">&#34;Version&#34;</span>: <span class="s2">&#34;2012-10-17&#34;</span>,
     <span class="s2">&#34;Id&#34;</span>: <span class="s2">&#34;certbot-dns-route53 sample policy&#34;</span>,
     <span class="s2">&#34;Statement&#34;</span>: <span class="o">[</span>
@@ -131,7 +131,7 @@ Certbot 提供相當完整的安裝指引，到 <a href="https://certbot.eff.org
 <p>現在假設您的執行環境是 EC2 (ubuntu) , EC2 的 IAM Role 也已 attach 上述的 IAM Policy 。
 # run image and set .aws default config in container</p>
 </blockquote>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ docker run -it --rm  --entrypoint ash certbot/dns-route53
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ docker run -it --rm  --entrypoint ash certbot/dns-route53
 
 <span class="c1"># 將YOUR_DOMAIN 換成您拖管在 route53 的 domain name , YOUR_EMAIL 換成您的 Email。</span>
 <span class="c1"># 進入 container 內。</span>
@@ -163,7 +163,7 @@ IMPORTANT NOTES:
 
    Donating to ISRG / Let<span class="err">&#39;</span>s Encrypt:   https://letsencrypt.org/donate
    Donating to EFF:                    https://eff.org/donate-le
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">/etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/fullchain.pem   &lt;- 憑證在這
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">/etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/fullchain.pem   &lt;- 憑證在這
 Your key file has been saved at:
 /etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/privkey.pem     &lt;- key 在這
 </code></pre></div><p>然後再把 憑證複製出來即可 。</p>

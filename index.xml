@@ -7,7 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 27 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to get access to GKE with service account key</title>
+      <link>https://blog.neilkuan.net/posts/2021-12-15-gcp-gke-get-access-with-service-account-key/</link>
+      <pubDate>Wed, 15 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/posts/2021-12-15-gcp-gke-get-access-with-service-account-key/</guid>
+      <description>前言： 有一天， 我的同事詢問我：『如何設定 GKE Cluster Access for kubectl？！』 我回他：『你要在哪裡透過 kubectl 操作叢集。』 他回我：『專案委託他開發API 並容器化，透過 GTILAB PIPELINE 部署到GKE，但是他有上只有for Runner Server 用的 Cert key。』
+我問他：『PIPELINE 的 deploy Job，是怎麼部署 service 的 deployment的！？』 他回我：『看不到 script 被藏起來了，但是他想在地端透過kubectl 來看 service running 狀態。』 我回他：『好！我幫你查查看，可以怎麼做』。
+於是把過程記錄了下來。
+ 首先我先拿到了 service account 的 key.   其內容大致長這樣。 cicd-sa@project-id.iam.gserviceaccount.com 是他的 service account email. project-id 是他的 service account 的 project id.
+ cat sa-cert.json { &amp;#34;type&amp;#34;: &amp;#34;service_account&amp;#34;, &amp;#34;project_id&amp;#34;: &amp;#34;project-id&amp;#34;, &amp;#34;private_key_id&amp;#34;: &amp;#34;1234567889xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&amp;#34;, &amp;#34;private_key&amp;#34;: &amp;#34;-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/+PoTGiGF3SEo8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+4htHvC\nsesOEKTP1sMZxEaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/7hO6K/VRyT1t8TwOElhCVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/IeVoYWsSp4FkDexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+\nnjq1yVuTGCFvCtGLi8NlVwDe7NUKrqSwjRNyA5F4Q44xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+oguUKxoWWaCsQKBgQDSlZC3w1fAreCd6r8F/ZHg76TbU0C88bFa\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+mV4da8mTSwytLTDc3Dtj5nHXgc2NOodcTY9AwSPldl\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/CVREwPsJJl3fNKcA5VD5rTl15SkE8k2NJl/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+lyf\nKOyexe9Hsa2IcTJQ5Yxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/iFmX1Wb\nuYeCYCd6VKU8u8oMvMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xaSZxLJwo\nne2fkDblz7P6m39mFnpsm7h8DDmzR5eHx5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx +VPi\nd13z8qvxy4VerA8SVXLucrRk\n-----END PRIVATE KEY-----\n&amp;#34;, &amp;#34;client_email&amp;#34;: &amp;#34;cicd-sa@project-id.</description>
+    </item>
+    
     <item>
       <title>AWS IAM Policy Generater with iamlive</title>
       <link>https://blog.neilkuan.net/posts/2021-05-27-iam-live/</link>
@@ -125,20 +138,6 @@ Let’s Encrypt 的數位憑證認證機構（CA）推出免費 SSL/TLS 憑證�
 docker hub https://hub.docker.com/r/certbot/dns-route53
 因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 IAM Policy 如下：
 { &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Id&amp;#34;: &amp;#34;certbot-dns-route53 sample policy&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;route53:ListHostedZones&amp;#34;, &amp;#34;route53:GetChange&amp;#34; ], &amp;#34;Resource&amp;#34;: [ &amp;#34;*&amp;#34; ] }, { &amp;#34;Effect&amp;#34; : &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34; : [ &amp;#34;route53:ChangeResourceRecordSets&amp;#34; ], &amp;#34;Resource&amp;#34; : [ &amp;#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&amp;#34; &amp;lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53.</description>
-    </item>
-    
-    <item>
-      <title>Least privilege ?! IAM Role For Service Account (IRSA)</title>
-      <link>https://blog.neilkuan.net/posts/aws-iam-role-for-eks-service-account/</link>
-      <pubDate>Wed, 22 Apr 2020 18:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.net/posts/aws-iam-role-for-eks-service-account/</guid>
-      <description>使用Amazon EKS集群上服務帳戶的IAM角色，您可以將IAM角色與Kubernetes服務帳戶關聯。 然後，該服務帳戶可以向使用該服務帳戶的任何 pod 中的 container 提供AWS權限。 使用此功能，您不再需要為工作節點( worker nodes ) IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。
-應用程序必須使用AWS憑證簽署其AWS API請求。 此功能提供了一種用於管理應用程序憑證的策略，類似於Amazon EC2實例配置文件向Amazon EC2實例提供憑證的方式。 您可以將IAM角色與Kubernetes服務帳戶相關聯，而不必創建AWS憑證並將其分發到容器或使用Amazon EC2實例的角色。 然後，容器容器中的應用程序可以使用AWS SDK或AWS CLI向授權的AWS服務發出API請求。
-服務帳戶的IAM角色功能具有以下優點：
- 最低特權 (Least privilege) -通過使用IAM角色提供服務帳戶功能，您不再需要為工作節點IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。 您可以將IAM權限限定在服務帳戶上，只有使用該服務帳戶的Pod才能訪問這些權限。 此功能還消除了對諸如kiam或kube2iam之類的第三方解決方案的需求。 憑證隔離 (Credential isolation ) - 容器只能檢索與其所屬的服務帳戶關聯的IAM角色的憑據。 容器永遠無法訪問用於屬於另一個容器的另一個容器的憑據。 可審核性 ( Auditability ) - 可通過CloudTrail獲得訪問和事件日誌，以幫助確保進行追溯審核。  2014年，AWS Identity and Access Management添加了對使用OpenID Connect（OIDC）的聯合身份的支持。通過此功能，您可以使用受支持的身份提供者對AWS API調用進行身份驗證，並接收有效的OIDC JSON Web令牌（JWT）。您可以將此令牌傳遞給AWS STS AssumeRoleWithWebIdentity API操作，並接收IAM臨時角色憑證。您可以使用這些憑證與任何AWS服務（例如Amazon S3和DynamoDB）進行交互。
-Kubernetes長期以來一直將服務帳戶用作其內部身份系統。 Pods可以使用僅Kubernetes API服務器可以驗證的自動安裝的令牌（非OIDC JWT）向Kubernetes API服務器進行身份驗證。這些舊版服務帳戶令牌不會過期，並且旋轉簽名密鑰是一個困難的過程。在Kubernetes版本1.12中，添加了對新ProjectedServiceAccountToken功能的支持，該功能是OIDC JSON Web令牌，它還包含服務帳戶標識，並支持可配置的受眾。
-Amazon EKS現在在每個集群上託管一個公共OIDC發現終端節點，其中包含ProjectedServiceAccountToken JSON Web令牌的簽名密鑰，因此外部系統（例如IAM）可以驗證和接受Kubernetes發行的OIDC令牌。</description>
     </item>
     
   </channel>

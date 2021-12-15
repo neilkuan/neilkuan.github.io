@@ -14,8 +14,8 @@ S3 policy 產生網站:https://awspolicygen.s3.amazonaws.com/policygen.html
 Need S3 , EC2 , VPC , endpoint , route table.
   Open Amazon VPC console.
   使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。  這邊先幫我記下 VPC 的 ID 等等較好操作。
-   Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint   點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID."><meta itemprop="datePublished" content="2020-05-17T10:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2020-05-17T10:00:00&#43;00:00" />
+   Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint   點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID."><meta itemprop="datePublished" content="2020-05-17T10:00:00+00:00" />
+<meta itemprop="dateModified" content="2020-05-17T10:00:00+00:00" />
 <meta itemprop="wordCount" content="235"><meta itemprop="image" content="https://blog.neilkuan.net/posts/aws-s3-private-endpoint.png">
 <meta itemprop="keywords" content="AWS,S3," /><meta property="og:title" content="AWS S3 Private endpoint" />
 <meta property="og:description" content="原文：https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-private-connection-no-authentication/
@@ -27,8 +27,8 @@ Need S3 , EC2 , VPC , endpoint , route table.
    Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint   點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.neilkuan.net/posts/aws_s3_private_endpoint/" /><meta property="og:image" content="https://blog.neilkuan.net/posts/aws-s3-private-endpoint.png" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-05-17T10:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2020-05-17T10:00:00&#43;00:00" />
+<meta property="article:published_time" content="2020-05-17T10:00:00+00:00" />
+<meta property="article:modified_time" content="2020-05-17T10:00:00+00:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://blog.neilkuan.net/posts/aws-s3-private-endpoint.png"/>
@@ -140,7 +140,7 @@ Need S3 , EC2 , VPC , endpoint , route table.
 <h2 id="點選-剛剛建立好了-s3--permissions--bucket-policy-設定bucket-policy">點選 剛剛建立好了 s3 → Permissions → Bucket Policy (設定Bucket Policy)<a href="#點選-剛剛建立好了-s3--permissions--bucket-policy-設定bucket-policy" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582863396287_+2020-02-28+12.16.31.png" alt=""></p>
 <p>官方提供建立 policy web site. <a href="https://awspolicygen.s3.amazonaws.com/policygen.html">https://awspolicygen.s3.amazonaws.com/policygen.html</a></p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#將 BUCKETARN    arn:aws:s3:::$BUCKETARN/*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#將 BUCKETARN    arn:aws:s3:::$BUCKETARN/*</span>
 <span class="c1">#   VPCE   aws:sourceVpce&#34;: &#34;$VPCE</span>
 <span class="c1"># 換成你的</span>
 <span class="o">{</span>
@@ -168,7 +168,7 @@ Need S3 , EC2 , VPC , endpoint , route table.
 <span class="o">}</span>
 </code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582863940716_+2020-02-28+12.25.35.png" alt="save 存檔"></p>
 <h2 id="開啟一台-ec2-在-剛剛的-vpc-內進行測試">開啟一台 ec2 在 剛剛的 vpc 內進行測試。<a href="#開啟一台-ec2-在-剛剛的-vpc-內進行測試" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#可以使用 awscli 進行測試。</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#可以使用 awscli 進行測試。</span>
 aws s3 cp <span class="nv">$object</span> s3://<span class="nv">$your</span>-bucket-name/
 
 aws s3 cp  s3://<span class="nv">$your</span>-bucket-name/<span class="nv">$object</span> <span class="nv">$objectname</span>
