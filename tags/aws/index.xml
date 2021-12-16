@@ -7,7 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 27 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 16 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Where is my db-instance ?!</title>
+      <link>https://blog.neilkuan.net/posts/2021-12-16-where-is-my-db-instance/</link>
+      <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/posts/2021-12-16-where-is-my-db-instance/</guid>
+      <description>前言：
+有一天， 我的同事詢問我：『為什麼在部門內的帳號 RDS console 出現 2 個 DB Instances 以及 1 個 DB Clusters， 但是點進去Databaes Console 卻什麼也沒有？！』 於是把尋找 『不存在的 db instance 之旅』過程記錄了下來。
+  首先我在該 region (us-east-1)，打開了 AWS CloudShell (當前支持 region)。   接著我透過aws rds describe-db-clusters 取得所有的 DB Clusters，以下是我的結果。
+  $ aws rds describe-db-clusters { &amp;#34;DBClusters&amp;#34;: [ { &amp;#34;AllocatedStorage&amp;#34;: 1, &amp;#34;AvailabilityZones&amp;#34;: [ &amp;#34;us-east-1c&amp;#34;, &amp;#34;us-east-1d&amp;#34;, &amp;#34;us-east-1b&amp;#34; ], &amp;#34;BackupRetentionPeriod&amp;#34;: 1, &amp;#34;DBClusterIdentifier&amp;#34;: &amp;#34;docdb-test&amp;#34;, &amp;#34;DBClusterParameterGroup&amp;#34;: &amp;#34;default.docdb4.0&amp;#34;, &amp;#34;DBSubnetGroup&amp;#34;: &amp;#34;default&amp;#34;, &amp;#34;Status&amp;#34;: &amp;#34;available&amp;#34;, &amp;#34;EarliestRestorableTime&amp;#34;: &amp;#34;.....&amp;#34;, &amp;#34;Endpoint&amp;#34;: &amp;#34;docdb-test.</description>
+    </item>
+    
     <item>
       <title>AWS IAM Policy Generater with iamlive</title>
       <link>https://blog.neilkuan.net/posts/2021-05-27-iam-live/</link>

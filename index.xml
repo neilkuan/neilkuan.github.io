@@ -7,7 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 15 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 16 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Where is my db-instance ?!</title>
+      <link>https://blog.neilkuan.net/posts/2021-12-16-where-is-my-db-instance/</link>
+      <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/posts/2021-12-16-where-is-my-db-instance/</guid>
+      <description>前言：
+有一天， 我的同事詢問我：『為什麼在部門內的帳號 RDS console 出現 2 個 DB Instances 以及 1 個 DB Clusters， 但是點進去Databaes Console 卻什麼也沒有？！』 於是把尋找 『不存在的 db instance 之旅』過程記錄了下來。
+  首先我在該 region (us-east-1)，打開了 AWS CloudShell (當前支持 region)。   接著我透過aws rds describe-db-clusters 取得所有的 DB Clusters，以下是我的結果。
+  $ aws rds describe-db-clusters { &amp;#34;DBClusters&amp;#34;: [ { &amp;#34;AllocatedStorage&amp;#34;: 1, &amp;#34;AvailabilityZones&amp;#34;: [ &amp;#34;us-east-1c&amp;#34;, &amp;#34;us-east-1d&amp;#34;, &amp;#34;us-east-1b&amp;#34; ], &amp;#34;BackupRetentionPeriod&amp;#34;: 1, &amp;#34;DBClusterIdentifier&amp;#34;: &amp;#34;docdb-test&amp;#34;, &amp;#34;DBClusterParameterGroup&amp;#34;: &amp;#34;default.docdb4.0&amp;#34;, &amp;#34;DBSubnetGroup&amp;#34;: &amp;#34;default&amp;#34;, &amp;#34;Status&amp;#34;: &amp;#34;available&amp;#34;, &amp;#34;EarliestRestorableTime&amp;#34;: &amp;#34;.....&amp;#34;, &amp;#34;Endpoint&amp;#34;: &amp;#34;docdb-test.</description>
+    </item>
+    
     <item>
       <title>How to get access to GKE with service account key</title>
       <link>https://blog.neilkuan.net/posts/2021-12-15-gcp-gke-get-access-with-service-account-key/</link>
@@ -123,21 +135,6 @@ Need S3 , EC2 , VPC , endpoint , route table.
   Open Amazon VPC console.
   使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。  這邊先幫我記下 VPC 的 ID 等等較好操作。
    Create Endpoint. → Virtual Private Cloud &amp;gt; Endpoints &amp;gt; cretae endpoint   點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID.</description>
-    </item>
-    
-    <item>
-      <title>Let’s Encrypt</title>
-      <link>https://blog.neilkuan.net/posts/certbot_lets_encrypt_create_ca_aws_route53/</link>
-      <pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.net/posts/certbot_lets_encrypt_create_ca_aws_route53/</guid>
-      <description>小弟的域名雖然託管在 Route53 上面 ，也知道 AWS 也有提供 ACM 搭配 ELB 憑證託管的免費方案，但有時候申請幾張 憑證來用是相當實用的。
-Let’s Encrypt 的數位憑證認證機構（CA）推出免費 SSL/TLS 憑證服務，也在年底正式對外開放。這是什麼呢？簡單來說，以往想為你的網站加入 SSL 加密協定（HTTPS，也就是網址列上的綠色鎖頭圖示），必須支付一筆費用來申請憑證，但有了 Let’s Encrypt 後將能免費申請憑證，且這一過程非常簡單、自動化。
- 值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
- 並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
-docker hub https://hub.docker.com/r/certbot/dns-route53
-因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 IAM Policy 如下：
-{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Id&amp;#34;: &amp;#34;certbot-dns-route53 sample policy&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;route53:ListHostedZones&amp;#34;, &amp;#34;route53:GetChange&amp;#34; ], &amp;#34;Resource&amp;#34;: [ &amp;#34;*&amp;#34; ] }, { &amp;#34;Effect&amp;#34; : &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34; : [ &amp;#34;route53:ChangeResourceRecordSets&amp;#34; ], &amp;#34;Resource&amp;#34; : [ &amp;#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&amp;#34; &amp;lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53.</description>
     </item>
     
   </channel>

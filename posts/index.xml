@@ -6,8 +6,95 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Wed, 15 Dec 2021 00:00:00 +0000</lastBuildDate>
+		<lastBuildDate>Thu, 16 Dec 2021 00:00:00 +0000</lastBuildDate>
 		<atom:link href="https://blog.neilkuan.net/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Where is my db-instance ?!</title>
+			<link>https://blog.neilkuan.net/posts/2021-12-16-where-is-my-db-instance/</link>
+			<pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
+			
+			<guid>https://blog.neilkuan.net/posts/2021-12-16-where-is-my-db-instance/</guid>
+			<description>前言：
+有一天， 我的同事詢問我：『為什麼在部門內的帳號 RDS console 出現 2 個 DB Instances 以及 1 個 DB Clusters， 但是點進去Databaes Console 卻什麼也沒有？！』 於是把尋找 『不存在的 db instance 之旅』過程記錄了下來。
+  首先我在該 region (us-east-1)，打開了 AWS CloudShell (當前支持 region)。   接著我透過aws rds describe-db-clusters 取得所有的 DB Clusters，以下是我的結果。
+  $ aws rds describe-db-clusters { &amp;#34;DBClusters&amp;#34;: [ { &amp;#34;AllocatedStorage&amp;#34;: 1, &amp;#34;AvailabilityZones&amp;#34;: [ &amp;#34;us-east-1c&amp;#34;, &amp;#34;us-east-1d&amp;#34;, &amp;#34;us-east-1b&amp;#34; ], &amp;#34;BackupRetentionPeriod&amp;#34;: 1, &amp;#34;DBClusterIdentifier&amp;#34;: &amp;#34;docdb-test&amp;#34;, &amp;#34;DBClusterParameterGroup&amp;#34;: &amp;#34;default.docdb4.0&amp;#34;, &amp;#34;DBSubnetGroup&amp;#34;: &amp;#34;default&amp;#34;, &amp;#34;Status&amp;#34;: &amp;#34;available&amp;#34;, &amp;#34;EarliestRestorableTime&amp;#34;: &amp;#34;.....&amp;#34;, &amp;#34;Endpoint&amp;#34;: &amp;#34;docdb-test.</description>
+			<content type="html"><![CDATA[<p>前言：</p>
+<p>有一天，
+我的同事詢問我：『為什麼在部門內的帳號 RDS console 出現 2 個 <code>DB Instances</code> 以及 1 個 <code>DB Clusters</code>，
+<img src="/posts/2021-12-16-where-is-my-db-instance/1.png" alt="rds dashboard">
+但是點進去<code>Databaes Console</code> 卻什麼也沒有？！』
+<img src="/posts/2021-12-16-where-is-my-db-instance/2.png" alt="rds instance console"></p>
+<p>於是把尋找 『不存在的 db instance 之旅』過程記錄了下來。</p>
+<ol>
+<li>
+<p>首先我在該 region (us-east-1)，打開了 AWS CloudShell (<a href="https://docs.aws.amazon.com/general/latest/gr/cloudshell.html">當前支持 region</a>)。
+<img src="/posts/2021-12-16-where-is-my-db-instance/3.png" alt="">
+<img src="/posts/2021-12-16-where-is-my-db-instance/4.png" alt=""></p>
+</li>
+<li>
+<p>接著我透過<code>aws rds describe-db-clusters</code> 取得所有的 <code>DB Clusters</code>，以下是我的結果。</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ aws rds describe-db-clusters 
+<span class="o">{</span>
+    <span class="s2">&#34;DBClusters&#34;</span>: <span class="o">[</span>
+        <span class="o">{</span>
+            <span class="s2">&#34;AllocatedStorage&#34;</span>: 1,
+            <span class="s2">&#34;AvailabilityZones&#34;</span>: <span class="o">[</span>
+                <span class="s2">&#34;us-east-1c&#34;</span>,
+                <span class="s2">&#34;us-east-1d&#34;</span>,
+                <span class="s2">&#34;us-east-1b&#34;</span>
+            <span class="o">]</span>,
+            <span class="s2">&#34;BackupRetentionPeriod&#34;</span>: 1,
+            <span class="s2">&#34;DBClusterIdentifier&#34;</span>: <span class="s2">&#34;docdb-test&#34;</span>,
+            <span class="s2">&#34;DBClusterParameterGroup&#34;</span>: <span class="s2">&#34;default.docdb4.0&#34;</span>,
+            <span class="s2">&#34;DBSubnetGroup&#34;</span>: <span class="s2">&#34;default&#34;</span>,
+            <span class="s2">&#34;Status&#34;</span>: <span class="s2">&#34;available&#34;</span>,
+            <span class="s2">&#34;EarliestRestorableTime&#34;</span>: <span class="s2">&#34;.....&#34;</span>,
+            <span class="s2">&#34;Endpoint&#34;</span>: <span class="s2">&#34;docdb-test.cluster-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;</span>,
+            <span class="s2">&#34;ReaderEndpoint&#34;</span>: <span class="s2">&#34;docdb-test.cluster-ro-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;</span>, <span class="c1"># endpoint 的結尾是 docdb 是 27017 &lt;--------</span>
+            <span class="s2">&#34;MultiAZ&#34;</span>: true,
+            <span class="s2">&#34;Engine&#34;</span>: <span class="s2">&#34;docdb&#34;</span>,
+            <span class="s2">&#34;EngineVersion&#34;</span>: <span class="s2">&#34;4.0.0&#34;</span>,
+            <span class="s2">&#34;LatestRestorableTime&#34;</span>: <span class="s2">&#34;2021-12-16T02:56:01.379000+00:00&#34;</span>,
+            <span class="s2">&#34;Port&#34;</span>: 27017,                        <span class="c1"># Port 是 27017 &lt;--------</span>
+            <span class="s2">&#34;MasterUsername&#34;</span>: <span class="s2">&#34;admin&#34;</span>,
+            <span class="s2">&#34;PreferredBackupWindow&#34;</span>: <span class="s2">&#34;00:00-00:30&#34;</span>,
+            <span class="s2">&#34;PreferredMaintenanceWindow&#34;</span>: <span class="s2">&#34;sat:07:57-sat:08:27&#34;</span>,
+            <span class="s2">&#34;ReadReplicaIdentifiers&#34;</span>: <span class="o">[]</span>,
+            <span class="s2">&#34;DBClusterMembers&#34;</span>: <span class="o">[</span>
+                <span class="o">{</span>
+                    <span class="s2">&#34;DBInstanceIdentifier&#34;</span>: <span class="s2">&#34;docdb-test&#34;</span>,
+                    <span class="s2">&#34;IsClusterWriter&#34;</span>: false,
+                    <span class="s2">&#34;DBClusterParameterGroupStatus&#34;</span>: <span class="s2">&#34;in-sync&#34;</span>,
+                    <span class="s2">&#34;PromotionTier&#34;</span>: <span class="m">1</span>
+                <span class="o">}</span>,
+                <span class="o">{</span>
+                    <span class="s2">&#34;DBInstanceIdentifier&#34;</span>: <span class="s2">&#34;docdb-test&#34;</span>,
+                    <span class="s2">&#34;IsClusterWriter&#34;</span>: true,
+                    <span class="s2">&#34;DBClusterParameterGroupStatus&#34;</span>: <span class="s2">&#34;in-sync&#34;</span>,
+                    <span class="s2">&#34;PromotionTier&#34;</span>: <span class="m">1</span>
+                <span class="o">}</span>
+            <span class="o">]</span>,
+            <span class="s2">&#34;VpcSecurityGroups&#34;</span>: <span class="o">[</span>
+                <span class="o">{</span>
+                    <span class="s2">&#34;VpcSecurityGroupId&#34;</span>: <span class="s2">&#34;sg-xxxxxxxxx&#34;</span>,
+                    <span class="s2">&#34;Status&#34;</span>: <span class="s2">&#34;active&#34;</span>
+                <span class="o">}</span>
+            <span class="o">]</span>,
+            <span class="s2">&#34;HostedZoneId&#34;</span>: <span class="s2">&#34;ZNXXXXXXXXX&#34;</span>
+</code></pre></div><p>在看完全部內容後，發現了兩個疑點：</p>
+<ul>
+<li><code>ReaderEndpoint</code> 的結尾是 <code>docdb.amazonaws.com</code></li>
+<li><code>Port</code> 是 <code>27017</code></li>
+</ul>
+<p>這讓我想到 Mongo DB，然後突然想到，AWS 有提供 <code>Amazon DocumentDB</code> 的這項服務，立馬跑到 <code>Amazon DocumentDB</code> Console 一探究盡。</p>
+<p>果真這邊有一個 <code>DocumentDB Cluster</code> 內有 兩個 <code>DB Insatnces</code>，結束了這場鬧劇。
+<img src="/posts/2021-12-16-where-is-my-db-instance/5.png" alt=""></p>
+<p>2021年12月16日  Neil Kuan</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>How to get access to GKE with service account key</title>
