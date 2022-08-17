@@ -10,7 +10,7 @@
 <meta itemprop="name" content="Why aws-sdk-js-v2 get sts assume-role token so slow in k8s node">
 <meta itemprop="description" content="前言： 工作上遇到的問題，花點時間解決，並解記錄下來。
 為什麼我的 node application 在 k8s 內部執行時，執行以下 function 時如此的慢，我在地端測試都沒有這個問題？？ 開門見山直接看有問題的 code.
-aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#39;regional&#39;, }); const credentials = await sts .assumeRole({ RoleArn: roleArn, RoleSessionName: &#39;dramaContourAssumeRole&#39;, }) .promise(); 可以看到光是執行 assumeRole() 就花費了 4.668s 的時間！！
+aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#39;regional&#39;, }); const credentials = await sts .assumeRole({ RoleArn: roleArn, RoleSessionName: &#39;RoleSessionName&#39;, }) .promise(); 可以看到光是執行 assumeRole() 就花費了 4.668s 的時間！！
 經過另一個方式用測試，採用直接塞 AKSK(ACCESS-KEY)(SECRET-ACCESS-KEY)的方式去執行 assumeRole() 以下為示意code:
 const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com/ &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#34;regional&#34;, accessKeyId: &#39;ACCESS-KEY&#39;, // &lt;- AK secretAccessKey: &#39;SECRET-ACCESS-KEY&#39; &lt;-SK }); const credentials = stsClient."><meta itemprop="datePublished" content="2022-08-17T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2022-08-17T00:00:00+00:00" />
@@ -18,7 +18,7 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
 <meta itemprop="keywords" content="K8s,AWS,Container,EC2,IMDS," /><meta property="og:title" content="Why aws-sdk-js-v2 get sts assume-role token so slow in k8s node" />
 <meta property="og:description" content="前言： 工作上遇到的問題，花點時間解決，並解記錄下來。
 為什麼我的 node application 在 k8s 內部執行時，執行以下 function 時如此的慢，我在地端測試都沒有這個問題？？ 開門見山直接看有問題的 code.
-aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#39;regional&#39;, }); const credentials = await sts .assumeRole({ RoleArn: roleArn, RoleSessionName: &#39;dramaContourAssumeRole&#39;, }) .promise(); 可以看到光是執行 assumeRole() 就花費了 4.668s 的時間！！
+aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#39;regional&#39;, }); const credentials = await sts .assumeRole({ RoleArn: roleArn, RoleSessionName: &#39;RoleSessionName&#39;, }) .promise(); 可以看到光是執行 assumeRole() 就花費了 4.668s 的時間！！
 經過另一個方式用測試，採用直接塞 AKSK(ACCESS-KEY)(SECRET-ACCESS-KEY)的方式去執行 assumeRole() 以下為示意code:
 const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com/ &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#34;regional&#34;, accessKeyId: &#39;ACCESS-KEY&#39;, // &lt;- AK secretAccessKey: &#39;SECRET-ACCESS-KEY&#39; &lt;-SK }); const credentials = stsClient." />
 <meta property="og:type" content="article" />
@@ -30,7 +30,7 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
 <meta name="twitter:title" content="Why aws-sdk-js-v2 get sts assume-role token so slow in k8s node"/>
 <meta name="twitter:description" content="前言： 工作上遇到的問題，花點時間解決，並解記錄下來。
 為什麼我的 node application 在 k8s 內部執行時，執行以下 function 時如此的慢，我在地端測試都沒有這個問題？？ 開門見山直接看有問題的 code.
-aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#39;regional&#39;, }); const credentials = await sts .assumeRole({ RoleArn: roleArn, RoleSessionName: &#39;dramaContourAssumeRole&#39;, }) .promise(); 可以看到光是執行 assumeRole() 就花費了 4.668s 的時間！！
+aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#39;regional&#39;, }); const credentials = await sts .assumeRole({ RoleArn: roleArn, RoleSessionName: &#39;RoleSessionName&#39;, }) .promise(); 可以看到光是執行 assumeRole() 就花費了 4.668s 的時間！！
 經過另一個方式用測試，採用直接塞 AKSK(ACCESS-KEY)(SECRET-ACCESS-KEY)的方式去執行 assumeRole() 以下為示意code:
 const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com/ &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#34;regional&#34;, accessKeyId: &#39;ACCESS-KEY&#39;, // &lt;- AK secretAccessKey: &#39;SECRET-ACCESS-KEY&#39; &lt;-SK }); const credentials = stsClient."/>
 
@@ -97,7 +97,7 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">credentials</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">sts</span>
 </span></span><span class="line"><span class="cl">      <span class="p">.</span><span class="nx">assumeRole</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">RoleArn</span><span class="o">:</span> <span class="nx">roleArn</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">RoleSessionName</span><span class="o">:</span> <span class="s1">&#39;dramaContourAssumeRole&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">RoleSessionName</span><span class="o">:</span> <span class="s1">&#39;RoleSessionName&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="p">})</span>
 </span></span><span class="line"><span class="cl">      <span class="p">.</span><span class="nx">promise</span><span class="p">();</span>
 </span></span></code></pre></div><p><img src="/posts/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/1.png" alt=""></p>

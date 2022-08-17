@@ -17,7 +17,7 @@
 			<guid>https://blog.neilkuan.net/posts/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/</guid>
 			<description>前言： 工作上遇到的問題，花點時間解決，並解記錄下來。
 為什麼我的 node application 在 k8s 內部執行時，執行以下 function 時如此的慢，我在地端測試都沒有這個問題？？ 開門見山直接看有問題的 code.
-aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &amp;#39;https://sts.us-east-1.amazonaws.com &amp;#39;, region: &amp;#39;us-east-1&amp;#39;, stsRegionalEndpoints: &amp;#39;regional&amp;#39;, }); const credentials = await sts .assumeRole({ RoleArn: roleArn, RoleSessionName: &amp;#39;dramaContourAssumeRole&amp;#39;, }) .promise(); 可以看到光是執行 assumeRole() 就花費了 4.668s 的時間！！
+aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &amp;#39;https://sts.us-east-1.amazonaws.com &amp;#39;, region: &amp;#39;us-east-1&amp;#39;, stsRegionalEndpoints: &amp;#39;regional&amp;#39;, }); const credentials = await sts .assumeRole({ RoleArn: roleArn, RoleSessionName: &amp;#39;RoleSessionName&amp;#39;, }) .promise(); 可以看到光是執行 assumeRole() 就花費了 4.668s 的時間！！
 經過另一個方式用測試，採用直接塞 AKSK(ACCESS-KEY)(SECRET-ACCESS-KEY)的方式去執行 assumeRole() 以下為示意code:
 const awsSdk = require(&amp;#39;aws-sdk&amp;#39;); const stsClient = new awsSdk.STS({ endpoint: &amp;#39;https://sts.us-east-1.amazonaws.com/ &amp;#39;, region: &amp;#39;us-east-1&amp;#39;, stsRegionalEndpoints: &amp;#34;regional&amp;#34;, accessKeyId: &amp;#39;ACCESS-KEY&amp;#39;, // &amp;lt;- AK secretAccessKey: &amp;#39;SECRET-ACCESS-KEY&amp;#39; &amp;lt;-SK }); const credentials = stsClient.</description>
 			<content type="html"><![CDATA[<blockquote>
@@ -36,7 +36,7 @@ const awsSdk = require(&amp;#39;aws-sdk&amp;#39;); const stsClient = new awsSdk.
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">credentials</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">sts</span>
 </span></span><span class="line"><span class="cl">      <span class="p">.</span><span class="nx">assumeRole</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">RoleArn</span><span class="o">:</span> <span class="nx">roleArn</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">RoleSessionName</span><span class="o">:</span> <span class="s1">&#39;dramaContourAssumeRole&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">RoleSessionName</span><span class="o">:</span> <span class="s1">&#39;RoleSessionName&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="p">})</span>
 </span></span><span class="line"><span class="cl">      <span class="p">.</span><span class="nx">promise</span><span class="p">();</span>
 </span></span></code></pre></div><p><img src="/posts/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/1.png" alt=""></p>
