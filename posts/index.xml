@@ -143,7 +143,16 @@ const awsSdk = require(&amp;#39;aws-sdk&amp;#39;); const stsClient = new awsSdk.
 <li>
 <p>透過調整 response hop limits 的上限，可以透過  awscli modify-instance-metadata-options將上限調整到 2 以上，或是 Launch Template or Launch Configuration 預設在起動 EC2 時進行調整。</p>
 </li>
+<li>
+<p>使用 VPC-CNI: Amazon EKS 會透過 Kubernetes 專用 Amazon VPC 容器網路介面 (CNI) 外掛程式支援原生 VPC 聯網。使用此外掛程式可讓 Kubernetes Pod 擁有與他們在 VPC 網路上 Pod 內相同的 IP 地址，這樣也解決 response hop limit 的問題。</p>
+</li>
+<li>
+<p>使用 <a href="https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html">IRSA</a> 給予 application 去取得權限與 AWS Service 進行互動。</p>
+</li>
 </ol>
+<blockquote>
+<p>將 IAM 角色與 Kubernetes 服務帳戶建立關聯。然後，此服務帳戶可以為使用該服務帳戶之任何 Pod 中的容器提供 AWS 許可。</p>
+</blockquote>
 <hr>
 <h3 id="other-links">Other links:</h3>
 <ol>
