@@ -9,18 +9,18 @@
 	<meta name="msapplication-TileColor" content="#C8E1E3">
 <meta itemprop="name" content="AWS IAM Policy Generater with iamlive">
 <meta itemprop="description" content="前言 踏入 IT界 也快2年了，時代快速發展，為了因應快速發展，許多企業都開始擁抱雲端計算，當然目前小弟在的公司也不例外，而我比較常接觸的雲端計算平台為AWS，在使用了AWS 這麼久，身為 IT 最重要的就是如何為 application 配予適當的 iam 權限(policy)，以達到 zero trust，給 application 越是剛剛好的權限越是好，而不是每個 application 要調用 s3 時，你就給他 arn:aws:iam::aws:policy/AmazonS3FullAccess，application 要調用 sqs 時，你就給他 arn:aws:iam::aws:policy/AmazonSQSFullAccess。
-iamlive  source github: https://github.com/iann0036/iamlive
- 有一天我在逛 github 的時候，突然發現一位AWS Hore 寫了一個 相當令我感興趣的 open source，那就是 iamlive，我們來看看他的說明簡介
- Generate an IAM policy from AWS calls using client-side monitoring (CSM) or embedded proxy。 透過監控 用戶端對 AWS 調用資源的 api 來持續幫你，產生 iam policay，來幫助您知道您調用的api 是需要多少權限。
- 到 release page 下載與執行環境可運行的binary https://github.com/iann0036/iamlive/releases 像我就選擇 iamlive-v0."><meta itemprop="datePublished" content="2021-05-27T00:00:00+00:00" />
+iamlive source github: https://github.com/iann0036/iamlive
+有一天我在逛 github 的時候，突然發現一位AWS Hore 寫了一個 相當令我感興趣的 open source，那就是 iamlive，我們來看看他的說明簡介
+Generate an IAM policy from AWS calls using client-side monitoring (CSM) or embedded proxy。 透過監控 用戶端對 AWS 調用資源的 api 來持續幫你，產生 iam policay，來幫助您知道您調用的api 是需要多少權限。
+到 release page 下載與執行環境可運行的binary https://github.com/iann0036/iamlive/releases 像我就選擇 iamlive-v0.36.0-darwin-amd64.dmg 並將 binary 放入您的 $PATH 路徑中。"><meta itemprop="datePublished" content="2021-05-27T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-05-27T00:00:00+00:00" />
 <meta itemprop="wordCount" content="210"><meta itemprop="image" content="https://raw.githubusercontent.com/iann0036/iamlive/assets/iamlive.gif">
 <meta itemprop="keywords" content="IAMLIVE,AWS," /><meta property="og:title" content="AWS IAM Policy Generater with iamlive" />
 <meta property="og:description" content="前言 踏入 IT界 也快2年了，時代快速發展，為了因應快速發展，許多企業都開始擁抱雲端計算，當然目前小弟在的公司也不例外，而我比較常接觸的雲端計算平台為AWS，在使用了AWS 這麼久，身為 IT 最重要的就是如何為 application 配予適當的 iam 權限(policy)，以達到 zero trust，給 application 越是剛剛好的權限越是好，而不是每個 application 要調用 s3 時，你就給他 arn:aws:iam::aws:policy/AmazonS3FullAccess，application 要調用 sqs 時，你就給他 arn:aws:iam::aws:policy/AmazonSQSFullAccess。
-iamlive  source github: https://github.com/iann0036/iamlive
- 有一天我在逛 github 的時候，突然發現一位AWS Hore 寫了一個 相當令我感興趣的 open source，那就是 iamlive，我們來看看他的說明簡介
- Generate an IAM policy from AWS calls using client-side monitoring (CSM) or embedded proxy。 透過監控 用戶端對 AWS 調用資源的 api 來持續幫你，產生 iam policay，來幫助您知道您調用的api 是需要多少權限。
- 到 release page 下載與執行環境可運行的binary https://github.com/iann0036/iamlive/releases 像我就選擇 iamlive-v0." />
+iamlive source github: https://github.com/iann0036/iamlive
+有一天我在逛 github 的時候，突然發現一位AWS Hore 寫了一個 相當令我感興趣的 open source，那就是 iamlive，我們來看看他的說明簡介
+Generate an IAM policy from AWS calls using client-side monitoring (CSM) or embedded proxy。 透過監控 用戶端對 AWS 調用資源的 api 來持續幫你，產生 iam policay，來幫助您知道您調用的api 是需要多少權限。
+到 release page 下載與執行環境可運行的binary https://github.com/iann0036/iamlive/releases 像我就選擇 iamlive-v0.36.0-darwin-amd64.dmg 並將 binary 放入您的 $PATH 路徑中。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.neilkuan.net/posts/2021-05-27-iam-live/" /><meta property="og:image" content="https://raw.githubusercontent.com/iann0036/iamlive/assets/iamlive.gif" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-05-27T00:00:00+00:00" />
@@ -31,10 +31,10 @@ iamlive  source github: https://github.com/iann0036/iamlive
 
 <meta name="twitter:title" content="AWS IAM Policy Generater with iamlive"/>
 <meta name="twitter:description" content="前言 踏入 IT界 也快2年了，時代快速發展，為了因應快速發展，許多企業都開始擁抱雲端計算，當然目前小弟在的公司也不例外，而我比較常接觸的雲端計算平台為AWS，在使用了AWS 這麼久，身為 IT 最重要的就是如何為 application 配予適當的 iam 權限(policy)，以達到 zero trust，給 application 越是剛剛好的權限越是好，而不是每個 application 要調用 s3 時，你就給他 arn:aws:iam::aws:policy/AmazonS3FullAccess，application 要調用 sqs 時，你就給他 arn:aws:iam::aws:policy/AmazonSQSFullAccess。
-iamlive  source github: https://github.com/iann0036/iamlive
- 有一天我在逛 github 的時候，突然發現一位AWS Hore 寫了一個 相當令我感興趣的 open source，那就是 iamlive，我們來看看他的說明簡介
- Generate an IAM policy from AWS calls using client-side monitoring (CSM) or embedded proxy。 透過監控 用戶端對 AWS 調用資源的 api 來持續幫你，產生 iam policay，來幫助您知道您調用的api 是需要多少權限。
- 到 release page 下載與執行環境可運行的binary https://github.com/iann0036/iamlive/releases 像我就選擇 iamlive-v0."/>
+iamlive source github: https://github.com/iann0036/iamlive
+有一天我在逛 github 的時候，突然發現一位AWS Hore 寫了一個 相當令我感興趣的 open source，那就是 iamlive，我們來看看他的說明簡介
+Generate an IAM policy from AWS calls using client-side monitoring (CSM) or embedded proxy。 透過監控 用戶端對 AWS 調用資源的 api 來持續幫你，產生 iam policay，來幫助您知道您調用的api 是需要多少權限。
+到 release page 下載與執行環境可運行的binary https://github.com/iann0036/iamlive/releases 像我就選擇 iamlive-v0.36.0-darwin-amd64.dmg 並將 binary 放入您的 $PATH 路徑中。"/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -128,7 +128,7 @@ iamlive  source github: https://github.com/iann0036/iamlive
 你會發現第一個視窗會發現你下了 s3 rm 的指令，並立即產生 <code>s3:DeleteObject</code> iam policy 給你。</li>
 </ol>
 <p><img src="/posts/iamlive/2021-05-27-s3-del.png" alt=""></p>
-<p>雖然目前只能偵測到 <code>Action</code> 沒辦法細微的偵測到什麼樣的  <code>resource</code> (目前為 &ldquo;*&quot;) 但我認為已經相當實用了，
+<p>雖然目前只能偵測到 <code>Action</code> 沒辦法細微的偵測到什麼樣的  <code>resource</code> (目前為 &ldquo;*&rdquo;) 但我認為已經相當實用了，
 推薦給大家。</p>
 <h3 id="發現-support-sdk-所以就手癢來試試看">發現 support SDK ，所以就手癢來試試看。<a href="#發現-support-sdk-所以就手癢來試試看" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <p><img src="/posts/iamlive/2021-05-27-IAM-LIVE01.png" alt=""></p>
@@ -165,7 +165,7 @@ iamlive  source github: https://github.com/iann0036/iamlive
 	</main>
 
 	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-		<p>&copy; 2021 <a href="https://blog.neilkuan.net/">Neil Blog</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>&copy; 2022 <a href="https://blog.neilkuan.net/">Neil Blog</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
 		<p>
 			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://blog.neilkuan.net/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
 		</p>
@@ -173,7 +173,7 @@ iamlive  source github: https://github.com/iann0036/iamlive
 
 
 
-	<script src="https://blog.neilkuan.net/js/bundle.min.7d8545daa55d62427355498dd8da13f98ff79a7938ce7d2a5e2ae1ec0de3beb8.js" integrity="sha256-fYVF2qVdYkJzVUmN2NoT+Y/3mnk4zn0qXirh7A3jvrg=" crossorigin="anonymous"></script>
+	<script src="https://blog.neilkuan.net/js/bundle.min.580988ed2982bcbb74a1773c7abea97b43e4c43b9324e10cda0813ec6ec4bb67.js" integrity="sha256-WAmI7SmCvLt0oXc8er6pe0PkxDuTJOEM2ggT7G7Eu2c=" crossorigin="anonymous"></script>
 	
 
 </body>

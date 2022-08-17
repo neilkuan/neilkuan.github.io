@@ -11,16 +11,16 @@
 <meta itemprop="description" content="前言： 有一天， 我的同事詢問我：『如何設定 GKE Cluster Access for kubectl？！』 我回他：『你要在哪裡透過 kubectl 操作叢集。』 他回我：『專案委託他開發API 並容器化，透過 GTILAB PIPELINE 部署到GKE，但是他有上只有for Runner Server 用的 Cert key。』
 我問他：『PIPELINE 的 deploy Job，是怎麼部署 service 的 deployment的！？』 他回我：『看不到 script 被藏起來了，但是他想在地端透過kubectl 來看 service running 狀態。』 我回他：『好！我幫你查查看，可以怎麼做』。
 於是把過程記錄了下來。
- 首先我先拿到了 service account 的 key.   其內容大致長這樣。 cicd-sa@project-id.iam.gserviceaccount.com 是他的 service account email. project-id 是他的 service account 的 project id.
- cat sa-cert.json { &#34;type&#34;: &#34;service_account&#34;, &#34;project_id&#34;: &#34;project-id&#34;, &#34;private_key_id&#34;: &#34;1234567889xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#34;, &#34;private_key&#34;: &#34;-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/&#43;PoTGiGF3SEo8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;4htHvC\nsesOEKTP1sMZxEaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/7hO6K/VRyT1t8TwOElhCVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/IeVoYWsSp4FkDexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;\nnjq1yVuTGCFvCtGLi8NlVwDe7NUKrqSwjRNyA5F4Q44xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;oguUKxoWWaCsQKBgQDSlZC3w1fAreCd6r8F/ZHg76TbU0C88bFa\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;mV4da8mTSwytLTDc3Dtj5nHXgc2NOodcTY9AwSPldl\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/CVREwPsJJl3fNKcA5VD5rTl15SkE8k2NJl/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;lyf\nKOyexe9Hsa2IcTJQ5Yxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/iFmX1Wb\nuYeCYCd6VKU8u8oMvMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xaSZxLJwo\nne2fkDblz7P6m39mFnpsm7h8DDmzR5eHx5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx &#43;VPi\nd13z8qvxy4VerA8SVXLucrRk\n-----END PRIVATE KEY-----\n&#34;, &#34;client_email&#34;: &#34;cicd-sa@project-id."><meta itemprop="datePublished" content="2021-12-15T00:00:00+00:00" />
+首先我先拿到了 service account 的 key. 其內容大致長這樣。 cicd-sa@project-id.iam.gserviceaccount.com 是他的 service account email. project-id 是他的 service account 的 project id.
+cat sa-cert.json { &#34;type&#34;: &#34;service_account&#34;, &#34;project_id&#34;: &#34;project-id&#34;, &#34;private_key_id&#34;: &#34;1234567889xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#34;, &#34;private_key&#34;: &#34;-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/&#43;PoTGiGF3SEo8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;4htHvC\nsesOEKTP1sMZxEaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/7hO6K/VRyT1t8TwOElhCVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/IeVoYWsSp4FkDexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;\nnjq1yVuTGCFvCtGLi8NlVwDe7NUKrqSwjRNyA5F4Q44xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;oguUKxoWWaCsQKBgQDSlZC3w1fAreCd6r8F/ZHg76TbU0C88bFa\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;mV4da8mTSwytLTDc3Dtj5nHXgc2NOodcTY9AwSPldl\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/CVREwPsJJl3fNKcA5VD5rTl15SkE8k2NJl/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;lyf\nKOyexe9Hsa2IcTJQ5Yxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/iFmX1Wb\nuYeCYCd6VKU8u8oMvMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xaSZxLJwo\nne2fkDblz7P6m39mFnpsm7h8DDmzR5eHx5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx &#43;VPi\nd13z8qvxy4VerA8SVXLucrRk\n-----END PRIVATE KEY-----\n&#34;, &#34;client_email&#34;: &#34;cicd-sa@project-id."><meta itemprop="datePublished" content="2021-12-15T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-12-15T00:00:00+00:00" />
 <meta itemprop="wordCount" content="213">
 <meta itemprop="keywords" content="IAM,GCP,GKE," /><meta property="og:title" content="How to get access to GKE with service account key" />
 <meta property="og:description" content="前言： 有一天， 我的同事詢問我：『如何設定 GKE Cluster Access for kubectl？！』 我回他：『你要在哪裡透過 kubectl 操作叢集。』 他回我：『專案委託他開發API 並容器化，透過 GTILAB PIPELINE 部署到GKE，但是他有上只有for Runner Server 用的 Cert key。』
 我問他：『PIPELINE 的 deploy Job，是怎麼部署 service 的 deployment的！？』 他回我：『看不到 script 被藏起來了，但是他想在地端透過kubectl 來看 service running 狀態。』 我回他：『好！我幫你查查看，可以怎麼做』。
 於是把過程記錄了下來。
- 首先我先拿到了 service account 的 key.   其內容大致長這樣。 cicd-sa@project-id.iam.gserviceaccount.com 是他的 service account email. project-id 是他的 service account 的 project id.
- cat sa-cert.json { &#34;type&#34;: &#34;service_account&#34;, &#34;project_id&#34;: &#34;project-id&#34;, &#34;private_key_id&#34;: &#34;1234567889xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#34;, &#34;private_key&#34;: &#34;-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/&#43;PoTGiGF3SEo8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;4htHvC\nsesOEKTP1sMZxEaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/7hO6K/VRyT1t8TwOElhCVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/IeVoYWsSp4FkDexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;\nnjq1yVuTGCFvCtGLi8NlVwDe7NUKrqSwjRNyA5F4Q44xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;oguUKxoWWaCsQKBgQDSlZC3w1fAreCd6r8F/ZHg76TbU0C88bFa\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;mV4da8mTSwytLTDc3Dtj5nHXgc2NOodcTY9AwSPldl\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/CVREwPsJJl3fNKcA5VD5rTl15SkE8k2NJl/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;lyf\nKOyexe9Hsa2IcTJQ5Yxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/iFmX1Wb\nuYeCYCd6VKU8u8oMvMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xaSZxLJwo\nne2fkDblz7P6m39mFnpsm7h8DDmzR5eHx5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx &#43;VPi\nd13z8qvxy4VerA8SVXLucrRk\n-----END PRIVATE KEY-----\n&#34;, &#34;client_email&#34;: &#34;cicd-sa@project-id." />
+首先我先拿到了 service account 的 key. 其內容大致長這樣。 cicd-sa@project-id.iam.gserviceaccount.com 是他的 service account email. project-id 是他的 service account 的 project id.
+cat sa-cert.json { &#34;type&#34;: &#34;service_account&#34;, &#34;project_id&#34;: &#34;project-id&#34;, &#34;private_key_id&#34;: &#34;1234567889xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#34;, &#34;private_key&#34;: &#34;-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/&#43;PoTGiGF3SEo8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;4htHvC\nsesOEKTP1sMZxEaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/7hO6K/VRyT1t8TwOElhCVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/IeVoYWsSp4FkDexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;\nnjq1yVuTGCFvCtGLi8NlVwDe7NUKrqSwjRNyA5F4Q44xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;oguUKxoWWaCsQKBgQDSlZC3w1fAreCd6r8F/ZHg76TbU0C88bFa\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;mV4da8mTSwytLTDc3Dtj5nHXgc2NOodcTY9AwSPldl\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/CVREwPsJJl3fNKcA5VD5rTl15SkE8k2NJl/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;lyf\nKOyexe9Hsa2IcTJQ5Yxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/iFmX1Wb\nuYeCYCd6VKU8u8oMvMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xaSZxLJwo\nne2fkDblz7P6m39mFnpsm7h8DDmzR5eHx5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx &#43;VPi\nd13z8qvxy4VerA8SVXLucrRk\n-----END PRIVATE KEY-----\n&#34;, &#34;client_email&#34;: &#34;cicd-sa@project-id." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.neilkuan.net/posts/2021-12-15-gcp-gke-get-access-with-service-account-key/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-12-15T00:00:00+00:00" />
@@ -31,8 +31,8 @@
 <meta name="twitter:description" content="前言： 有一天， 我的同事詢問我：『如何設定 GKE Cluster Access for kubectl？！』 我回他：『你要在哪裡透過 kubectl 操作叢集。』 他回我：『專案委託他開發API 並容器化，透過 GTILAB PIPELINE 部署到GKE，但是他有上只有for Runner Server 用的 Cert key。』
 我問他：『PIPELINE 的 deploy Job，是怎麼部署 service 的 deployment的！？』 他回我：『看不到 script 被藏起來了，但是他想在地端透過kubectl 來看 service running 狀態。』 我回他：『好！我幫你查查看，可以怎麼做』。
 於是把過程記錄了下來。
- 首先我先拿到了 service account 的 key.   其內容大致長這樣。 cicd-sa@project-id.iam.gserviceaccount.com 是他的 service account email. project-id 是他的 service account 的 project id.
- cat sa-cert.json { &#34;type&#34;: &#34;service_account&#34;, &#34;project_id&#34;: &#34;project-id&#34;, &#34;private_key_id&#34;: &#34;1234567889xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#34;, &#34;private_key&#34;: &#34;-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/&#43;PoTGiGF3SEo8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;4htHvC\nsesOEKTP1sMZxEaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/7hO6K/VRyT1t8TwOElhCVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/IeVoYWsSp4FkDexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;\nnjq1yVuTGCFvCtGLi8NlVwDe7NUKrqSwjRNyA5F4Q44xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;oguUKxoWWaCsQKBgQDSlZC3w1fAreCd6r8F/ZHg76TbU0C88bFa\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;mV4da8mTSwytLTDc3Dtj5nHXgc2NOodcTY9AwSPldl\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/CVREwPsJJl3fNKcA5VD5rTl15SkE8k2NJl/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;lyf\nKOyexe9Hsa2IcTJQ5Yxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/iFmX1Wb\nuYeCYCd6VKU8u8oMvMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xaSZxLJwo\nne2fkDblz7P6m39mFnpsm7h8DDmzR5eHx5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx &#43;VPi\nd13z8qvxy4VerA8SVXLucrRk\n-----END PRIVATE KEY-----\n&#34;, &#34;client_email&#34;: &#34;cicd-sa@project-id."/>
+首先我先拿到了 service account 的 key. 其內容大致長這樣。 cicd-sa@project-id.iam.gserviceaccount.com 是他的 service account email. project-id 是他的 service account 的 project id.
+cat sa-cert.json { &#34;type&#34;: &#34;service_account&#34;, &#34;project_id&#34;: &#34;project-id&#34;, &#34;private_key_id&#34;: &#34;1234567889xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#34;, &#34;private_key&#34;: &#34;-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/&#43;PoTGiGF3SEo8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;4htHvC\nsesOEKTP1sMZxEaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/7hO6K/VRyT1t8TwOElhCVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/IeVoYWsSp4FkDexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;\nnjq1yVuTGCFvCtGLi8NlVwDe7NUKrqSwjRNyA5F4Q44xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;oguUKxoWWaCsQKBgQDSlZC3w1fAreCd6r8F/ZHg76TbU0C88bFa\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;mV4da8mTSwytLTDc3Dtj5nHXgc2NOodcTY9AwSPldl\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/CVREwPsJJl3fNKcA5VD5rTl15SkE8k2NJl/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#43;lyf\nKOyexe9Hsa2IcTJQ5Yxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/iFmX1Wb\nuYeCYCd6VKU8u8oMvMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xaSZxLJwo\nne2fkDblz7P6m39mFnpsm7h8DDmzR5eHx5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx &#43;VPi\nd13z8qvxy4VerA8SVXLucrRk\n-----END PRIVATE KEY-----\n&#34;, &#34;client_email&#34;: &#34;cicd-sa@project-id."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -96,60 +96,60 @@
 <blockquote>
 <p>其內容大致長這樣。 <code>cicd-sa@project-id.iam.gserviceaccount.com</code> 是他的 service account email. <code>project-id</code> 是他的 service account 的 project id.</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">cat sa-cert.json
-<span class="o">{</span>
-  <span class="s2">&#34;type&#34;</span>: <span class="s2">&#34;service_account&#34;</span>,
-  <span class="s2">&#34;project_id&#34;</span>: <span class="s2">&#34;project-id&#34;</span>,
-  <span class="s2">&#34;private_key_id&#34;</span>: <span class="s2">&#34;1234567889xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#34;</span>,
-  <span class="s2">&#34;private_key&#34;</span>: <span class="s2">&#34;-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/+PoTGiGF3SEo8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+4htHvC\nsesOEKTP1sMZxEaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/
-</span><span class="s2">  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/7hO6K/VRyT1t8TwOElhCVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/IeVoYWsSp4FkDexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+\nnjq1yVuTGCFvCtGLi8NlVwDe7NUKrqSwjRNyA5F4Q44xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+oguUKxoWWaCsQKBgQDSlZC3w1fAreCd6r8F/ZHg76TbU0C88bFa\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+mV4da8mTSwytLTDc3Dtj5nHXgc2NOodcTY9AwSPldl\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/CVREwPsJJl3fNKcA5VD5rTl15SkE8k2NJl/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+lyf\nKOyexe9Hsa2IcTJQ5Yxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/iFmX1Wb\nuYeCYCd6VKU8u8oMvMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xaSZxLJwo\nne2fkDblz7P6m39mFnpsm7h8DDmzR5eHx5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-</span><span class="s2">  +VPi\nd13z8qvxy4VerA8SVXLucrRk\n-----END PRIVATE KEY-----\n&#34;</span>,
-  <span class="s2">&#34;client_email&#34;</span>: <span class="s2">&#34;cicd-sa@project-id.iam.gserviceaccount.com&#34;</span>,
-  <span class="s2">&#34;client_id&#34;</span>: <span class="s2">&#34;00000000000000000000&#34;</span>,
-  <span class="s2">&#34;auth_uri&#34;</span>: <span class="s2">&#34;https://accounts.google.com/o/oauth2/auth&#34;</span>,
-  <span class="s2">&#34;token_uri&#34;</span>: <span class="s2">&#34;https://oauth2.googleapis.com/token&#34;</span>,
-  <span class="s2">&#34;auth_provider_x509_cert_url&#34;</span>: <span class="s2">&#34;https://www.googleapis.com/oauth2/v1/certs&#34;</span>,
-  <span class="s2">&#34;client_x509_cert_url&#34;</span>: <span class="s2">&#34;https://www.googleapis.com/robot/v1/metadata/x509/cicd-sa%40cgh-hc-ut.iam.gserviceaccount.com&#34;</span>
-<span class="o">}</span>
-</code></pre></div><ol start="2">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat sa-cert.json
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;type&#34;</span>: <span class="s2">&#34;service_account&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;project_id&#34;</span>: <span class="s2">&#34;project-id&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;private_key_id&#34;</span>: <span class="s2">&#34;1234567889xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;private_key&#34;</span>: <span class="s2">&#34;-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/+PoTGiGF3SEo8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+4htHvC\nsesOEKTP1sMZxEaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/
+</span></span></span><span class="line"><span class="cl"><span class="s2">  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/7hO6K/VRyT1t8TwOElhCVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/IeVoYWsSp4FkDexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+\nnjq1yVuTGCFvCtGLi8NlVwDe7NUKrqSwjRNyA5F4Q44xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+oguUKxoWWaCsQKBgQDSlZC3w1fAreCd6r8F/ZHg76TbU0C88bFa\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+mV4da8mTSwytLTDc3Dtj5nHXgc2NOodcTY9AwSPldl\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/CVREwPsJJl3fNKcA5VD5rTl15SkE8k2NJl/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+lyf\nKOyexe9Hsa2IcTJQ5Yxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/iFmX1Wb\nuYeCYCd6VKU8u8oMvMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xaSZxLJwo\nne2fkDblz7P6m39mFnpsm7h8DDmzR5eHx5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+</span></span></span><span class="line"><span class="cl"><span class="s2">  +VPi\nd13z8qvxy4VerA8SVXLucrRk\n-----END PRIVATE KEY-----\n&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;client_email&#34;</span>: <span class="s2">&#34;cicd-sa@project-id.iam.gserviceaccount.com&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;client_id&#34;</span>: <span class="s2">&#34;00000000000000000000&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;auth_uri&#34;</span>: <span class="s2">&#34;https://accounts.google.com/o/oauth2/auth&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;token_uri&#34;</span>: <span class="s2">&#34;https://oauth2.googleapis.com/token&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;auth_provider_x509_cert_url&#34;</span>: <span class="s2">&#34;https://www.googleapis.com/oauth2/v1/certs&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;client_x509_cert_url&#34;</span>: <span class="s2">&#34;https://www.googleapis.com/robot/v1/metadata/x509/cicd-sa%40cgh-hc-ut.iam.gserviceaccount.com&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><ol start="2">
 <li>接著我透過 <code>gcloud auth activate-service-account</code> 指定 <code>sa-cert.json</code> 來做 auth init，如果沒有出錯，這麼一來就設定成功了。</li>
 </ol>
 <blockquote>
 <p>如果出現錯誤請檢查<code>sa-cert.json</code> 是否正確。 或是檢查local computer 的時間。</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ gcloud auth activate-service-account --key-file<span class="o">=</span>sa-cert.json
-<span class="c1"># Activated service account credentials for cicd-sa@project-id.iam.gserviceaccount.com</span>
-</code></pre></div><ol start="3">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gcloud auth activate-service-account --key-file<span class="o">=</span>sa-cert.json
+</span></span><span class="line"><span class="cl"><span class="c1"># Activated service account credentials for cicd-sa@project-id.iam.gserviceaccount.com</span>
+</span></span></code></pre></div><ol start="3">
 <li>你可以透過<code>gcloud auth list</code> 來確定是否設定成功。</li>
 </ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ gcloud auth list
-
-Credentialed Accounts
-
-ACTIVE  ACCOUNT
-        your-account@mail.com
-*       cicd-sa@cgh-hc-ut.iam.gserviceaccount.com
-
-To <span class="nb">set</span> the active account, run:
-    $ gcloud config <span class="nb">set</span> account ACCOUNT
-
-
-
-Updates are available <span class="k">for</span> some Cloud SDK components.  To install them,
-please run:
-  $ gcloud components update
-</code></pre></div><ol start="4">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gcloud auth list
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Credentialed Accounts
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ACTIVE  ACCOUNT
+</span></span><span class="line"><span class="cl">        your-account@mail.com
+</span></span><span class="line"><span class="cl">*       cicd-sa@cgh-hc-ut.iam.gserviceaccount.com
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">To <span class="nb">set</span> the active account, run:
+</span></span><span class="line"><span class="cl">    $ gcloud config <span class="nb">set</span> account ACCOUNT
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Updates are available <span class="k">for</span> some Cloud SDK components.  To install them,
+</span></span><span class="line"><span class="cl">please run:
+</span></span><span class="line"><span class="cl">  $ gcloud components update
+</span></span></code></pre></div><ol start="4">
 <li>接著我透過 <code>gcloud container clusters get-credentials</code> 指定 <code>cluster-name</code> 來做 get access for kubectl 。</li>
 </ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ gcloud container clusters get-credentials GKE_CLUSTER_NAME --region GKE_CLUSTER_REGION --project PROJECT_ID
-<span class="c1"># Fetching cluster endpoint and auth data. &lt;- 出現此畫面則設定成功了。</span>
-</code></pre></div><ol start="5">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gcloud container clusters get-credentials GKE_CLUSTER_NAME --region GKE_CLUSTER_REGION --project PROJECT_ID
+</span></span><span class="line"><span class="cl"><span class="c1"># Fetching cluster endpoint and auth data. &lt;- 出現此畫面則設定成功了。</span>
+</span></span></code></pre></div><ol start="5">
 <li>接著我透過 <code>kubectl get pods</code> 查看 pod 狀態。</li>
 </ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">kubectl get pods
-NAME                     READY   STATUS    RESTARTS   AGE
-app-1-7d5cdf64f-4dgbg    1/1     Running   <span class="m">0</span>          10m
-</code></pre></div><p>參考：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl get pods
+</span></span><span class="line"><span class="cl">NAME                     READY   STATUS    RESTARTS   AGE
+</span></span><span class="line"><span class="cl">app-1-7d5cdf64f-4dgbg    1/1     Running   <span class="m">0</span>          10m
+</span></span></code></pre></div><p>參考：</p>
 <ul>
 <li><a href="https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl">https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl</a></li>
 <li><a href="https://stackoverflow.com/questions/42379685/can-i-automate-google-cloud-sdk-gcloud-init-interactive-command">https://stackoverflow.com/questions/42379685/can-i-automate-google-cloud-sdk-gcloud-init-interactive-command</a></li>
@@ -180,7 +180,7 @@ app-1-7d5cdf64f-4dgbg    1/1     Running   <span class="m">0</span>          10m
 	</main>
 
 	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-		<p>&copy; 2021 <a href="https://blog.neilkuan.net/">Neil Blog</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>&copy; 2022 <a href="https://blog.neilkuan.net/">Neil Blog</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
 		<p>
 			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://blog.neilkuan.net/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
 		</p>
@@ -188,7 +188,7 @@ app-1-7d5cdf64f-4dgbg    1/1     Running   <span class="m">0</span>          10m
 
 
 
-	<script src="https://blog.neilkuan.net/js/bundle.min.7d8545daa55d62427355498dd8da13f98ff79a7938ce7d2a5e2ae1ec0de3beb8.js" integrity="sha256-fYVF2qVdYkJzVUmN2NoT+Y/3mnk4zn0qXirh7A3jvrg=" crossorigin="anonymous"></script>
+	<script src="https://blog.neilkuan.net/js/bundle.min.580988ed2982bcbb74a1773c7abea97b43e4c43b9324e10cda0813ec6ec4bb67.js" integrity="sha256-WAmI7SmCvLt0oXc8er6pe0PkxDuTJOEM2ggT7G7Eu2c=" crossorigin="anonymous"></script>
 	
 
 </body>

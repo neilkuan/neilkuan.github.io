@@ -15,11 +15,13 @@
       
       <guid>https://blog.neilkuan.net/posts/lolbanner/</guid>
       <description>前言： 我的環境是 mac os 如果是其他系統 裝起來應該大同小異 可以參考 https://www.tecmint.com/lolcat-command-to-output-rainbow-of-colors-in-linux-terminal/
- lolcat is a ruby gem hence it is essential to have latest version of RUBY installed on your system.
- 首先利用 brew 安裝 必要的套件
- 沒有 homebrew 請先安裝 ckick here
- # 如果沒有 ruby 請先安裝 ruby  $ brew install ruby $ brew install figlet $ brew install lolcat 創建front 資料夾，並進入
-$ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-fonts 到 https://github.com/xero/figlet-fonts 選取你想要的 主題，我選的是 3d.</description>
+lolcat is a ruby gem hence it is essential to have latest version of RUBY installed on your system.
+首先利用 brew 安裝 必要的套件
+沒有 homebrew 請先安裝 ckick here
+# 如果沒有 ruby 請先安裝 ruby $ brew install ruby $ brew install figlet $ brew install lolcat 創建front 資料夾，並進入
+$ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-fonts 到 https://github.com/xero/figlet-fonts 選取你想要的 主題，我選的是 3d.flf
+下載 文字格式
+$ cd ~/.</description>
     </item>
     
   </channel>

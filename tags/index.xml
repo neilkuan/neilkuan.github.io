@@ -7,13 +7,49 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 16 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 17 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWS</title>
       <link>https://blog.neilkuan.net/tags/aws/</link>
-      <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 17 Aug 2022 00:00:00 +0000</pubDate>
       
       <guid>https://blog.neilkuan.net/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Container</title>
+      <link>https://blog.neilkuan.net/tags/container/</link>
+      <pubDate>Wed, 17 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/tags/container/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>EC2</title>
+      <link>https://blog.neilkuan.net/tags/ec2/</link>
+      <pubDate>Wed, 17 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/tags/ec2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>IMDS</title>
+      <link>https://blog.neilkuan.net/tags/imds/</link>
+      <pubDate>Wed, 17 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/tags/imds/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>K8s</title>
+      <link>https://blog.neilkuan.net/tags/k8s/</link>
+      <pubDate>Wed, 17 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/tags/k8s/</guid>
       <description></description>
     </item>
     
@@ -59,42 +95,6 @@
       <pubDate>Wed, 15 Dec 2021 00:00:00 +0000</pubDate>
       
       <guid>https://blog.neilkuan.net/tags/iam/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>IAMLIVE</title>
-      <link>https://blog.neilkuan.net/tags/iamlive/</link>
-      <pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.net/tags/iamlive/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cloudshell</title>
-      <link>https://blog.neilkuan.net/tags/cloudshell/</link>
-      <pubDate>Wed, 16 Dec 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.net/tags/cloudshell/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Container</title>
-      <link>https://blog.neilkuan.net/tags/container/</link>
-      <pubDate>Sat, 26 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.net/tags/container/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>DOCKER</title>
-      <link>https://blog.neilkuan.net/tags/docker/</link>
-      <pubDate>Sat, 26 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.net/tags/docker/</guid>
       <description></description>
     </item>
     

@@ -6,8 +6,156 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Thu, 16 Dec 2021 00:00:00 +0000</lastBuildDate>
+		<lastBuildDate>Wed, 17 Aug 2022 00:00:00 +0000</lastBuildDate>
 		<atom:link href="https://blog.neilkuan.net/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Why aws-sdk-js-v2 get sts assume-role token so slow in k8s node</title>
+			<link>https://blog.neilkuan.net/posts/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/</link>
+			<pubDate>Wed, 17 Aug 2022 00:00:00 +0000</pubDate>
+			
+			<guid>https://blog.neilkuan.net/posts/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/</guid>
+			<description>前言： 工作上遇到的問題，花點時間解決，並解記錄下來。
+為什麼我的 node application 在 k8s 內部執行時，執行以下 function 時如此的慢，我在地端測試都沒有這個問題？？ 開門見山直接看有問題的 code.
+aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &amp;#39;https://sts.us-east-1.amazonaws.com &amp;#39;, region: &amp;#39;us-east-1&amp;#39;, stsRegionalEndpoints: &amp;#39;regional&amp;#39;, }); const credentials = await sts .assumeRole({ RoleArn: roleArn, RoleSessionName: &amp;#39;dramaContourAssumeRole&amp;#39;, }) .promise(); 可以看到光是執行 assumeRole() 就花費了 4.668s 的時間！！
+經過另一個方式用測試，採用直接塞 AKSK(ACCESS-KEY)(SECRET-ACCESS-KEY)的方式去執行 assumeRole() 以下為示意code:
+const awsSdk = require(&amp;#39;aws-sdk&amp;#39;); const stsClient = new awsSdk.STS({ endpoint: &amp;#39;https://sts.us-east-1.amazonaws.com/ &amp;#39;, region: &amp;#39;us-east-1&amp;#39;, stsRegionalEndpoints: &amp;#34;regional&amp;#34;, accessKeyId: &amp;#39;ACCESS-KEY&amp;#39;, // &amp;lt;- AK secretAccessKey: &amp;#39;SECRET-ACCESS-KEY&amp;#39; &amp;lt;-SK }); const credentials = stsClient.</description>
+			<content type="html"><![CDATA[<blockquote>
+<p>前言： 工作上遇到的問題，花點時間解決，並解記錄下來。</p>
+</blockquote>
+<h2 id="為什麼我的-node-application-在-k8s-內部執行時執行以下-function-時如此的慢我在地端測試都沒有這個問題">為什麼我的 node application 在 k8s 內部執行時，執行以下 function 時如此的慢，我在地端測試都沒有這個問題？？</h2>
+<p>開門見山直接看有問題的 code.</p>
+<ul>
+<li><code>aws-sdk-js</code> version: <code>2.1026.0</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">sts</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AWS</span><span class="p">.</span><span class="nx">STS</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">endpoint</span><span class="o">:</span> <span class="s1">&#39;https://sts.us-east-1.amazonaws.com &#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">region</span><span class="o">:</span> <span class="s1">&#39;us-east-1&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">stsRegionalEndpoints</span><span class="o">:</span> <span class="s1">&#39;regional&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">credentials</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">sts</span>
+</span></span><span class="line"><span class="cl">      <span class="p">.</span><span class="nx">assumeRole</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">RoleArn</span><span class="o">:</span> <span class="nx">roleArn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">RoleSessionName</span><span class="o">:</span> <span class="s1">&#39;dramaContourAssumeRole&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">})</span>
+</span></span><span class="line"><span class="cl">      <span class="p">.</span><span class="nx">promise</span><span class="p">();</span>
+</span></span></code></pre></div><p><img src="/posts/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/1.png" alt=""></p>
+<p>可以看到光是執行 <code>assumeRole()</code> 就花費了 <code>4.668s</code> 的時間！！</p>
+<p>經過另一個方式用測試，採用直接塞 AKSK(<code>ACCESS-KEY</code>)(<code>SECRET-ACCESS-KEY</code>)的方式去執行 <code>assumeRole()</code> 以下為示意code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">awsSdk</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;aws-sdk&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">stsClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">awsSdk</span><span class="p">.</span><span class="nx">STS</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">endpoint</span><span class="o">:</span> <span class="s1">&#39;https://sts.us-east-1.amazonaws.com/ &#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">region</span><span class="o">:</span> <span class="s1">&#39;us-east-1&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">stsRegionalEndpoints</span><span class="o">:</span> <span class="s2">&#34;regional&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">accessKeyId</span><span class="o">:</span> <span class="s1">&#39;ACCESS-KEY&#39;</span><span class="p">,</span> <span class="c1">// &lt;- AK
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">secretAccessKey</span><span class="o">:</span> <span class="s1">&#39;SECRET-ACCESS-KEY&#39;</span> <span class="o">&lt;-</span><span class="nx">SK</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">credentials</span> <span class="o">=</span> <span class="nx">stsClient</span><span class="p">.</span><span class="nx">assumeRole</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">RoleArn</span><span class="o">:</span> <span class="s1">&#39;ROLE-ARN&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">RoleSessionName</span><span class="o">:</span> <span class="s1">&#39;SESSION-NAME&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="nx">promise</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">credentials</span><span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">value</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Value: &#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="k">catch</span><span class="p">((</span><span class="nx">reason</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Reason: &#39;</span><span class="p">,</span> <span class="nx">reason</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="p">[</span><span class="nx">AWS</span> <span class="nx">sts</span> <span class="mi">200</span> <span class="mf">0.037</span><span class="nx">s</span> <span class="mi">0</span> <span class="nx">retries</span><span class="p">]</span> <span class="nx">assumeRole</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">RoleArn</span><span class="o">:</span> <span class="s1">&#39;ROLE-ARN&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">RoleSessionName</span><span class="o">:</span> <span class="s1">&#39;SESSION-NAME&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="nx">AWS</span> <span class="nx">sts</span> <span class="mi">200</span> <span class="mf">2.589</span><span class="nx">s</span> <span class="mi">0</span> <span class="nx">retries</span><span class="p">]</span> <span class="nx">assumeRole</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">RoleArn</span><span class="o">:</span> <span class="s1">&#39;ROLE-ARN&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">RoleSessionName</span><span class="o">:</span> <span class="s1">&#39;SESSION-NAME&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="nx">AWS</span> <span class="nx">sts</span> <span class="mi">200</span> <span class="mf">0.055</span><span class="nx">s</span> <span class="mi">0</span> <span class="nx">retries</span><span class="p">]</span> <span class="nx">assumeRole</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">RoleArn</span><span class="o">:</span> <span class="s1">&#39;ROLE-ARN&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">RoleSessionName</span><span class="o">:</span> <span class="s1">&#39;SESSION-NAME&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><p>可以看到直結解果有明顯縮短，到 <code>2.589s</code> 甚至是 <code>0.055s</code> 這又是為什麼呢？</p>
+<p>使用 AWS 時，常常 Application 會需要跟其他 AWS Service 進行互動 比如說最常見的 DynamoDB, S3 etc…</p>
+<p>而要與這些服務互動，除了常見的 aws console 登陸後，你的 IAM User 有 attach 特定的 policy 可以讓你透過console 與資源去做互動，而如果開發人員在開發應用時，如果應用要與 AWS 其他的 Service 互動，
+勢必要獲得授權，而最簡單獲得授權的方式，就是在 指定的 IAM User 的 <code>security credentials</code> 創建一個 <code>access key</code> 。</p>
+<p><img src="/posts/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/2.png" alt="">
+<img src="/posts/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/3.png" alt="">
+這就是所謂的 AWS <code>Access Key</code> AWS <code>Secret Access Key</code> 俗稱 <code>AKSK</code> ，直接用 <code>AKSK</code> 這個雖然方便，但越是方便的東西越是帶著風險，如果不小心有一天，你的 <code>AKSK</code> 不小信 hardcode 寫在你的 source code ，又不小心 publish 到像是 Github, Gitlab 的 public repo ，都有可能會造成你的 AWS Resource 被有心人士惡意竄改，或是亂開 EC2 來挖礦，你的錢包可以就會傷心了…，所以建議 AKSK 只建議在本機開發使用，千萬不要  <code>hardcode</code> 在 source code 內，建議使用 <code>AWS_PROFILE</code> 來進行管理，基本上 AWS SDK 各語言都可以透過 <code>AWS_PROFILE</code> <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html">Named profiles for the AWS CLI - AWS Command Line Interface</a> 來進行授權吃到開發環境的，aws credentials 設定檔 <code>$HOME/.aws/=</code></p>
+<p>在正式環境中，我們使用 AWS EC2 or 其他 Compute Service ，都可以透過該服務的 IAM Role 來授權換取臨時性的 <code>Credential</code> ，而這次的事件也是由這個原因引起的。</p>
+<p>先來看一下 Nodejs 應用如何取得 Credential</p>
+<blockquote>
+<p><a href="https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials-node.html">https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials-node.html</a></p>
+</blockquote>
+<blockquote>
+<p>Here are the ways you can supply your credentials in order of recommendation:</p>
+</blockquote>
+<blockquote>
+<p>Loaded from AWS Identity and Access Management (IAM) roles for Amazon EC2</p>
+</blockquote>
+<blockquote>
+<p>Loaded from the shared credentials file (~/.aws/credentials)</p>
+</blockquote>
+<blockquote>
+<p>Loaded from environment variables</p>
+</blockquote>
+<p>可以從文件中得知，預設如果是 AWS EC2 環境的話，會先使用 EC2 IAM Role 來獲得 <code>Credential</code>
+，再來嘗試 loading  ~/.aws/credentials 的檔案，再來才是環境變數，但如果你是直接 <code>hardcode</code> <code>AKSK</code> 在 source code ，當然會直接用 <code>hardcode</code> 內的 <code>AKSK</code> ，所以我們再回到此次的問題，hardcode AKSK 速度極快，為什麼改用 EC2 role 就很慢呢，可以在</p>
+<p><a href="https://github.com/aws/aws-sdk-js/issues/3024">High latency inside ecs docker with latest versions From V2.575.0  of aws sdk. It is working till V2.574.0 · Issue #3024 · aws/aws-sdk-js</a>，</p>
+<p>此 repo 中找到此 issue，原來在 aws-sdk version <code>v2.575.0</code> 之後，預設先嘗試走 <code>IMDSv2</code> 流程進行拿取 <code>instance metadata</code> 的 token，這樣做是為了加強安全性，<code>IMDSv2</code> 更新的流程需要在能夠調用任何元 metadata endpoint 之前獲得令牌。
+<img src="/posts/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/4.png" alt=""></p>
+<p>那麼 <code>IMDSv2</code> 又是什麼呢 ？我們可以從 EC2 的文件中得知:</p>
+<blockquote>
+<p><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html">https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html</a></p>
+</blockquote>
+<p>How Instance Metadata Service Version 2 (IMDSv2) works</p>
+<p>IMDSv2 使用 <code>session-oriented requests</code>。對於 <code>session-oriented requests</code>，您可以創建一個 <code>session token</code> 來定義 session 持續時間，該持續時間最短為一秒，最長為六小時(21600s)。在指定的持續時間內，您可以將相同的 <code>session token</code> 用於後續請求。在指定的持續時間到期後，您必須創建一個新的 <code>session token</code> 以用於未來的請求。</p>
+<p>以下為請求 <code>session token</code> 的範例，需要在 EC2 執行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">TOKEN</span><span class="o">=</span><span class="sb">`</span>curl -X PUT <span class="s2">&#34;http://169.254.169.254/latest/api/token&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;X-aws-ec2-metadata-token-ttl-seconds: 21600&#34;</span><span class="sb">`</span> 
+</span></span></code></pre></div><p>拿到 <code>TOKEN</code> 後就可以透過他去存取 metadata endpoint</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -H <span class="s2">&#34;X-aws-ec2-metadata-token: </span><span class="nv">$TOKEN</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-v http://169.254.169.254/latest/meta-data/
+</span></span></code></pre></div><p>回到這次的事件</p>
+<p>為什麼透過 <code>IMDSv2</code> 拿取的速度這麼慢勒，原因為此環境為 k8s 的 node，也就是 application 會是以 Container ( pod ) 方式跑在此 EC2 中，</p>
+<p>然而當前的 k8s 使用的網路，如果沒有指定 <code>kubelet</code> 網絡插件，則使用 <code>noop</code> 插件，它設置 <code>net/bridge/bridge-nf-call-iptables=1</code> 以確保簡單的配置（例如帶有 <code>bridge</code> 的 <code>Docker</code>）與 <code>iptables</code> 代理一起正常工作。</p>
+<blockquote>
+<p>Network Plugins: <a href="https://v1-20.docs.kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/">https://v1-20.docs.kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/</a>
+所以我們來大概看一下 Docker Bridge 的架構，containers 都可以透過 docker0 到 EC2 的eth0 網卡，與外界聯絡。
+<a href="https://argus-sec.com/docker-networking-behind-the-scenes/">https://argus-sec.com/docker-networking-behind-the-scenes/</a></p>
+</blockquote>
+<p><img src="/posts/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/5.png" alt=""></p>
+<p>當前環境的 k8s cluster
+<img src="/posts/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/6.png" alt=""></p>
+<p>那麼用 Docker bridge 的模式，為什麼會影響，aws-sdk 存取 IMDSv2 這麼慢呢？因為對於 JavaScript SDK 在獲取 EC2 role 的行為上，首先會使用 MetaData Version 2 (IMDSv2), 當 IMDSv2 無法回應時經過幾次重試，最終使用 IMDSv1 獲取權限。基於您的網路架構，當 Container 要訪問 IMDSv2 時，路徑如下：</p>
+<blockquote>
+<p>[Container] &ndash;&gt; [bridge] &ndash;&gt; [Instance] &ndash;&gt; [IMDSv2]</p>
+</blockquote>
+<p>而訪問 IMDSv2 timeout 的原因是，預設使用 put 請求，拿取 <code>session token</code> 時，網路層的 hop <a href="https://en.wikipedia.org/wiki/Hop_(networking)">Hop networking</a> limit 是 1，而我們 container 的環境是透過 docker bridge 的方式與外界聯絡（與 IMDSv2)，也就是 2 hop ，超過限制時 IMDSv2 的 endpoint 將會拒絕回應，所以造成 timeout。</p>
+<blockquote>
+<p>By default, the response to PUT requests has a response hop limit (time to live) of 1 at the IP protocol level. You can adjust the hop limit using the modify-instance-metadata-options command if you need to make it larger. For example, you might need a larger hop limit for backward compatibility with container services running on the instance.
+<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html">https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html</a></p>
+</blockquote>
+<h2 id="所以改善此-issue-的方法就是有幾種">所以改善此 issue 的方法就是有幾種：</h2>
+<ol>
+<li>
+<p>強制 ＳＤＫ 使用 IMDSv1 的方式存取 metadata endpoint (不建議比較不安全，往後的 instance 應該也會淘汰v1 的方式去存取metadata endpoint )。</p>
+</li>
+<li>
+<p>透過調整 response hop limits 的上限，可以透過  awscli modify-instance-metadata-options將上限調整到 2 以上，或是 Launch Template or Launch Configuration 預設在起動 EC2 時進行調整。</p>
+</li>
+</ol>
+<hr>
+<h3 id="other-links">Other links:</h3>
+<ol>
+<li>Use IMDSv2 - Use IMDSv2 - Amazon Elastic Compute Cloud: <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html">https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html</a></li>
+<li>aws-sdk-js/metadata_service.js at v2.1026.0 · aws/aws-sdk-js: <a href="https://github.com/aws/aws-sdk-js/blob/v2.1026.0/lib/metadata_service.js#L123">https://github.com/aws/aws-sdk-js/blob/v2.1026.0/lib/metadata_service.js#L123</a></li>
+<li>amazon-ecs-agent/config.go at master · aws/amazon-ecs-agent: <a href="https://github.com/aws/amazon-ecs-agent/blob/master/agent/config/config.go#L129">https://github.com/aws/amazon-ecs-agent/blob/master/agent/config/config.go#L129</a></li>
+<li>擷取執行個體中繼資料 - 查詢調節 - <a href="https://docs.aws.amazon.com/zh_tw/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html#instancedata-throttling">https://docs.aws.amazon.com/zh_tw/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html#instancedata-throttling</a></li>
+<li>AWS 中的錯誤重試與指數退避 - AWS 中的錯誤重試與指數退避 - AWS 一般參考: <a href="https://docs.aws.amazon.com/zh_tw/general/latest/gr/api-retries.html">https://docs.aws.amazon.com/zh_tw/general/latest/gr/api-retries.html</a></li>
+</ol>
+<h2 id="20220817-neil-kuan">20220817 Neil Kuan</h2>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Where is my db-instance ?!</title>
@@ -17,8 +165,8 @@
 			<guid>https://blog.neilkuan.net/posts/2021-12-16-where-is-my-db-instance/</guid>
 			<description>前言：
 有一天， 我的同事詢問我：『為什麼在部門內的帳號 RDS console 出現 2 個 DB Instances 以及 1 個 DB Clusters， 但是點進去Databaes Console 卻什麼也沒有？！』 於是把尋找 『不存在的 db instance 之旅』過程記錄了下來。
-  首先我在該 region (us-east-1)，打開了 AWS CloudShell (當前支持 region)。   接著我透過aws rds describe-db-clusters 取得所有的 DB Clusters，以下是我的結果。
-  $ aws rds describe-db-clusters { &amp;#34;DBClusters&amp;#34;: [ { &amp;#34;AllocatedStorage&amp;#34;: 1, &amp;#34;AvailabilityZones&amp;#34;: [ &amp;#34;us-east-1c&amp;#34;, &amp;#34;us-east-1d&amp;#34;, &amp;#34;us-east-1b&amp;#34; ], &amp;#34;BackupRetentionPeriod&amp;#34;: 1, &amp;#34;DBClusterIdentifier&amp;#34;: &amp;#34;docdb-test&amp;#34;, &amp;#34;DBClusterParameterGroup&amp;#34;: &amp;#34;default.docdb4.0&amp;#34;, &amp;#34;DBSubnetGroup&amp;#34;: &amp;#34;default&amp;#34;, &amp;#34;Status&amp;#34;: &amp;#34;available&amp;#34;, &amp;#34;EarliestRestorableTime&amp;#34;: &amp;#34;.....&amp;#34;, &amp;#34;Endpoint&amp;#34;: &amp;#34;docdb-test.</description>
+首先我在該 region (us-east-1)，打開了 AWS CloudShell (當前支持 region)。 接著我透過aws rds describe-db-clusters 取得所有的 DB Clusters，以下是我的結果。
+$ aws rds describe-db-clusters { &amp;#34;DBClusters&amp;#34;: [ { &amp;#34;AllocatedStorage&amp;#34;: 1, &amp;#34;AvailabilityZones&amp;#34;: [ &amp;#34;us-east-1c&amp;#34;, &amp;#34;us-east-1d&amp;#34;, &amp;#34;us-east-1b&amp;#34; ], &amp;#34;BackupRetentionPeriod&amp;#34;: 1, &amp;#34;DBClusterIdentifier&amp;#34;: &amp;#34;docdb-test&amp;#34;, &amp;#34;DBClusterParameterGroup&amp;#34;: &amp;#34;default.docdb4.0&amp;#34;, &amp;#34;DBSubnetGroup&amp;#34;: &amp;#34;default&amp;#34;, &amp;#34;Status&amp;#34;: &amp;#34;available&amp;#34;, &amp;#34;EarliestRestorableTime&amp;#34;: &amp;#34;.....&amp;#34;, &amp;#34;Endpoint&amp;#34;: &amp;#34;docdb-test.cluster-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&amp;#34;, &amp;#34;ReaderEndpoint&amp;#34;: &amp;#34;docdb-test.cluster-ro-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&amp;#34;, # endpoint 的結尾是 docdb 是 27017 &amp;lt;-------- &amp;#34;MultiAZ&amp;#34;: true, &amp;#34;Engine&amp;#34;: &amp;#34;docdb&amp;#34;, &amp;#34;EngineVersion&amp;#34;: &amp;#34;4.</description>
 			<content type="html"><![CDATA[<p>前言：</p>
 <p>有一天，
 我的同事詢問我：『為什麼在部門內的帳號 RDS console 出現 2 個 <code>DB Instances</code> 以及 1 個 <code>DB Clusters</code>，
@@ -36,55 +184,55 @@
 <p>接著我透過<code>aws rds describe-db-clusters</code> 取得所有的 <code>DB Clusters</code>，以下是我的結果。</p>
 </li>
 </ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ aws rds describe-db-clusters 
-<span class="o">{</span>
-    <span class="s2">&#34;DBClusters&#34;</span>: <span class="o">[</span>
-        <span class="o">{</span>
-            <span class="s2">&#34;AllocatedStorage&#34;</span>: 1,
-            <span class="s2">&#34;AvailabilityZones&#34;</span>: <span class="o">[</span>
-                <span class="s2">&#34;us-east-1c&#34;</span>,
-                <span class="s2">&#34;us-east-1d&#34;</span>,
-                <span class="s2">&#34;us-east-1b&#34;</span>
-            <span class="o">]</span>,
-            <span class="s2">&#34;BackupRetentionPeriod&#34;</span>: 1,
-            <span class="s2">&#34;DBClusterIdentifier&#34;</span>: <span class="s2">&#34;docdb-test&#34;</span>,
-            <span class="s2">&#34;DBClusterParameterGroup&#34;</span>: <span class="s2">&#34;default.docdb4.0&#34;</span>,
-            <span class="s2">&#34;DBSubnetGroup&#34;</span>: <span class="s2">&#34;default&#34;</span>,
-            <span class="s2">&#34;Status&#34;</span>: <span class="s2">&#34;available&#34;</span>,
-            <span class="s2">&#34;EarliestRestorableTime&#34;</span>: <span class="s2">&#34;.....&#34;</span>,
-            <span class="s2">&#34;Endpoint&#34;</span>: <span class="s2">&#34;docdb-test.cluster-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;</span>,
-            <span class="s2">&#34;ReaderEndpoint&#34;</span>: <span class="s2">&#34;docdb-test.cluster-ro-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;</span>, <span class="c1"># endpoint 的結尾是 docdb 是 27017 &lt;--------</span>
-            <span class="s2">&#34;MultiAZ&#34;</span>: true,
-            <span class="s2">&#34;Engine&#34;</span>: <span class="s2">&#34;docdb&#34;</span>,
-            <span class="s2">&#34;EngineVersion&#34;</span>: <span class="s2">&#34;4.0.0&#34;</span>,
-            <span class="s2">&#34;LatestRestorableTime&#34;</span>: <span class="s2">&#34;2021-12-16T02:56:01.379000+00:00&#34;</span>,
-            <span class="s2">&#34;Port&#34;</span>: 27017,                        <span class="c1"># Port 是 27017 &lt;--------</span>
-            <span class="s2">&#34;MasterUsername&#34;</span>: <span class="s2">&#34;admin&#34;</span>,
-            <span class="s2">&#34;PreferredBackupWindow&#34;</span>: <span class="s2">&#34;00:00-00:30&#34;</span>,
-            <span class="s2">&#34;PreferredMaintenanceWindow&#34;</span>: <span class="s2">&#34;sat:07:57-sat:08:27&#34;</span>,
-            <span class="s2">&#34;ReadReplicaIdentifiers&#34;</span>: <span class="o">[]</span>,
-            <span class="s2">&#34;DBClusterMembers&#34;</span>: <span class="o">[</span>
-                <span class="o">{</span>
-                    <span class="s2">&#34;DBInstanceIdentifier&#34;</span>: <span class="s2">&#34;docdb-test&#34;</span>,
-                    <span class="s2">&#34;IsClusterWriter&#34;</span>: false,
-                    <span class="s2">&#34;DBClusterParameterGroupStatus&#34;</span>: <span class="s2">&#34;in-sync&#34;</span>,
-                    <span class="s2">&#34;PromotionTier&#34;</span>: <span class="m">1</span>
-                <span class="o">}</span>,
-                <span class="o">{</span>
-                    <span class="s2">&#34;DBInstanceIdentifier&#34;</span>: <span class="s2">&#34;docdb-test&#34;</span>,
-                    <span class="s2">&#34;IsClusterWriter&#34;</span>: true,
-                    <span class="s2">&#34;DBClusterParameterGroupStatus&#34;</span>: <span class="s2">&#34;in-sync&#34;</span>,
-                    <span class="s2">&#34;PromotionTier&#34;</span>: <span class="m">1</span>
-                <span class="o">}</span>
-            <span class="o">]</span>,
-            <span class="s2">&#34;VpcSecurityGroups&#34;</span>: <span class="o">[</span>
-                <span class="o">{</span>
-                    <span class="s2">&#34;VpcSecurityGroupId&#34;</span>: <span class="s2">&#34;sg-xxxxxxxxx&#34;</span>,
-                    <span class="s2">&#34;Status&#34;</span>: <span class="s2">&#34;active&#34;</span>
-                <span class="o">}</span>
-            <span class="o">]</span>,
-            <span class="s2">&#34;HostedZoneId&#34;</span>: <span class="s2">&#34;ZNXXXXXXXXX&#34;</span>
-</code></pre></div><p>在看完全部內容後，發現了兩個疑點：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ aws rds describe-db-clusters 
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;DBClusters&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">        <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;AllocatedStorage&#34;</span>: 1,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;AvailabilityZones&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;us-east-1c&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;us-east-1d&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;us-east-1b&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;BackupRetentionPeriod&#34;</span>: 1,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;DBClusterIdentifier&#34;</span>: <span class="s2">&#34;docdb-test&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;DBClusterParameterGroup&#34;</span>: <span class="s2">&#34;default.docdb4.0&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;DBSubnetGroup&#34;</span>: <span class="s2">&#34;default&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Status&#34;</span>: <span class="s2">&#34;available&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;EarliestRestorableTime&#34;</span>: <span class="s2">&#34;.....&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Endpoint&#34;</span>: <span class="s2">&#34;docdb-test.cluster-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;ReaderEndpoint&#34;</span>: <span class="s2">&#34;docdb-test.cluster-ro-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;</span>, <span class="c1"># endpoint 的結尾是 docdb 是 27017 &lt;--------</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;MultiAZ&#34;</span>: true,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Engine&#34;</span>: <span class="s2">&#34;docdb&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;EngineVersion&#34;</span>: <span class="s2">&#34;4.0.0&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;LatestRestorableTime&#34;</span>: <span class="s2">&#34;2021-12-16T02:56:01.379000+00:00&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Port&#34;</span>: 27017,                        <span class="c1"># Port 是 27017 &lt;--------</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;MasterUsername&#34;</span>: <span class="s2">&#34;admin&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;PreferredBackupWindow&#34;</span>: <span class="s2">&#34;00:00-00:30&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;PreferredMaintenanceWindow&#34;</span>: <span class="s2">&#34;sat:07:57-sat:08:27&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;ReadReplicaIdentifiers&#34;</span>: <span class="o">[]</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;DBClusterMembers&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;DBInstanceIdentifier&#34;</span>: <span class="s2">&#34;docdb-test&#34;</span>,
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;IsClusterWriter&#34;</span>: false,
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;DBClusterParameterGroupStatus&#34;</span>: <span class="s2">&#34;in-sync&#34;</span>,
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;PromotionTier&#34;</span>: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">                <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">                <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;DBInstanceIdentifier&#34;</span>: <span class="s2">&#34;docdb-test&#34;</span>,
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;IsClusterWriter&#34;</span>: true,
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;DBClusterParameterGroupStatus&#34;</span>: <span class="s2">&#34;in-sync&#34;</span>,
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;PromotionTier&#34;</span>: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">                <span class="o">}</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;VpcSecurityGroups&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;VpcSecurityGroupId&#34;</span>: <span class="s2">&#34;sg-xxxxxxxxx&#34;</span>,
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;Status&#34;</span>: <span class="s2">&#34;active&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="o">}</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;HostedZoneId&#34;</span>: <span class="s2">&#34;ZNXXXXXXXXX&#34;</span>
+</span></span></code></pre></div><p>在看完全部內容後，發現了兩個疑點：</p>
 <ul>
 <li><code>ReaderEndpoint</code> 的結尾是 <code>docdb.amazonaws.com</code></li>
 <li><code>Port</code> 是 <code>27017</code></li>
@@ -105,8 +253,8 @@
 			<description>前言： 有一天， 我的同事詢問我：『如何設定 GKE Cluster Access for kubectl？！』 我回他：『你要在哪裡透過 kubectl 操作叢集。』 他回我：『專案委託他開發API 並容器化，透過 GTILAB PIPELINE 部署到GKE，但是他有上只有for Runner Server 用的 Cert key。』
 我問他：『PIPELINE 的 deploy Job，是怎麼部署 service 的 deployment的！？』 他回我：『看不到 script 被藏起來了，但是他想在地端透過kubectl 來看 service running 狀態。』 我回他：『好！我幫你查查看，可以怎麼做』。
 於是把過程記錄了下來。
- 首先我先拿到了 service account 的 key.   其內容大致長這樣。 cicd-sa@project-id.iam.gserviceaccount.com 是他的 service account email. project-id 是他的 service account 的 project id.
- cat sa-cert.json { &amp;#34;type&amp;#34;: &amp;#34;service_account&amp;#34;, &amp;#34;project_id&amp;#34;: &amp;#34;project-id&amp;#34;, &amp;#34;private_key_id&amp;#34;: &amp;#34;1234567889xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&amp;#34;, &amp;#34;private_key&amp;#34;: &amp;#34;-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/+PoTGiGF3SEo8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+4htHvC\nsesOEKTP1sMZxEaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/7hO6K/VRyT1t8TwOElhCVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/IeVoYWsSp4FkDexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+\nnjq1yVuTGCFvCtGLi8NlVwDe7NUKrqSwjRNyA5F4Q44xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+oguUKxoWWaCsQKBgQDSlZC3w1fAreCd6r8F/ZHg76TbU0C88bFa\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+mV4da8mTSwytLTDc3Dtj5nHXgc2NOodcTY9AwSPldl\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/CVREwPsJJl3fNKcA5VD5rTl15SkE8k2NJl/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+lyf\nKOyexe9Hsa2IcTJQ5Yxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/iFmX1Wb\nuYeCYCd6VKU8u8oMvMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xaSZxLJwo\nne2fkDblz7P6m39mFnpsm7h8DDmzR5eHx5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx +VPi\nd13z8qvxy4VerA8SVXLucrRk\n-----END PRIVATE KEY-----\n&amp;#34;, &amp;#34;client_email&amp;#34;: &amp;#34;cicd-sa@project-id.</description>
+首先我先拿到了 service account 的 key. 其內容大致長這樣。 cicd-sa@project-id.iam.gserviceaccount.com 是他的 service account email. project-id 是他的 service account 的 project id.
+cat sa-cert.json { &amp;#34;type&amp;#34;: &amp;#34;service_account&amp;#34;, &amp;#34;project_id&amp;#34;: &amp;#34;project-id&amp;#34;, &amp;#34;private_key_id&amp;#34;: &amp;#34;1234567889xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&amp;#34;, &amp;#34;private_key&amp;#34;: &amp;#34;-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/+PoTGiGF3SEo8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+4htHvC\nsesOEKTP1sMZxEaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/7hO6K/VRyT1t8TwOElhCVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/IeVoYWsSp4FkDexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+\nnjq1yVuTGCFvCtGLi8NlVwDe7NUKrqSwjRNyA5F4Q44xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+oguUKxoWWaCsQKBgQDSlZC3w1fAreCd6r8F/ZHg76TbU0C88bFa\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+mV4da8mTSwytLTDc3Dtj5nHXgc2NOodcTY9AwSPldl\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/CVREwPsJJl3fNKcA5VD5rTl15SkE8k2NJl/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+lyf\nKOyexe9Hsa2IcTJQ5Yxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/iFmX1Wb\nuYeCYCd6VKU8u8oMvMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xaSZxLJwo\nne2fkDblz7P6m39mFnpsm7h8DDmzR5eHx5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx +VPi\nd13z8qvxy4VerA8SVXLucrRk\n-----END PRIVATE KEY-----\n&amp;#34;, &amp;#34;client_email&amp;#34;: &amp;#34;cicd-sa@project-id.</description>
 			<content type="html"><![CDATA[<p>前言：
 有一天，
 我的同事詢問我：『如何設定 GKE Cluster Access for kubectl？！』
@@ -122,60 +270,60 @@
 <blockquote>
 <p>其內容大致長這樣。 <code>cicd-sa@project-id.iam.gserviceaccount.com</code> 是他的 service account email. <code>project-id</code> 是他的 service account 的 project id.</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">cat sa-cert.json
-<span class="o">{</span>
-  <span class="s2">&#34;type&#34;</span>: <span class="s2">&#34;service_account&#34;</span>,
-  <span class="s2">&#34;project_id&#34;</span>: <span class="s2">&#34;project-id&#34;</span>,
-  <span class="s2">&#34;private_key_id&#34;</span>: <span class="s2">&#34;1234567889xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#34;</span>,
-  <span class="s2">&#34;private_key&#34;</span>: <span class="s2">&#34;-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/+PoTGiGF3SEo8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+4htHvC\nsesOEKTP1sMZxEaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/
-</span><span class="s2">  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/7hO6K/VRyT1t8TwOElhCVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/IeVoYWsSp4FkDexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+\nnjq1yVuTGCFvCtGLi8NlVwDe7NUKrqSwjRNyA5F4Q44xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+oguUKxoWWaCsQKBgQDSlZC3w1fAreCd6r8F/ZHg76TbU0C88bFa\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+mV4da8mTSwytLTDc3Dtj5nHXgc2NOodcTY9AwSPldl\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/CVREwPsJJl3fNKcA5VD5rTl15SkE8k2NJl/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+lyf\nKOyexe9Hsa2IcTJQ5Yxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/iFmX1Wb\nuYeCYCd6VKU8u8oMvMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xaSZxLJwo\nne2fkDblz7P6m39mFnpsm7h8DDmzR5eHx5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-</span><span class="s2">  +VPi\nd13z8qvxy4VerA8SVXLucrRk\n-----END PRIVATE KEY-----\n&#34;</span>,
-  <span class="s2">&#34;client_email&#34;</span>: <span class="s2">&#34;cicd-sa@project-id.iam.gserviceaccount.com&#34;</span>,
-  <span class="s2">&#34;client_id&#34;</span>: <span class="s2">&#34;00000000000000000000&#34;</span>,
-  <span class="s2">&#34;auth_uri&#34;</span>: <span class="s2">&#34;https://accounts.google.com/o/oauth2/auth&#34;</span>,
-  <span class="s2">&#34;token_uri&#34;</span>: <span class="s2">&#34;https://oauth2.googleapis.com/token&#34;</span>,
-  <span class="s2">&#34;auth_provider_x509_cert_url&#34;</span>: <span class="s2">&#34;https://www.googleapis.com/oauth2/v1/certs&#34;</span>,
-  <span class="s2">&#34;client_x509_cert_url&#34;</span>: <span class="s2">&#34;https://www.googleapis.com/robot/v1/metadata/x509/cicd-sa%40cgh-hc-ut.iam.gserviceaccount.com&#34;</span>
-<span class="o">}</span>
-</code></pre></div><ol start="2">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat sa-cert.json
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;type&#34;</span>: <span class="s2">&#34;service_account&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;project_id&#34;</span>: <span class="s2">&#34;project-id&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;private_key_id&#34;</span>: <span class="s2">&#34;1234567889xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;private_key&#34;</span>: <span class="s2">&#34;-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/+PoTGiGF3SEo8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+4htHvC\nsesOEKTP1sMZxEaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/
+</span></span></span><span class="line"><span class="cl"><span class="s2">  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/7hO6K/VRyT1t8TwOElhCVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/IeVoYWsSp4FkDexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+\nnjq1yVuTGCFvCtGLi8NlVwDe7NUKrqSwjRNyA5F4Q44xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+oguUKxoWWaCsQKBgQDSlZC3w1fAreCd6r8F/ZHg76TbU0C88bFa\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+mV4da8mTSwytLTDc3Dtj5nHXgc2NOodcTY9AwSPldl\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/CVREwPsJJl3fNKcA5VD5rTl15SkE8k2NJl/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+lyf\nKOyexe9Hsa2IcTJQ5Yxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/iFmX1Wb\nuYeCYCd6VKU8u8oMvMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xaSZxLJwo\nne2fkDblz7P6m39mFnpsm7h8DDmzR5eHx5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+</span></span></span><span class="line"><span class="cl"><span class="s2">  +VPi\nd13z8qvxy4VerA8SVXLucrRk\n-----END PRIVATE KEY-----\n&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;client_email&#34;</span>: <span class="s2">&#34;cicd-sa@project-id.iam.gserviceaccount.com&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;client_id&#34;</span>: <span class="s2">&#34;00000000000000000000&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;auth_uri&#34;</span>: <span class="s2">&#34;https://accounts.google.com/o/oauth2/auth&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;token_uri&#34;</span>: <span class="s2">&#34;https://oauth2.googleapis.com/token&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;auth_provider_x509_cert_url&#34;</span>: <span class="s2">&#34;https://www.googleapis.com/oauth2/v1/certs&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;client_x509_cert_url&#34;</span>: <span class="s2">&#34;https://www.googleapis.com/robot/v1/metadata/x509/cicd-sa%40cgh-hc-ut.iam.gserviceaccount.com&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><ol start="2">
 <li>接著我透過 <code>gcloud auth activate-service-account</code> 指定 <code>sa-cert.json</code> 來做 auth init，如果沒有出錯，這麼一來就設定成功了。</li>
 </ol>
 <blockquote>
 <p>如果出現錯誤請檢查<code>sa-cert.json</code> 是否正確。 或是檢查local computer 的時間。</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ gcloud auth activate-service-account --key-file<span class="o">=</span>sa-cert.json
-<span class="c1"># Activated service account credentials for cicd-sa@project-id.iam.gserviceaccount.com</span>
-</code></pre></div><ol start="3">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gcloud auth activate-service-account --key-file<span class="o">=</span>sa-cert.json
+</span></span><span class="line"><span class="cl"><span class="c1"># Activated service account credentials for cicd-sa@project-id.iam.gserviceaccount.com</span>
+</span></span></code></pre></div><ol start="3">
 <li>你可以透過<code>gcloud auth list</code> 來確定是否設定成功。</li>
 </ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ gcloud auth list
-
-Credentialed Accounts
-
-ACTIVE  ACCOUNT
-        your-account@mail.com
-*       cicd-sa@cgh-hc-ut.iam.gserviceaccount.com
-
-To <span class="nb">set</span> the active account, run:
-    $ gcloud config <span class="nb">set</span> account ACCOUNT
-
-
-
-Updates are available <span class="k">for</span> some Cloud SDK components.  To install them,
-please run:
-  $ gcloud components update
-</code></pre></div><ol start="4">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gcloud auth list
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Credentialed Accounts
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ACTIVE  ACCOUNT
+</span></span><span class="line"><span class="cl">        your-account@mail.com
+</span></span><span class="line"><span class="cl">*       cicd-sa@cgh-hc-ut.iam.gserviceaccount.com
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">To <span class="nb">set</span> the active account, run:
+</span></span><span class="line"><span class="cl">    $ gcloud config <span class="nb">set</span> account ACCOUNT
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Updates are available <span class="k">for</span> some Cloud SDK components.  To install them,
+</span></span><span class="line"><span class="cl">please run:
+</span></span><span class="line"><span class="cl">  $ gcloud components update
+</span></span></code></pre></div><ol start="4">
 <li>接著我透過 <code>gcloud container clusters get-credentials</code> 指定 <code>cluster-name</code> 來做 get access for kubectl 。</li>
 </ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ gcloud container clusters get-credentials GKE_CLUSTER_NAME --region GKE_CLUSTER_REGION --project PROJECT_ID
-<span class="c1"># Fetching cluster endpoint and auth data. &lt;- 出現此畫面則設定成功了。</span>
-</code></pre></div><ol start="5">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gcloud container clusters get-credentials GKE_CLUSTER_NAME --region GKE_CLUSTER_REGION --project PROJECT_ID
+</span></span><span class="line"><span class="cl"><span class="c1"># Fetching cluster endpoint and auth data. &lt;- 出現此畫面則設定成功了。</span>
+</span></span></code></pre></div><ol start="5">
 <li>接著我透過 <code>kubectl get pods</code> 查看 pod 狀態。</li>
 </ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">kubectl get pods
-NAME                     READY   STATUS    RESTARTS   AGE
-app-1-7d5cdf64f-4dgbg    1/1     Running   <span class="m">0</span>          10m
-</code></pre></div><p>參考：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl get pods
+</span></span><span class="line"><span class="cl">NAME                     READY   STATUS    RESTARTS   AGE
+</span></span><span class="line"><span class="cl">app-1-7d5cdf64f-4dgbg    1/1     Running   <span class="m">0</span>          10m
+</span></span></code></pre></div><p>參考：</p>
 <ul>
 <li><a href="https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl">https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl</a></li>
 <li><a href="https://stackoverflow.com/questions/42379685/can-i-automate-google-cloud-sdk-gcloud-init-interactive-command">https://stackoverflow.com/questions/42379685/can-i-automate-google-cloud-sdk-gcloud-init-interactive-command</a></li>
@@ -191,10 +339,10 @@ app-1-7d5cdf64f-4dgbg    1/1     Running   <span class="m">0</span>          10m
 			
 			<guid>https://blog.neilkuan.net/posts/2021-05-27-iam-live/</guid>
 			<description>前言 踏入 IT界 也快2年了，時代快速發展，為了因應快速發展，許多企業都開始擁抱雲端計算，當然目前小弟在的公司也不例外，而我比較常接觸的雲端計算平台為AWS，在使用了AWS 這麼久，身為 IT 最重要的就是如何為 application 配予適當的 iam 權限(policy)，以達到 zero trust，給 application 越是剛剛好的權限越是好，而不是每個 application 要調用 s3 時，你就給他 arn:aws:iam::aws:policy/AmazonS3FullAccess，application 要調用 sqs 時，你就給他 arn:aws:iam::aws:policy/AmazonSQSFullAccess。
-iamlive  source github: https://github.com/iann0036/iamlive
- 有一天我在逛 github 的時候，突然發現一位AWS Hore 寫了一個 相當令我感興趣的 open source，那就是 iamlive，我們來看看他的說明簡介
- Generate an IAM policy from AWS calls using client-side monitoring (CSM) or embedded proxy。 透過監控 用戶端對 AWS 調用資源的 api 來持續幫你，產生 iam policay，來幫助您知道您調用的api 是需要多少權限。
- 到 release page 下載與執行環境可運行的binary https://github.com/iann0036/iamlive/releases 像我就選擇 iamlive-v0.</description>
+iamlive source github: https://github.com/iann0036/iamlive
+有一天我在逛 github 的時候，突然發現一位AWS Hore 寫了一個 相當令我感興趣的 open source，那就是 iamlive，我們來看看他的說明簡介
+Generate an IAM policy from AWS calls using client-side monitoring (CSM) or embedded proxy。 透過監控 用戶端對 AWS 調用資源的 api 來持續幫你，產生 iam policay，來幫助您知道您調用的api 是需要多少權限。
+到 release page 下載與執行環境可運行的binary https://github.com/iann0036/iamlive/releases 像我就選擇 iamlive-v0.36.0-darwin-amd64.dmg 並將 binary 放入您的 $PATH 路徑中。</description>
 			<content type="html"><![CDATA[<h2 id="前言">前言</h2>
 <p>踏入 IT界 也快2年了，時代快速發展，為了因應快速發展，許多企業都開始擁抱雲端計算，當然目前小弟在的公司也不例外，而我比較常接觸的雲端計算平台為AWS，在使用了AWS 這麼久，身為 IT 最重要的就是如何為 <code>application</code> 配予適當的 iam 權限(policy)，以達到 <code>zero trust</code>，給 <code>application</code> 越是剛剛好的權限越是好，而不是每個 <code>application</code> 要調用 s3 時，你就給他 <code>arn:aws:iam::aws:policy/AmazonS3FullAccess</code>，<code>application</code> 要調用 sqs 時，你就給他 <code>arn:aws:iam::aws:policy/AmazonSQSFullAccess</code>。</p>
 <h2 id="iamlive"><code>iamlive</code></h2>
@@ -239,7 +387,7 @@ iamlive  source github: https://github.com/iann0036/iamlive
 你會發現第一個視窗會發現你下了 s3 rm 的指令，並立即產生 <code>s3:DeleteObject</code> iam policy 給你。</li>
 </ol>
 <p><img src="/posts/iamlive/2021-05-27-s3-del.png" alt=""></p>
-<p>雖然目前只能偵測到 <code>Action</code> 沒辦法細微的偵測到什麼樣的  <code>resource</code> (目前為 &ldquo;*&quot;) 但我認為已經相當實用了，
+<p>雖然目前只能偵測到 <code>Action</code> 沒辦法細微的偵測到什麼樣的  <code>resource</code> (目前為 &ldquo;*&rdquo;) 但我認為已經相當實用了，
 推薦給大家。</p>
 <h3 id="發現-support-sdk-所以就手癢來試試看">發現 support SDK ，所以就手癢來試試看。</h3>
 <p><img src="/posts/iamlive/2021-05-27-IAM-LIVE01.png" alt=""></p>
@@ -263,7 +411,7 @@ iamlive  source github: https://github.com/iann0036/iamlive
 			<description>AWS CloudShell AWS 在 re:Invent 2020 Werner Vogels Keynote 中宣佈了
 AWS CloudShell source blog: https://aws.amazon.com/tw/blogs/aws/aws-cloudshell-command-line-access-to-aws-resources/
 特色如下： Browser-based shell
- Issue AWS Command Line Interface (AWS CLI) commands, run scripts, access common command line utilities including PowerShell and Bash, and use other popular AWS CLIs, such as the Amazon ECS CLI and the AWS SAM CLI, to interact with your AWS resources – all without leaving your web browser. (只能說繼GCP CloudShell, Azure CloudShell等類似服務後，AWS終於追上？！，你可以透過browser-based shell , 在上面執行 一些日常的維護 ，快速修復生產環境，甚至嘗試一些新的AWS服務或功能，我也有嘗試安裝cdk 並進行deploy) https://twitter.</description>
+Issue AWS Command Line Interface (AWS CLI) commands, run scripts, access common command line utilities including PowerShell and Bash, and use other popular AWS CLIs, such as the Amazon ECS CLI and the AWS SAM CLI, to interact with your AWS resources – all without leaving your web browser. (只能說繼GCP CloudShell, Azure CloudShell等類似服務後，AWS終於追上？！，你可以透過browser-based shell , 在上面執行 一些日常的維護 ，快速修復生產環境，甚至嘗試一些新的AWS服務或功能，我也有嘗試安裝cdk 並進行deploy) https://twitter.</description>
 			<content type="html"><![CDATA[<h1 id="aws-cloudshell">AWS CloudShell</h1>
 <p>AWS 在 <strong>re:Invent 2020</strong>  <a href="https://twitter.com/awscloud/status/1338876278225719296?s=20"><strong>Werner Vogels Keynote</strong></a> 中宣佈了</p>
 <h2 id="aws-cloudshell-1">AWS CloudShell</h2>
@@ -320,9 +468,9 @@ Amazon Linux 2 為基底 這意味著你可以 sudo yum 安裝套件&hellip;</p>
 <h2 id="是不是相當快速簡單啊">是不是相當快速簡單啊</h2>
 <hr>
 <p>說了這麼多 來試一下我寫的 shell script 讓你裝一下 炫炫的特效</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ curl -s https://gist.githubusercontent.com/neilkuan/f48394a1e68dcebe99272889753a5d06/raw/fc91a6f2d97bf9b13a4185d74a925870c22ba9c9/cloudshell-lolbanner.sh <span class="p">|</span> bash
-https://gist.github.com/f48394a1e68dcebe99272889753a5d06.git
-</code></pre></div><p><img src="/posts/cloudshell/7.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl -s https://gist.githubusercontent.com/neilkuan/f48394a1e68dcebe99272889753a5d06/raw/fc91a6f2d97bf9b13a4185d74a925870c22ba9c9/cloudshell-lolbanner.sh <span class="p">|</span> bash
+</span></span><span class="line"><span class="cl">https://gist.github.com/f48394a1e68dcebe99272889753a5d06.git
+</span></span></code></pre></div><p><img src="/posts/cloudshell/7.png" alt=""></p>
 <p><img src="/posts/cloudshell/8.png" alt=""></p>
 <p>see more
 cloudshell docs: <a href="https://docs.aws.amazon.com/cloudshell/latest/userguide/welcome.html">https://docs.aws.amazon.com/cloudshell/latest/userguide/welcome.html</a></p>
@@ -337,10 +485,10 @@ cloudshell docs: <a href="https://docs.aws.amazon.com/cloudshell/latest/userguid
 			
 			<guid>https://blog.neilkuan.net/posts/github-container-registry/</guid>
 			<description>Github Container Registry source new : https://github.blog/2020-09-01-introducing-github-container-registry/
- 自去年發布GitHub Packages以來，已經從GitHub下載了數億個軟件包，其中Docker是Packages中僅次於npm的第二受歡迎的ecosystem，儘管GitHub Packages已經為團隊提供了更大的軟件供應鏈可追溯性，但如今，GitHub 正在添加新功能，以改善它通過GitHub Container Registry為開發人員提供的體驗和性能。
- Introducing GitHub Container Registry GitHub Container Registry現已作為公共Beta發布，它改進了我們在GitHub Packages中處理容器的方式。通過今天引入的新功能，您可以更好地實施訪問策略，鼓勵使用標準 base image，並通過在整個 organization 中更輕鬆地共享來促進內部使用。並且提供了開源專案可以拜放 container 的地方for free .
+自去年發布GitHub Packages以來，已經從GitHub下載了數億個軟件包，其中Docker是Packages中僅次於npm的第二受歡迎的ecosystem，儘管GitHub Packages已經為團隊提供了更大的軟件供應鏈可追溯性，但如今，GitHub 正在添加新功能，以改善它通過GitHub Container Registry為開發人員提供的體驗和性能。
+Introducing GitHub Container Registry GitHub Container Registry現已作為公共Beta發布，它改進了我們在GitHub Packages中處理容器的方式。通過今天引入的新功能，您可以更好地實施訪問策略，鼓勵使用標準 base image，並通過在整個 organization 中更輕鬆地共享來促進內部使用。並且提供了開源專案可以拜放 container 的地方for free .
 廢話結束 ，那麼要怎麼做才能 在 Github Container Registry 上面擺放 Public image 給予他人來下載勒
- 首先準備 github access token (以下為需要的權限)  Select the read:packages scope to download container images and read their metadata. Select the write:packages scope to download and upload container images and read and write their metadata.</description>
+首先準備 github access token (以下為需要的權限) Select the read:packages scope to download container images and read their metadata. Select the write:packages scope to download and upload container images and read and write their metadata.</description>
 			<content type="html"><![CDATA[<h1 id="github-container-registry">Github Container Registry</h1>
 <p>source new : <a href="https://github.blog/2020-09-01-introducing-github-container-registry/">https://github.blog/2020-09-01-introducing-github-container-registry/</a></p>
 <blockquote>
@@ -372,22 +520,22 @@ cloudshell docs: <a href="https://docs.aws.amazon.com/cloudshell/latest/userguid
 <ol start="2">
 <li>docker host</li>
 </ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 剛剛 copy 的 personal access tokens</span>
-<span class="nb">export</span> <span class="nv">CR_PAT</span><span class="o">=</span><span class="s2">&#34;xxxxxxxxxxxxxxxxxxxxxxxx&#34;</span>
-<span class="nb">export</span> <span class="nv">USERNAME</span><span class="o">=</span><span class="s2">&#34;REPLACE_YOUR_GITHUB_USERNAME&#34;</span>
-
-<span class="c1"># docker login </span>
-<span class="nb">echo</span> <span class="nv">$CR_PAT</span> <span class="p">|</span> docker login ghcr.io -u <span class="nv">$USERNAME</span> --password-stdin
-
-<span class="c1"># 使用一個簡單的範例 從 docker hub 拉取 alpine:latese </span>
-docker pull alpine:latest
-
-<span class="c1"># 打上 github container registry tag</span>
-docker tag alpine:latest ghcr.io/<span class="nv">$USERNAME</span>/test-ghcr:test
-
-<span class="c1"># push to github container registry</span>
-docker push ghcr.io/<span class="nv">$USERNAME</span>/test-ghcr:test
-</code></pre></div><ol start="3">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 剛剛 copy 的 personal access tokens</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">CR_PAT</span><span class="o">=</span><span class="s2">&#34;xxxxxxxxxxxxxxxxxxxxxxxx&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">USERNAME</span><span class="o">=</span><span class="s2">&#34;REPLACE_YOUR_GITHUB_USERNAME&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># docker login </span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nv">$CR_PAT</span> <span class="p">|</span> docker login ghcr.io -u <span class="nv">$USERNAME</span> --password-stdin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用一個簡單的範例 從 docker hub 拉取 alpine:latese </span>
+</span></span><span class="line"><span class="cl">docker pull alpine:latest
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 打上 github container registry tag</span>
+</span></span><span class="line"><span class="cl">docker tag alpine:latest ghcr.io/<span class="nv">$USERNAME</span>/test-ghcr:test
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># push to github container registry</span>
+</span></span><span class="line"><span class="cl">docker push ghcr.io/<span class="nv">$USERNAME</span>/test-ghcr:test
+</span></span></code></pre></div><ol start="3">
 <li>public container image</li>
 </ol>
 <p>接下來你可以到你 github 的 個人頁面 的 <strong>Packages</strong> ，可以發現目前是 private 的 所以我們必須讓它公有化，這樣在拉取image 不需要有權限。</p>
@@ -410,7 +558,7 @@ docker push ghcr.io/<span class="nv">$USERNAME</span>/test-ghcr:test
 			
 			<guid>https://blog.neilkuan.net/posts/building-docker-images-with-kaniko/</guid>
 			<description>Kaniko !!! Building Docker images with Kaniko kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster. kaniko solves two problems with using the Docker-in-Docker build method:
- Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow.  When building an image with kaniko and CI/CD, you should be aware of a few important details:</description>
+Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow. When building an image with kaniko and CI/CD, you should be aware of a few important details:</description>
 			<content type="html"><![CDATA[<h1 id="kaniko-">Kaniko !!!</h1>
 <h1 id="building-docker-images-with-kaniko">Building Docker images with Kaniko</h1>
 <p><a href="https://github.com/GoogleContainerTools/kaniko">kaniko</a> is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster.
@@ -434,80 +582,80 @@ kaniko solves two problems with using the <a href="https://docs.gitlab.com/ee/ci
 <li>centos 7</li>
 </ul>
 <p>可以使用 docker run 調用:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">docker run -it gcr.io/kaniko-project/executor:latest --help
-</code></pre></div><p>它在默認的 <strong>container</strong> 內 <code>/workspace</code> 目錄下尋找 <code>Dockerfile</code>，並且通過<code>-d</code> flag 來設定將要推送的<code>registry name</code> and <code>image name</code> , <code>image:tag</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run -it gcr.io/kaniko-project/executor:latest --help
+</span></span></code></pre></div><p>它在默認的 <strong>container</strong> 內 <code>/workspace</code> 目錄下尋找 <code>Dockerfile</code>，並且通過<code>-d</code> flag 來設定將要推送的<code>registry name</code> and <code>image name</code> , <code>image:tag</code>。</p>
 <p><strong>創建資料夾</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">mkdir ~/kaniko-example
-<span class="nb">cd</span> kaniko-example
-vi Dockerfile
-mkdir nginx 
-vi nginx/default.conf
-</code></pre></div><p><strong>sample Dockerfile</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">FROM nginx:alpine
-LABEL github-action<span class="o">=</span><span class="s2">&#34;GCR&#34;</span>
-LABEL <span class="nv">NAME</span><span class="o">=</span><span class="s2">&#34;nginx-gcr&#34;</span>
-LABEL <span class="nv">Version</span><span class="o">=</span><span class="s2">&#34;0.0.1&#34;</span>
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
-EXPOSE <span class="m">8080</span>
-</code></pre></div><p><strong>sample default.conf</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">server <span class="o">{</span>
-    listen        8080<span class="p">;</span>
-    server_name   localhost<span class="p">;</span>
-    location / <span class="o">{</span>
-        root      /usr/share/nginx/html<span class="p">;</span>
-        index     index.html index.htm<span class="p">;</span>
-    <span class="o">}</span>
-
-    <span class="c1"># redirect server error pages to the static page /50x.html</span>
-    error_page    <span class="m">500</span> <span class="m">502</span> <span class="m">503</span> <span class="m">504</span>  /50x.html<span class="p">;</span>
-    <span class="nv">location</span> <span class="o">=</span> /50x.html <span class="o">{</span>
-        root      /usr/share/nginx/html<span class="p">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div><p>為了能夠將生成的 <code>image</code> 推送到遠方 <code>Docker Registry</code> ，您需要使 <code>credentials token</code> 據在 <strong>kaniko container</strong> 中可用。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># docker login 預設 login 到 docker hub </span>
-
-docker login 
-
-<span class="c1"># 我們可以看一下發現 其實他也就是 username:password | base64 過後的檔案而已  </span>
-cat ~/.docker/config.conf
-<span class="c1">#############################use admin:admin base64 過後 ###########################</span>
-<span class="o">{</span>
-        <span class="s2">&#34;auths&#34;</span>: <span class="o">{</span>
-                <span class="s2">&#34;https://index.docker.io/v1/&#34;</span>: <span class="o">{</span>
-                        <span class="s2">&#34;auth&#34;</span>: <span class="s2">&#34;YWRtaW46YWRtaW4K&#34;</span>
-                <span class="o">}</span>
-        <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div><p>使用 <code>docker version (``[v17.03.0-ce](https://github.com/docker/docker/releases/tag/v17.03.0-ce)``)</code> 的朋友 ， 因為有了<code>credsStore</code> or <code>credential-helper</code> 來保管 <code>credential</code>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir ~/kaniko-example
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> kaniko-example
+</span></span><span class="line"><span class="cl">vi Dockerfile
+</span></span><span class="line"><span class="cl">mkdir nginx 
+</span></span><span class="line"><span class="cl">vi nginx/default.conf
+</span></span></code></pre></div><p><strong>sample Dockerfile</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">FROM nginx:alpine
+</span></span><span class="line"><span class="cl">LABEL github-action<span class="o">=</span><span class="s2">&#34;GCR&#34;</span>
+</span></span><span class="line"><span class="cl">LABEL <span class="nv">NAME</span><span class="o">=</span><span class="s2">&#34;nginx-gcr&#34;</span>
+</span></span><span class="line"><span class="cl">LABEL <span class="nv">Version</span><span class="o">=</span><span class="s2">&#34;0.0.1&#34;</span>
+</span></span><span class="line"><span class="cl">COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+</span></span><span class="line"><span class="cl">EXPOSE <span class="m">8080</span>
+</span></span></code></pre></div><p><strong>sample default.conf</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">server <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    listen        8080<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    server_name   localhost<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    location / <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        root      /usr/share/nginx/html<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        index     index.html index.htm<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># redirect server error pages to the static page /50x.html</span>
+</span></span><span class="line"><span class="cl">    error_page    <span class="m">500</span> <span class="m">502</span> <span class="m">503</span> <span class="m">504</span>  /50x.html<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">location</span> <span class="o">=</span> /50x.html <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        root      /usr/share/nginx/html<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>為了能夠將生成的 <code>image</code> 推送到遠方 <code>Docker Registry</code> ，您需要使 <code>credentials token</code> 據在 <strong>kaniko container</strong> 中可用。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># docker login 預設 login 到 docker hub </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">docker login 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 我們可以看一下發現 其實他也就是 username:password | base64 過後的檔案而已  </span>
+</span></span><span class="line"><span class="cl">cat ~/.docker/config.conf
+</span></span><span class="line"><span class="cl"><span class="c1">#############################use admin:admin base64 過後 ###########################</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;auths&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;https://index.docker.io/v1/&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="s2">&#34;auth&#34;</span>: <span class="s2">&#34;YWRtaW46YWRtaW4K&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>使用 <code>docker version (``[v17.03.0-ce](https://github.com/docker/docker/releases/tag/v17.03.0-ce)``)</code> 的朋友 ， 因為有了<code>credsStore</code> or <code>credential-helper</code> 來保管 <code>credential</code>
 建議 自己將 <code>username:password</code> base64 後，替換 掉 <code>YWRtaW46YWRtaW4K</code></p>
 <pre><code>echo username:password | base64 
 </code></pre>
 <p><a href="https://github.com/spotify/docker-client/issues/657">see issue</a></p>
 <p>當前資料夾目錄結構</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">ls -lR ~/kaniko-example
-total <span class="m">32</span>
--rw-r--r--  <span class="m">1</span> neilguan  staff    <span class="m">155</span>  <span class="m">7</span> <span class="m">31</span> 17:32 Dockerfile
--rw-r--r--  <span class="m">1</span> neilguan  staff  <span class="m">11357</span>  <span class="m">7</span> <span class="m">31</span> 16:15 LICENSE
-drwxr-xr-x  <span class="m">3</span> neilguan  staff     <span class="m">96</span>  <span class="m">7</span> <span class="m">31</span> 16:23 nginx
-
-./nginx:
-total <span class="m">8</span>
--rw-r--r--  <span class="m">1</span> neilguan  staff  <span class="m">352</span>  <span class="m">7</span> <span class="m">31</span> 16:23 default.conf
-</code></pre></div><h2 id="lets-do-it-">Let’s do it ~~</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ls -lR ~/kaniko-example
+</span></span><span class="line"><span class="cl">total <span class="m">32</span>
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> neilguan  staff    <span class="m">155</span>  <span class="m">7</span> <span class="m">31</span> 17:32 Dockerfile
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> neilguan  staff  <span class="m">11357</span>  <span class="m">7</span> <span class="m">31</span> 16:15 LICENSE
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">3</span> neilguan  staff     <span class="m">96</span>  <span class="m">7</span> <span class="m">31</span> 16:23 nginx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">./nginx:
+</span></span><span class="line"><span class="cl">total <span class="m">8</span>
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> neilguan  staff  <span class="m">352</span>  <span class="m">7</span> <span class="m">31</span> 16:23 default.conf
+</span></span></code></pre></div><h2 id="lets-do-it-">Let’s do it ~~</h2>
 <p>現在本地目錄 <code>~/kaniko-example</code> 中有一個Dockerfile。
 您可以使用以下命令構建並推送Docker映像（替換&lt;username/image-name:tag&gt;…）：
 我們將會把 家目錄的 <code>.docker/config.json</code> 掛入 container 內的 <code>/kaniko/config.json</code>
 設置 container 環境變數  <code>DOCKER_CONFIG=/kaniko</code>
 指定 <code>-f</code> <strong>Dockerfile</strong> 路徑 並設定 目的地 ～</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> ~/kaniko-example
-
-docker run -it -v ~/.docker/config.json:/kaniko/config.json <span class="se">\
-</span><span class="se"></span>        -v <span class="nv">$PWD</span>:/workspace -e <span class="nv">DOCKER_CONFIG</span><span class="o">=</span>/kaniko <span class="se">\
-</span><span class="se"></span>        gcr.io/kaniko-project/executor:latest <span class="se">\
-</span><span class="se"></span>        -f /workspace/Dockerfile <span class="se">\
-</span><span class="se"></span>        -d &lt;username/image-name:tag&gt;
-</code></pre></div><p><img src="/posts/20200804-kaniko/3-kaniko-build.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> ~/kaniko-example
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">docker run -it -v ~/.docker/config.json:/kaniko/config.json <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        -v <span class="nv">$PWD</span>:/workspace -e <span class="nv">DOCKER_CONFIG</span><span class="o">=</span>/kaniko <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        gcr.io/kaniko-project/executor:latest <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        -f /workspace/Dockerfile <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        -d &lt;username/image-name:tag&gt;
+</span></span></code></pre></div><p><img src="/posts/20200804-kaniko/3-kaniko-build.png" alt=""></p>
 <p>如果順利 ！？ＸＤ
 你可以到你的 docker hub 看到您透過 kaniko build and push 的 image :</p>
 <p><img src="/posts/20200804-kaniko/4-dockerhub.png" alt=""></p>
@@ -528,7 +676,7 @@ gitlab 已有很好的 example</p>
 			<description>source: https://learn.hashicorp.com/terraform/cdktf/cdktf-install
 source: https://www.hashicorp.com/blog/cdk-for-terraform-enabling-python-and-typescript-support/
 On Linux Install Terraform Download package : https://www.terraform.io/downloads.html
-# linux x86  $ wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip $ unzip terraform_0.12.28_linux_amd64.zip $ echo $PATH $ chmod +x terraform $ sudo mv terraform /usr/local/bin/ Install CDK for Terraform
+# linux x86 $ wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip $ unzip terraform_0.12.28_linux_amd64.zip $ echo $PATH $ chmod +x terraform $ sudo mv terraform /usr/local/bin/ Install CDK for Terraform
 https://learn.hashicorp.com/terraform/cdktf/cdktf-install#quick-start-tutorial
 $ npm install --global cdktf-cli $ npm install --global cdktf-cli@next # Test cdktf $ cdktf $ cdktf deploy --help $ mkdir typescript-docker &amp;amp;&amp;amp; cd $_ $ cdktf init --template=typescript --local # modify origin cdktf.</description>
 			<content type="html"><![CDATA[<p>source:
@@ -537,85 +685,85 @@ $ npm install --global cdktf-cli $ npm install --global cdktf-cli@next # Test cd
 <a href="https://www.hashicorp.com/blog/cdk-for-terraform-enabling-python-and-typescript-support/">https://www.hashicorp.com/blog/cdk-for-terraform-enabling-python-and-typescript-support/</a></p>
 <h2 id="on-linux-install-terraform">On Linux Install Terraform</h2>
 <p>Download package : <a href="https://www.terraform.io/downloads.html">https://www.terraform.io/downloads.html</a></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># linux x86 </span>
-$ wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
-
-$ unzip terraform_0.12.28_linux_amd64.zip 
-
-$ <span class="nb">echo</span> <span class="nv">$PATH</span>
-
-$ chmod +x terraform 
-
-$ sudo mv terraform /usr/local/bin/
-</code></pre></div><p><strong>Install CDK for Terraform</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># linux x86 </span>
+</span></span><span class="line"><span class="cl">$ wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ unzip terraform_0.12.28_linux_amd64.zip 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$PATH</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ chmod +x terraform 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sudo mv terraform /usr/local/bin/
+</span></span></code></pre></div><p><strong>Install CDK for Terraform</strong></p>
 <p><a href="https://learn.hashicorp.com/terraform/cdktf/cdktf-install#quick-start-tutorial">https://learn.hashicorp.com/terraform/cdktf/cdktf-install#quick-start-tutorial</a></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ npm install --global cdktf-cli
-
-$ npm install --global cdktf-cli@next
-
-<span class="c1"># Test cdktf</span>
-$ cdktf
-
-$ cdktf deploy --help
-
-$ mkdir typescript-docker <span class="o">&amp;&amp;</span> <span class="nb">cd</span> <span class="nv">$_</span>
-
-$ cdktf init --template<span class="o">=</span>typescript --local
-</code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_D9888AA049A6B324D337D9AABA35BD93839DA958770902331B9E7165DF376B79_1594944009743_+2020-07-17+8.00.04.png" alt=""></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># modify origin cdktf.json</span>
-<span class="o">{</span>
-  <span class="s2">&#34;language&#34;</span>: <span class="s2">&#34;typescript&#34;</span>,
-  <span class="s2">&#34;app&#34;</span>: <span class="s2">&#34;npm run --silent compile &amp;&amp; node main.js&#34;</span>,
-  <span class="s2">&#34;terraformProviders&#34;</span>: <span class="o">[</span>
-    <span class="s2">&#34;aws@~&gt; 2.0&#34;</span>
-  <span class="o">]</span>
-<span class="o">}</span>
-<span class="c1"># &#34;aws@~&gt; 2.0&#34; to &#34;docker&#34;</span>
-<span class="o">{</span>
-  <span class="s2">&#34;language&#34;</span>: <span class="s2">&#34;typescript&#34;</span>,
-  <span class="s2">&#34;app&#34;</span>: <span class="s2">&#34;npm run --silent compile &amp;&amp; node main.js&#34;</span>,
-  <span class="s2">&#34;terraformProviders&#34;</span>: <span class="o">[</span>
-    <span class="s2">&#34;docker&#34;</span>
-  <span class="o">]</span>
-<span class="o">}</span>
-</code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_D9888AA049A6B324D337D9AABA35BD93839DA958770902331B9E7165DF376B79_1594944036320_+2020-07-17+8.00.31.png" alt=""></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#main.ts</span>
-import <span class="o">{</span> Construct <span class="o">}</span> from <span class="s1">&#39;constructs&#39;</span>
-import <span class="o">{</span> App, TerraformStack <span class="o">}</span> from <span class="s1">&#39;cdktf&#39;</span>
-import <span class="o">{</span> Container, Image <span class="o">}</span> from <span class="s1">&#39;./.gen/providers/docker&#39;</span>
-
-class MyStack extends TerraformStack <span class="o">{</span>
-  constructor<span class="o">(</span>scope: Construct, name: string<span class="o">)</span> <span class="o">{</span>
-    super<span class="o">(</span>scope, name<span class="o">)</span>
-
-    const <span class="nv">dockerImage</span> <span class="o">=</span> new Image<span class="o">(</span>this, <span class="s1">&#39;nginxImage&#39;</span>, <span class="o">{</span>
-      name: <span class="s1">&#39;nginx:latest&#39;</span>,
-      keepLocally: false,
-    <span class="o">})</span>
-
-    new Container<span class="o">(</span>this, <span class="s1">&#39;nginxContainer&#39;</span>, <span class="o">{</span>
-      image: dockerImage.latest,
-      name: <span class="s1">&#39;tutorial&#39;</span>,
-      ports: <span class="o">[</span>
-        <span class="o">{</span>
-          internal: 80,
-          external: 8000,
-        <span class="o">}</span>,
-      <span class="o">]</span>,
-    <span class="o">})</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-    
-const <span class="nv">app</span> <span class="o">=</span> new App<span class="o">()</span>
-new MyStack<span class="o">(</span>app, <span class="s1">&#39;typescript-docker&#39;</span><span class="o">)</span>
-app.synth<span class="o">()</span>
-</code></pre></div><p><strong>Install dependencies and deploy</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ cdktf get
-
-$ cdktf deploy --auto-approve <span class="nb">true</span>
-</code></pre></div><p><strong>Delete</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">cdktf destroy --auto-approve <span class="nb">true</span>
-</code></pre></div><p><img src="/posts/cdk_for_terraform.gif" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ npm install --global cdktf-cli
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ npm install --global cdktf-cli@next
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Test cdktf</span>
+</span></span><span class="line"><span class="cl">$ cdktf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ cdktf deploy --help
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ mkdir typescript-docker <span class="o">&amp;&amp;</span> <span class="nb">cd</span> <span class="nv">$_</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ cdktf init --template<span class="o">=</span>typescript --local
+</span></span></code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_D9888AA049A6B324D337D9AABA35BD93839DA958770902331B9E7165DF376B79_1594944009743_+2020-07-17+8.00.04.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># modify origin cdktf.json</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;language&#34;</span>: <span class="s2">&#34;typescript&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;app&#34;</span>: <span class="s2">&#34;npm run --silent compile &amp;&amp; node main.js&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;terraformProviders&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;aws@~&gt; 2.0&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># &#34;aws@~&gt; 2.0&#34; to &#34;docker&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;language&#34;</span>: <span class="s2">&#34;typescript&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;app&#34;</span>: <span class="s2">&#34;npm run --silent compile &amp;&amp; node main.js&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;terraformProviders&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;docker&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_D9888AA049A6B324D337D9AABA35BD93839DA958770902331B9E7165DF376B79_1594944036320_+2020-07-17+8.00.31.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#main.ts</span>
+</span></span><span class="line"><span class="cl">import <span class="o">{</span> Construct <span class="o">}</span> from <span class="s1">&#39;constructs&#39;</span>
+</span></span><span class="line"><span class="cl">import <span class="o">{</span> App, TerraformStack <span class="o">}</span> from <span class="s1">&#39;cdktf&#39;</span>
+</span></span><span class="line"><span class="cl">import <span class="o">{</span> Container, Image <span class="o">}</span> from <span class="s1">&#39;./.gen/providers/docker&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">class MyStack extends TerraformStack <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  constructor<span class="o">(</span>scope: Construct, name: string<span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    super<span class="o">(</span>scope, name<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    const <span class="nv">dockerImage</span> <span class="o">=</span> new Image<span class="o">(</span>this, <span class="s1">&#39;nginxImage&#39;</span>, <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      name: <span class="s1">&#39;nginx:latest&#39;</span>,
+</span></span><span class="line"><span class="cl">      keepLocally: false,
+</span></span><span class="line"><span class="cl">    <span class="o">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    new Container<span class="o">(</span>this, <span class="s1">&#39;nginxContainer&#39;</span>, <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      image: dockerImage.latest,
+</span></span><span class="line"><span class="cl">      name: <span class="s1">&#39;tutorial&#39;</span>,
+</span></span><span class="line"><span class="cl">      ports: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">        <span class="o">{</span>
+</span></span><span class="line"><span class="cl">          internal: 80,
+</span></span><span class="line"><span class="cl">          external: 8000,
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">      <span class="o">]</span>,
+</span></span><span class="line"><span class="cl">    <span class="o">})</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">const <span class="nv">app</span> <span class="o">=</span> new App<span class="o">()</span>
+</span></span><span class="line"><span class="cl">new MyStack<span class="o">(</span>app, <span class="s1">&#39;typescript-docker&#39;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">app.synth<span class="o">()</span>
+</span></span></code></pre></div><p><strong>Install dependencies and deploy</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ cdktf get
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ cdktf deploy --auto-approve <span class="nb">true</span>
+</span></span></code></pre></div><p><strong>Delete</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cdktf destroy --auto-approve <span class="nb">true</span>
+</span></span></code></pre></div><p><img src="/posts/cdk_for_terraform.gif" alt=""></p>
 <p>202007028 Neil Kuan</p>
 ]]></content>
 		</item>
@@ -627,11 +775,13 @@ $ cdktf deploy --auto-approve <span class="nb">true</span>
 			
 			<guid>https://blog.neilkuan.net/posts/lolbanner/</guid>
 			<description>前言： 我的環境是 mac os 如果是其他系統 裝起來應該大同小異 可以參考 https://www.tecmint.com/lolcat-command-to-output-rainbow-of-colors-in-linux-terminal/
- lolcat is a ruby gem hence it is essential to have latest version of RUBY installed on your system.
- 首先利用 brew 安裝 必要的套件
- 沒有 homebrew 請先安裝 ckick here
- # 如果沒有 ruby 請先安裝 ruby  $ brew install ruby $ brew install figlet $ brew install lolcat 創建front 資料夾，並進入
-$ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-fonts 到 https://github.com/xero/figlet-fonts 選取你想要的 主題，我選的是 3d.</description>
+lolcat is a ruby gem hence it is essential to have latest version of RUBY installed on your system.
+首先利用 brew 安裝 必要的套件
+沒有 homebrew 請先安裝 ckick here
+# 如果沒有 ruby 請先安裝 ruby $ brew install ruby $ brew install figlet $ brew install lolcat 創建front 資料夾，並進入
+$ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-fonts 到 https://github.com/xero/figlet-fonts 選取你想要的 主題，我選的是 3d.flf
+下載 文字格式
+$ cd ~/.</description>
 			<content type="html"><![CDATA[<p>前言：
 我的環境是 mac os
 如果是其他系統 裝起來應該大同小異
@@ -644,42 +794,42 @@ $ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-f
 <blockquote>
 <p>沒有 homebrew 請先安裝 <a href="https://brew.sh/index_zh-tw">ckick here</a></p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 如果沒有 ruby 請先安裝 ruby </span>
-$ brew install ruby
-$ brew install figlet
-$ brew install lolcat
-</code></pre></div><p>創建front 資料夾，並進入</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ mkdir -p ~/.local/share/fonts/figlet-fonts/
-$ <span class="nb">cd</span> ~/.local/share/fonts/figlet-fonts
-</code></pre></div><p>到 <a href="https://github.com/xero/figlet-fonts">https://github.com/xero/figlet-fonts</a> 選取你想要的 主題，我選的是  3d.flf</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 如果沒有 ruby 請先安裝 ruby </span>
+</span></span><span class="line"><span class="cl">$ brew install ruby
+</span></span><span class="line"><span class="cl">$ brew install figlet
+</span></span><span class="line"><span class="cl">$ brew install lolcat
+</span></span></code></pre></div><p>創建front 資料夾，並進入</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ mkdir -p ~/.local/share/fonts/figlet-fonts/
+</span></span><span class="line"><span class="cl">$ <span class="nb">cd</span> ~/.local/share/fonts/figlet-fonts
+</span></span></code></pre></div><p>到 <a href="https://github.com/xero/figlet-fonts">https://github.com/xero/figlet-fonts</a> 選取你想要的 主題，我選的是  3d.flf</p>
 <p><img src="https://paper-attachments.dropbox.com/s_793C9F574C826051E8CEA1C98F67BB1594B6A14892CAE635880BE7E2D3EFA987_1593482022208_+2020-06-30+9.53.38.png" alt=""></p>
 <p>下載 文字格式</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">cd</span> ~/.local/share/fonts/figlet-fonts
-$ wget https://raw.githubusercontent.com/xero/figlet-fonts/master/3d.flf
-$ ls ~/.local/share/fonts/figlet-fonts
-3d.flf
-</code></pre></div><p>撰寫 Shell Script Function &lt;放在家目錄即可&gt;</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">cd</span> ~
-$ vi <span class="nv">lolbanner</span>
-<span class="o">===============================================</span>
-<span class="c1">#!/bin/bash</span>
-<span class="nv">input</span><span class="o">=</span><span class="nv">$*</span>
-<span class="k">function</span> lolbanner<span class="o">(){</span>
-   <span class="nb">echo</span> <span class="s2">&#34;&#34;</span>
-   figlet -c -f ~/.local/share/fonts/figlet-fonts/3d.flf <span class="nv">$input</span> <span class="p">|</span> lolcat
-   <span class="nb">echo</span> <span class="s2">&#34;&#34;</span>
-<span class="o">}</span>
-<span class="nv">lolbanner</span>
-<span class="o">===============================================</span>
-<span class="c1"># 給予執行權限</span>
-$ chmod +x ~/lolbanner
-</code></pre></div><p><strong>alias  command</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">echo</span> <span class="s1">&#39;alias lolbanner=&#39;</span><span class="nv">$HOME</span>/lolbanner<span class="s1">&#39;&#39;</span> &gt;&gt; ~/.bash_profile
-</code></pre></div><p>再次讀取 <code>.bash_profile</code>  &lt;下次 login terminal 時會自動讀取&gt;</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">source</span> ~/.bash_profile
-</code></pre></div><h1 id="大功告成"><strong>大功告成</strong></h1>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">    $ lolbanner Let<span class="se">\&#39;</span>s LolBanner
-</code></pre></div><p><img src="/posts/2020-06-30-lolbanner-02.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ <span class="nb">cd</span> ~/.local/share/fonts/figlet-fonts
+</span></span><span class="line"><span class="cl">$ wget https://raw.githubusercontent.com/xero/figlet-fonts/master/3d.flf
+</span></span><span class="line"><span class="cl">$ ls ~/.local/share/fonts/figlet-fonts
+</span></span><span class="line"><span class="cl">3d.flf
+</span></span></code></pre></div><p>撰寫 Shell Script Function &lt;放在家目錄即可&gt;</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ <span class="nb">cd</span> ~
+</span></span><span class="line"><span class="cl">$ vi <span class="nv">lolbanner</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#!/bin/bash</span>
+</span></span><span class="line"><span class="cl"><span class="nv">input</span><span class="o">=</span><span class="nv">$*</span>
+</span></span><span class="line"><span class="cl"><span class="k">function</span> lolbanner<span class="o">(){</span>
+</span></span><span class="line"><span class="cl">   <span class="nb">echo</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">   figlet -c -f ~/.local/share/fonts/figlet-fonts/3d.flf <span class="nv">$input</span> <span class="p">|</span> lolcat
+</span></span><span class="line"><span class="cl">   <span class="nb">echo</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="nv">lolbanner</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 給予執行權限</span>
+</span></span><span class="line"><span class="cl">$ chmod +x ~/lolbanner
+</span></span></code></pre></div><p><strong>alias  command</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="s1">&#39;alias lolbanner=&#39;</span><span class="nv">$HOME</span>/lolbanner<span class="s1">&#39;&#39;</span> &gt;&gt; ~/.bash_profile
+</span></span></code></pre></div><p>再次讀取 <code>.bash_profile</code>  &lt;下次 login terminal 時會自動讀取&gt;</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">source</span> ~/.bash_profile
+</span></span></code></pre></div><h1 id="大功告成"><strong>大功告成</strong></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">    $ lolbanner Let<span class="se">\&#39;</span>s LolBanner
+</span></span></code></pre></div><p><img src="/posts/2020-06-30-lolbanner-02.png" alt=""></p>
 <p>2020年6月29日  Neil Kuan</p>
 ]]></content>
 		</item>
@@ -694,9 +844,9 @@ $ chmod +x ~/lolbanner
 S3 policy 產生網站:https://awspolicygen.s3.amazonaws.com/policygen.html
 需要大量的 object 頻繁的上傳到 s3 ，又不想走外部網路時做的方式 ＶＰＣ 對S3 的endpoint 傳輸吧！！！
 Need S3 , EC2 , VPC , endpoint , route table.
-  Open Amazon VPC console.
-  使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。  這邊先幫我記下 VPC 的 ID 等等較好操作。
-   Create Endpoint. → Virtual Private Cloud &amp;gt; Endpoints &amp;gt; cretae endpoint   點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID.</description>
+Open Amazon VPC console.
+使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。 這邊先幫我記下 VPC 的 ID 等等較好操作。
+Create Endpoint. → Virtual Private Cloud &amp;gt; Endpoints &amp;gt; cretae endpoint 點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID. 由於我選擇 region 為 Tokyo 所以 ,service name 為 com.</description>
 			<content type="html"><![CDATA[<p>原文：https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-private-connection-no-authentication/</p>
 <p>S3 policy 產生網站:https://awspolicygen.s3.amazonaws.com/policygen.html</p>
 <h2 id="需要大量的-object-頻繁的上傳到-s3-又不想走外部網路時做的方式">需要大量的 object 頻繁的上傳到 s3 ，又不想走外部網路時做的方式</h2>
@@ -747,39 +897,39 @@ Need S3 , EC2 , VPC , endpoint , route table.
 <h2 id="點選-剛剛建立好了-s3--permissions--bucket-policy-設定bucket-policy">點選 剛剛建立好了 s3 → Permissions → Bucket Policy (設定Bucket Policy)</h2>
 <p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582863396287_+2020-02-28+12.16.31.png" alt=""></p>
 <p>官方提供建立 policy web site. <a href="https://awspolicygen.s3.amazonaws.com/policygen.html">https://awspolicygen.s3.amazonaws.com/policygen.html</a></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#將 BUCKETARN    arn:aws:s3:::$BUCKETARN/*</span>
-<span class="c1">#   VPCE   aws:sourceVpce&#34;: &#34;$VPCE</span>
-<span class="c1"># 換成你的</span>
-<span class="o">{</span>
-    <span class="s2">&#34;Version&#34;</span>: <span class="s2">&#34;2012-10-17&#34;</span>,
-    <span class="s2">&#34;Id&#34;</span>: <span class="s2">&#34;Policy1415115909152&#34;</span>,
-    <span class="s2">&#34;Statement&#34;</span>: <span class="o">[</span>
-        <span class="o">{</span>
-            <span class="s2">&#34;Sid&#34;</span>: <span class="s2">&#34;Access-to-specific-VPCE-only&#34;</span>,
-            <span class="s2">&#34;Principal&#34;</span>: <span class="s2">&#34;*&#34;</span>,
-            <span class="s2">&#34;Action&#34;</span>: <span class="o">[</span>
-                <span class="s2">&#34;s3:GetObject&#34;</span>,
-                <span class="s2">&#34;s3:PutObject&#34;</span>
-            <span class="o">]</span>,
-            <span class="s2">&#34;Effect&#34;</span>: <span class="s2">&#34;Allow&#34;</span>,
-            <span class="s2">&#34;Resource&#34;</span>: <span class="o">[</span>
-                <span class="s2">&#34;arn:aws:s3:::</span><span class="nv">$BUCKETARN</span><span class="s2">/*&#34;</span>
-            <span class="o">]</span>,
-            <span class="s2">&#34;Condition&#34;</span>: <span class="o">{</span>
-                <span class="s2">&#34;StringEquals&#34;</span>: <span class="o">{</span>
-                    <span class="s2">&#34;aws:sourceVpce&#34;</span>: <span class="s2">&#34;</span><span class="nv">$VPCE</span><span class="s2">&#34;</span>
-                <span class="o">}</span>
-            <span class="o">}</span>
-        <span class="o">}</span>
-    <span class="o">]</span>
-<span class="o">}</span>
-</code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582863940716_+2020-02-28+12.25.35.png" alt="save 存檔"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#將 BUCKETARN    arn:aws:s3:::$BUCKETARN/*</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#   VPCE   aws:sourceVpce&#34;: &#34;$VPCE</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 換成你的</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Version&#34;</span>: <span class="s2">&#34;2012-10-17&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Id&#34;</span>: <span class="s2">&#34;Policy1415115909152&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Statement&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">        <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Sid&#34;</span>: <span class="s2">&#34;Access-to-specific-VPCE-only&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Principal&#34;</span>: <span class="s2">&#34;*&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Action&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;s3:GetObject&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;s3:PutObject&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Effect&#34;</span>: <span class="s2">&#34;Allow&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Resource&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;arn:aws:s3:::</span><span class="nv">$BUCKETARN</span><span class="s2">/*&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Condition&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;StringEquals&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;aws:sourceVpce&#34;</span>: <span class="s2">&#34;</span><span class="nv">$VPCE</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="o">}</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582863940716_+2020-02-28+12.25.35.png" alt="save 存檔"></p>
 <h2 id="開啟一台-ec2-在-剛剛的-vpc-內進行測試">開啟一台 ec2 在 剛剛的 vpc 內進行測試。</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#可以使用 awscli 進行測試。</span>
-aws s3 cp <span class="nv">$object</span> s3://<span class="nv">$your</span>-bucket-name/
-
-aws s3 cp  s3://<span class="nv">$your</span>-bucket-name/<span class="nv">$object</span> <span class="nv">$objectname</span>
-</code></pre></div><blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#可以使用 awscli 進行測試。</span>
+</span></span><span class="line"><span class="cl">aws s3 cp <span class="nv">$object</span> s3://<span class="nv">$your</span>-bucket-name/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">aws s3 cp  s3://<span class="nv">$your</span>-bucket-name/<span class="nv">$object</span> <span class="nv">$objectname</span>
+</span></span></code></pre></div><blockquote>
 <p>下圖為，為<strong>尚未</strong>設定endpoint 與 s3 bucket policy 上傳object 結果。<br>
 <img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582864100235_+2020-02-28+12.28.17.png" alt=""></p>
 </blockquote>
@@ -801,8 +951,8 @@ aws s3 cp  s3://<span class="nv">$your</span>-bucket-name/<span class="nv">$obje
 			<guid>https://blog.neilkuan.net/posts/certbot_lets_encrypt_create_ca_aws_route53/</guid>
 			<description>小弟的域名雖然託管在 Route53 上面 ，也知道 AWS 也有提供 ACM 搭配 ELB 憑證託管的免費方案，但有時候申請幾張 憑證來用是相當實用的。
 Let’s Encrypt 的數位憑證認證機構（CA）推出免費 SSL/TLS 憑證服務，也在年底正式對外開放。這是什麼呢？簡單來說，以往想為你的網站加入 SSL 加密協定（HTTPS，也就是網址列上的綠色鎖頭圖示），必須支付一筆費用來申請憑證，但有了 Let’s Encrypt 後將能免費申請憑證，且這一過程非常簡單、自動化。
- 值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
- 並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
+值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
+並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
 docker hub https://hub.docker.com/r/certbot/dns-route53
 因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 IAM Policy 如下：
 { &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Id&amp;#34;: &amp;#34;certbot-dns-route53 sample policy&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;route53:ListHostedZones&amp;#34;, &amp;#34;route53:GetChange&amp;#34; ], &amp;#34;Resource&amp;#34;: [ &amp;#34;*&amp;#34; ] }, { &amp;#34;Effect&amp;#34; : &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34; : [ &amp;#34;route53:ChangeResourceRecordSets&amp;#34; ], &amp;#34;Resource&amp;#34; : [ &amp;#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&amp;#34; &amp;lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53.</description>
@@ -816,73 +966,73 @@ Certbot 提供相當完整的安裝指引，到 <a href="https://certbot.eff.org
 <h2 id="docker-hub">docker hub</h2>
 <p><a href="https://hub.docker.com/r/certbot/dns-route53">https://hub.docker.com/r/certbot/dns-route53</a></p>
 <p>因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 <strong>IAM Policy</strong> 如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span>
-    <span class="s2">&#34;Version&#34;</span>: <span class="s2">&#34;2012-10-17&#34;</span>,
-    <span class="s2">&#34;Id&#34;</span>: <span class="s2">&#34;certbot-dns-route53 sample policy&#34;</span>,
-    <span class="s2">&#34;Statement&#34;</span>: <span class="o">[</span>
-        <span class="o">{</span>
-            <span class="s2">&#34;Effect&#34;</span>: <span class="s2">&#34;Allow&#34;</span>,
-            <span class="s2">&#34;Action&#34;</span>: <span class="o">[</span>
-                <span class="s2">&#34;route53:ListHostedZones&#34;</span>,
-                <span class="s2">&#34;route53:GetChange&#34;</span>
-            <span class="o">]</span>,
-            <span class="s2">&#34;Resource&#34;</span>: <span class="o">[</span>
-                <span class="s2">&#34;*&#34;</span>
-            <span class="o">]</span>
-        <span class="o">}</span>,
-        <span class="o">{</span>
-            <span class="s2">&#34;Effect&#34;</span> : <span class="s2">&#34;Allow&#34;</span>,
-            <span class="s2">&#34;Action&#34;</span> : <span class="o">[</span>
-                <span class="s2">&#34;route53:ChangeResourceRecordSets&#34;</span>
-            <span class="o">]</span>,
-            <span class="s2">&#34;Resource&#34;</span> : <span class="o">[</span>
-                <span class="s2">&#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&#34;</span>  &lt;- 要換成您的
-            <span class="o">]</span>
-        <span class="o">}</span>
-    <span class="o">]</span>
-<span class="o">}</span>
-</code></pre></div><h2 id="certbot-route53-docs">Certbot-route53 docs</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Version&#34;</span>: <span class="s2">&#34;2012-10-17&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Id&#34;</span>: <span class="s2">&#34;certbot-dns-route53 sample policy&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Statement&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">        <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Effect&#34;</span>: <span class="s2">&#34;Allow&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Action&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;route53:ListHostedZones&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;route53:GetChange&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Resource&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;*&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">        <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Effect&#34;</span> : <span class="s2">&#34;Allow&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Action&#34;</span> : <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;route53:ChangeResourceRecordSets&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Resource&#34;</span> : <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&#34;</span>  &lt;- 要換成您的
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><h2 id="certbot-route53-docs">Certbot-route53 docs</h2>
 <p><a href="https://certbot-dns-route53.readthedocs.io/en/stable/">https://certbot-dns-route53.readthedocs.io/en/stable/</a></p>
 <blockquote>
 <p>現在假設您的執行環境是 EC2 (ubuntu) , EC2 的 IAM Role 也已 attach 上述的 IAM Policy 。
 # run image and set .aws default config in container</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ docker run -it --rm  --entrypoint ash certbot/dns-route53
-
-<span class="c1"># 將YOUR_DOMAIN 換成您拖管在 route53 的 domain name , YOUR_EMAIL 換成您的 Email。</span>
-<span class="c1"># 進入 container 內。</span>
-certbot certonly --agree-tos <span class="se">\
-</span><span class="se"></span>   --dns-route53 <span class="se">\
-</span><span class="se"></span>   --dns-route53-propagation-seconds <span class="m">30</span> <span class="se">\
-</span><span class="se"></span>   -d *.<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span> -m <span class="si">${</span><span class="nv">YOUR_EMAIL</span><span class="si">}</span> --eff-email 
-
-<span class="c1"># 等待大概 30 s </span>
-Saving debug log to /var/log/letsencrypt/letsencrypt.log
-Found credentials in shared credentials file: ~/.aws/credentials
-Plugins selected: Authenticator dns-route53, Installer None
-Obtaining a new certificate
-Performing the following challenges:
-dns-01 challenge <span class="k">for</span> example.com
-Waiting <span class="k">for</span> verification...
-Cleaning up challenges
-
-IMPORTANT NOTES:
- - Congratulations! Your certificate and chain have been saved at:
-   /etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/fullchain.pem   &lt;- 憑證在這
-   Your key file has been saved at:
-   /etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/privkey.pem     &lt;- key 在這
-   Your cert will expire on 2020-08-15. To obtain a new or tweaked
-   version of this certificate in the future, simply run certbot
-   again. To non-interactively renew *all* of your certificates, run
-   <span class="s2">&#34;certbot renew&#34;</span>
- - If you like Certbot, please consider supporting our work by:
-
-   Donating to ISRG / Let<span class="err">&#39;</span>s Encrypt:   https://letsencrypt.org/donate
-   Donating to EFF:                    https://eff.org/donate-le
-</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">/etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/fullchain.pem   &lt;- 憑證在這
-Your key file has been saved at:
-/etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/privkey.pem     &lt;- key 在這
-</code></pre></div><p>然後再把 憑證複製出來即可 。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ docker run -it --rm  --entrypoint ash certbot/dns-route53
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 將YOUR_DOMAIN 換成您拖管在 route53 的 domain name , YOUR_EMAIL 換成您的 Email。</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 進入 container 內。</span>
+</span></span><span class="line"><span class="cl">certbot certonly --agree-tos <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>   --dns-route53 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>   --dns-route53-propagation-seconds <span class="m">30</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>   -d *.<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span> -m <span class="si">${</span><span class="nv">YOUR_EMAIL</span><span class="si">}</span> --eff-email 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 等待大概 30 s </span>
+</span></span><span class="line"><span class="cl">Saving debug log to /var/log/letsencrypt/letsencrypt.log
+</span></span><span class="line"><span class="cl">Found credentials in shared credentials file: ~/.aws/credentials
+</span></span><span class="line"><span class="cl">Plugins selected: Authenticator dns-route53, Installer None
+</span></span><span class="line"><span class="cl">Obtaining a new certificate
+</span></span><span class="line"><span class="cl">Performing the following challenges:
+</span></span><span class="line"><span class="cl">dns-01 challenge <span class="k">for</span> example.com
+</span></span><span class="line"><span class="cl">Waiting <span class="k">for</span> verification...
+</span></span><span class="line"><span class="cl">Cleaning up challenges
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">IMPORTANT NOTES:
+</span></span><span class="line"><span class="cl"> - Congratulations! Your certificate and chain have been saved at:
+</span></span><span class="line"><span class="cl">   /etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/fullchain.pem   &lt;- 憑證在這
+</span></span><span class="line"><span class="cl">   Your key file has been saved at:
+</span></span><span class="line"><span class="cl">   /etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/privkey.pem     &lt;- key 在這
+</span></span><span class="line"><span class="cl">   Your cert will expire on 2020-08-15. To obtain a new or tweaked
+</span></span><span class="line"><span class="cl">   version of this certificate in the future, simply run certbot
+</span></span><span class="line"><span class="cl">   again. To non-interactively renew *all* of your certificates, run
+</span></span><span class="line"><span class="cl">   <span class="s2">&#34;certbot renew&#34;</span>
+</span></span><span class="line"><span class="cl"> - If you like Certbot, please consider supporting our work by:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   Donating to ISRG / Let<span class="err">&#39;</span>s Encrypt:   https://letsencrypt.org/donate
+</span></span><span class="line"><span class="cl">   Donating to EFF:                    https://eff.org/donate-le
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/fullchain.pem   &lt;- 憑證在這
+</span></span><span class="line"><span class="cl">Your key file has been saved at:
+</span></span><span class="line"><span class="cl">/etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/privkey.pem     &lt;- key 在這
+</span></span></code></pre></div><p>然後再把 憑證複製出來即可 。</p>
 <p>2020年5月17日 Neil Kuan</p>
 ]]></content>
 		</item>
@@ -896,9 +1046,10 @@ Your key file has been saved at:
 			<description>使用Amazon EKS集群上服務帳戶的IAM角色，您可以將IAM角色與Kubernetes服務帳戶關聯。 然後，該服務帳戶可以向使用該服務帳戶的任何 pod 中的 container 提供AWS權限。 使用此功能，您不再需要為工作節點( worker nodes ) IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。
 應用程序必須使用AWS憑證簽署其AWS API請求。 此功能提供了一種用於管理應用程序憑證的策略，類似於Amazon EC2實例配置文件向Amazon EC2實例提供憑證的方式。 您可以將IAM角色與Kubernetes服務帳戶相關聯，而不必創建AWS憑證並將其分發到容器或使用Amazon EC2實例的角色。 然後，容器容器中的應用程序可以使用AWS SDK或AWS CLI向授權的AWS服務發出API請求。
 服務帳戶的IAM角色功能具有以下優點：
- 最低特權 (Least privilege) -通過使用IAM角色提供服務帳戶功能，您不再需要為工作節點IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。 您可以將IAM權限限定在服務帳戶上，只有使用該服務帳戶的Pod才能訪問這些權限。 此功能還消除了對諸如kiam或kube2iam之類的第三方解決方案的需求。 憑證隔離 (Credential isolation ) - 容器只能檢索與其所屬的服務帳戶關聯的IAM角色的憑據。 容器永遠無法訪問用於屬於另一個容器的另一個容器的憑據。 可審核性 ( Auditability ) - 可通過CloudTrail獲得訪問和事件日誌，以幫助確保進行追溯審核。  2014年，AWS Identity and Access Management添加了對使用OpenID Connect（OIDC）的聯合身份的支持。通過此功能，您可以使用受支持的身份提供者對AWS API調用進行身份驗證，並接收有效的OIDC JSON Web令牌（JWT）。您可以將此令牌傳遞給AWS STS AssumeRoleWithWebIdentity API操作，並接收IAM臨時角色憑證。您可以使用這些憑證與任何AWS服務（例如Amazon S3和DynamoDB）進行交互。
+最低特權 (Least privilege) -通過使用IAM角色提供服務帳戶功能，您不再需要為工作節點IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。 您可以將IAM權限限定在服務帳戶上，只有使用該服務帳戶的Pod才能訪問這些權限。 此功能還消除了對諸如kiam或kube2iam之類的第三方解決方案的需求。 憑證隔離 (Credential isolation ) - 容器只能檢索與其所屬的服務帳戶關聯的IAM角色的憑據。 容器永遠無法訪問用於屬於另一個容器的另一個容器的憑據。 可審核性 ( Auditability ) - 可通過CloudTrail獲得訪問和事件日誌，以幫助確保進行追溯審核。 2014年，AWS Identity and Access Management添加了對使用OpenID Connect（OIDC）的聯合身份的支持。通過此功能，您可以使用受支持的身份提供者對AWS API調用進行身份驗證，並接收有效的OIDC JSON Web令牌（JWT）。您可以將此令牌傳遞給AWS STS AssumeRoleWithWebIdentity API操作，並接收IAM臨時角色憑證。您可以使用這些憑證與任何AWS服務（例如Amazon S3和DynamoDB）進行交互。
 Kubernetes長期以來一直將服務帳戶用作其內部身份系統。 Pods可以使用僅Kubernetes API服務器可以驗證的自動安裝的令牌（非OIDC JWT）向Kubernetes API服務器進行身份驗證。這些舊版服務帳戶令牌不會過期，並且旋轉簽名密鑰是一個困難的過程。在Kubernetes版本1.12中，添加了對新ProjectedServiceAccountToken功能的支持，該功能是OIDC JSON Web令牌，它還包含服務帳戶標識，並支持可配置的受眾。
-Amazon EKS現在在每個集群上託管一個公共OIDC發現終端節點，其中包含ProjectedServiceAccountToken JSON Web令牌的簽名密鑰，因此外部系統（例如IAM）可以驗證和接受Kubernetes發行的OIDC令牌。</description>
+Amazon EKS現在在每個集群上託管一個公共OIDC發現終端節點，其中包含ProjectedServiceAccountToken JSON Web令牌的簽名密鑰，因此外部系統（例如IAM）可以驗證和接受Kubernetes發行的OIDC令牌。
+Using a supported AWS SDK The containers in your pods must use an AWS SDK version that supports assuming an IAM role via an OIDC web identity token file.</description>
 			<content type="html"><![CDATA[<p>使用Amazon EKS集群上服務帳戶的IAM角色，您可以將IAM角色與Kubernetes服務帳戶關聯。 然後，該服務帳戶可以向使用該服務帳戶的任何 pod 中的 container 提供AWS權限。 使用此功能，您不再需要為工作節點( worker nodes ) IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。</p>
 <p>應用程序必須使用AWS憑證簽署其AWS API請求。 此功能提供了一種用於管理應用程序憑證的策略，類似於Amazon EC2實例配置文件向Amazon EC2實例提供憑證的方式。 您可以將IAM角色與Kubernetes服務帳戶相關聯，而不必創建AWS憑證並將其分發到容器或使用Amazon EC2實例的角色。 然後，容器容器中的應用程序可以使用AWS SDK或AWS CLI向授權的AWS服務發出API請求。</p>
 <p>服務帳戶的IAM角色功能具有以下優點：</p>
@@ -935,130 +1086,130 @@ The containers in your pods must use an AWS SDK version that supports assuming a
 <li>The IAM roles for service accounts feature is available on new Amazon EKS Kubernetes version 1.14 clusters, and clusters that were updated to versions 1.14 or 1.13 on or after September 3rd, 2019.</li>
 </ul>
 <h2 id="need-tools-in-your-workspaces">Need tools in your workspaces</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># You must use at least version 1.18.15 of the AWS CLI to receive the proper output from this command:</span>
-
--- aws cli version 1.18.15
-
--- eksctl version <span class="o">[</span>ℹ<span class="o">]</span>  version.Info<span class="o">{</span>BuiltAt:<span class="s2">&#34;&#34;</span>, GitCommit:<span class="s2">&#34;&#34;</span>, GitTag:<span class="s2">&#34;0.5.3&#34;</span><span class="o">}</span>
-
-<span class="c1"># The IAM roles for service accounts feature is available on new Amazon EKS Kubernetes # version 1.14 clusters, and clusters that were updatedtversions 1.14 or 1.13 on or# after September 3rd, 2019.</span>
--- kubectl version --short &gt;<span class="o">=</span> 1.13.*
-</code></pre></div><h1 id="create-an-oidc-identity-provider">CREATE AN OIDC IDENTITY PROVIDER</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># You must use at least version 1.18.15 of the AWS CLI to receive the proper output from this command:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">-- aws cli version 1.18.15
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">-- eksctl version <span class="o">[</span>ℹ<span class="o">]</span>  version.Info<span class="o">{</span>BuiltAt:<span class="s2">&#34;&#34;</span>, GitCommit:<span class="s2">&#34;&#34;</span>, GitTag:<span class="s2">&#34;0.5.3&#34;</span><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># The IAM roles for service accounts feature is available on new Amazon EKS Kubernetes # version 1.14 clusters, and clusters that were updatedtversions 1.14 or 1.13 on or# after September 3rd, 2019.</span>
+</span></span><span class="line"><span class="cl">-- kubectl version --short &gt;<span class="o">=</span> 1.13.*
+</span></span></code></pre></div><h1 id="create-an-oidc-identity-provider">CREATE AN OIDC IDENTITY PROVIDER</h1>
 <p><strong>To create an IAM OIDC identity provider for your cluster with eksctl</strong>
 To use IAM roles for service accounts in your cluster, you must create an OIDC identity provider in the IAM console
 Check your <code>eksctl</code> version that your <code>eksctl</code> version is at least 0.5.1</p>
 <h3 id="eks_cluster_name-is-your-eks-cluster-name-like-pic1">$EKS_CLUSTER_NAME is your EKS cluster name like pic1</h3>
 <p><img src="https://paper-attachments.dropbox.com/s_BA713D821AD3EE4DD10F9D6A0B6FF7A0B882B9995A0025F4B6E008CC62EA297B_1587539609827_+2020-04-22+3.12.34.png" alt="pic1"></p>
 <p><strong>Create your OIDC identity provider for your cluster</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ eksctl utils associate-iam-oidc-provider --cluster <span class="nv">$EKS_CLUSTER_NAME</span> --approve
----output
-<span class="o">[</span>ℹ<span class="o">]</span>  using region <span class="o">{</span>AWS_REGION<span class="o">}</span>
-<span class="o">[</span>ℹ<span class="o">]</span>  will create IAM Open ID Connect provider <span class="k">for</span> cluster <span class="s2">&#34;</span><span class="nv">$EKS_CLUSTER_NAME</span><span class="s2">&#34;</span> in <span class="s2">&#34;{AWS_REGION}&#34;</span>
-<span class="o">[</span>✔<span class="o">]</span>  created IAM Open ID Connect provider <span class="k">for</span> cluster <span class="s2">&#34;</span><span class="nv">$EKS_CLUSTER_NAME</span><span class="s2">&#34;</span> in <span class="s2">&#34;{AWS_REGION}&#34;</span>
-</code></pre></div><p>If you go to the <a href="https://console.aws.amazon.com/iam/home#/providers">Identity Providers in IAM Console</a>, you will see OIDC provider has created for your cluster</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ eksctl utils associate-iam-oidc-provider --cluster <span class="nv">$EKS_CLUSTER_NAME</span> --approve
+</span></span><span class="line"><span class="cl">---output
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ℹ<span class="o">]</span>  using region <span class="o">{</span>AWS_REGION<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ℹ<span class="o">]</span>  will create IAM Open ID Connect provider <span class="k">for</span> cluster <span class="s2">&#34;</span><span class="nv">$EKS_CLUSTER_NAME</span><span class="s2">&#34;</span> in <span class="s2">&#34;{AWS_REGION}&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✔<span class="o">]</span>  created IAM Open ID Connect provider <span class="k">for</span> cluster <span class="s2">&#34;</span><span class="nv">$EKS_CLUSTER_NAME</span><span class="s2">&#34;</span> in <span class="s2">&#34;{AWS_REGION}&#34;</span>
+</span></span></code></pre></div><p>If you go to the <a href="https://console.aws.amazon.com/iam/home#/providers">Identity Providers in IAM Console</a>, you will see OIDC provider has created for your cluster</p>
 <p><img src="https://eksworkshop.com/images/irsa/irsa-oidc.png" alt="OIDC Identity Provider"></p>
 <h1 id="creating-an-iam-role-for-service-account">CREATING AN IAM ROLE FOR SERVICE ACCOUNT</h1>
 <p><strong>To create an IAM role for your service accounts with eksctl</strong>
 You must create an IAM policy that specifies the permissions that you would like the containers in your pods to have. In this workshop we will use AWS managed policy named “<strong>AmazonS3ReadOnlyAccess</strong>” which allow get and list for all S3 resources.
 You must also create a role for your service accounts to use before you associate it with a service account. Then you can then attach a specific IAM policy to the role that gives the containers in your pods the permissions you desire.
 <strong>Get ARN for AmazonS3ReadOnlyAccess:</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># Get aws manged policy</span>
-$ aws iam list-policies --query <span class="s1">&#39;Policies[?PolicyName==`AmazonS3ReadOnlyAccess`].Arn&#39;</span>
---- output
-<span class="s2">&#34;arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess&#34;</span>
-
-<span class="c1"># This policy like this pic2</span>
-</code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_BA713D821AD3EE4DD10F9D6A0B6FF7A0B882B9995A0025F4B6E008CC62EA297B_1587540436402_+2020-04-22+3.27.04.png" alt="pic 2"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Get aws manged policy</span>
+</span></span><span class="line"><span class="cl">$ aws iam list-policies --query <span class="s1">&#39;Policies[?PolicyName==`AmazonS3ReadOnlyAccess`].Arn&#39;</span>
+</span></span><span class="line"><span class="cl">--- output
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># This policy like this pic2</span>
+</span></span></code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_BA713D821AD3EE4DD10F9D6A0B6FF7A0B882B9995A0025F4B6E008CC62EA297B_1587540436402_+2020-04-22+3.27.04.png" alt="pic 2"></p>
 <p><strong>Create an IAM role for your service accounts:</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># $SA_NAME is your k8s service account name .</span>
-<span class="c1"># $NAMESPACE is your service account in which namespaces .</span>
-<span class="c1"># $POLICY_ARN is your want to give your service account that role can do .</span>
-<span class="c1"># $EKS_CLUSTER_NAME is your EKS Cluster Name .</span>
-<span class="c1"># eksctl create iamserviceaccount --name $SA_NAME --namespace $NAMESPACE --cluster $EKS_CLUSTER_NAME --attach-policy-arn $POLICY_ARN --approv--override-existing-serviceaccounts</span>
-
-<span class="c1"># Now , I create a iam role have AmazonS3ReadOnlyAccess policy ,</span>
-eksctl create iamserviceaccount --name iam-test --namespace default --cluster <span class="nv">$EKS_CLUSTER_NAME</span> --attach-policy-arn arn:aws:iam::aws:policAmazonS3ReadOnlyAccess --approve --override-existing-serviceaccounts
-
---- output
-<span class="o">[</span>ℹ<span class="o">]</span>  using region <span class="o">{</span>AWS_REGION<span class="o">}</span>
-<span class="o">[</span>ℹ<span class="o">]</span>  <span class="m">1</span> iamserviceaccount <span class="o">(</span>default/iam-test<span class="o">)</span> was included <span class="o">(</span>based on the include/exclude rules<span class="o">)</span>
-<span class="o">[</span>!<span class="o">]</span>  metadata of serviceaccounts that exist in Kubernetes will be updated, as --override-existing-serviceaccounts was <span class="nb">set</span>
-<span class="o">[</span>ℹ<span class="o">]</span>  <span class="m">1</span> task: <span class="o">{</span> <span class="m">2</span> sequential sub-tasks: <span class="o">{</span> create IAM role <span class="k">for</span> serviceaccount <span class="s2">&#34;default/iam-test&#34;</span>, create serviceaccount <span class="s2">&#34;default/iam-test&#34;</span> <span class="o">}</span> <span class="o">}</span>
-<span class="o">[</span>ℹ<span class="o">]</span>  building iamserviceaccount stack <span class="s2">&#34;eksctl-eksworkshop-eksctl-addon-iamserviceaccount-default-iam-test&#34;</span>
-<span class="o">[</span>ℹ<span class="o">]</span>  deploying stack <span class="s2">&#34;eksctl-eksworkshop-eksctl-addon-iamserviceaccount-default-iam-test&#34;</span>
-<span class="o">[</span>ℹ<span class="o">]</span>  created serviceaccount <span class="s2">&#34;default/iam-test&#34;</span>
-</code></pre></div><h1 id="specifying-an-iam-role-for-service-account">SPECIFYING AN IAM ROLE FOR SERVICE ACCOUNT</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># $SA_NAME is your k8s service account name .</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># $NAMESPACE is your service account in which namespaces .</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># $POLICY_ARN is your want to give your service account that role can do .</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># $EKS_CLUSTER_NAME is your EKS Cluster Name .</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># eksctl create iamserviceaccount --name $SA_NAME --namespace $NAMESPACE --cluster $EKS_CLUSTER_NAME --attach-policy-arn $POLICY_ARN --approv--override-existing-serviceaccounts</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Now , I create a iam role have AmazonS3ReadOnlyAccess policy ,</span>
+</span></span><span class="line"><span class="cl">eksctl create iamserviceaccount --name iam-test --namespace default --cluster <span class="nv">$EKS_CLUSTER_NAME</span> --attach-policy-arn arn:aws:iam::aws:policAmazonS3ReadOnlyAccess --approve --override-existing-serviceaccounts
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--- output
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ℹ<span class="o">]</span>  using region <span class="o">{</span>AWS_REGION<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ℹ<span class="o">]</span>  <span class="m">1</span> iamserviceaccount <span class="o">(</span>default/iam-test<span class="o">)</span> was included <span class="o">(</span>based on the include/exclude rules<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>!<span class="o">]</span>  metadata of serviceaccounts that exist in Kubernetes will be updated, as --override-existing-serviceaccounts was <span class="nb">set</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ℹ<span class="o">]</span>  <span class="m">1</span> task: <span class="o">{</span> <span class="m">2</span> sequential sub-tasks: <span class="o">{</span> create IAM role <span class="k">for</span> serviceaccount <span class="s2">&#34;default/iam-test&#34;</span>, create serviceaccount <span class="s2">&#34;default/iam-test&#34;</span> <span class="o">}</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ℹ<span class="o">]</span>  building iamserviceaccount stack <span class="s2">&#34;eksctl-eksworkshop-eksctl-addon-iamserviceaccount-default-iam-test&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ℹ<span class="o">]</span>  deploying stack <span class="s2">&#34;eksctl-eksworkshop-eksctl-addon-iamserviceaccount-default-iam-test&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ℹ<span class="o">]</span>  created serviceaccount <span class="s2">&#34;default/iam-test&#34;</span>
+</span></span></code></pre></div><h1 id="specifying-an-iam-role-for-service-account">SPECIFYING AN IAM ROLE FOR SERVICE ACCOUNT</h1>
 <h2 id="specifying-an-iam-role-for-your-service-account">Specifying an IAM Role for your Service Account</h2>
 <p>In the previous step, we created the IAM role that associated with a service account named <strong>iam-test</strong> in the cluster and this has already been done for you with the service account you specified when creating the role.
 <strong>Be sure your service account iam-test is exist:</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ kubectl get sa
-NAME               SECRETS   AGE
-default            <span class="m">1</span>         25h
-iam-test           <span class="m">1</span>         24m
-</code></pre></div><p><strong>Make sure your service account with the ARN of the IAM role is annotated:</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ kubectl describe sa iam-test
---- output
-Name:                iam-test
-Namespace:           default
-Labels:              &lt;none&gt;
-Annotations:         eks.amazonaws.com/role-arn: arn:aws:iam::<span class="si">${</span><span class="nv">AWS_ACCOUNT_ID</span><span class="si">}</span>:roleksctl-<span class="nv">$EKS_CLUSTER_NAME</span>-addon-iamserviceac-Role1-2UJ4A3H87Z59M
-Image pull secrets:  &lt;none&gt;
-Mountable secrets:   iam-test-token-5n9cb
-Tokens:              iam-test-token-5n9cb
-Events:              &lt;none&gt;
-</code></pre></div><h1 id="deploy-sample-pod">DEPLOY SAMPLE POD</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ kubectl get sa
+</span></span><span class="line"><span class="cl">NAME               SECRETS   AGE
+</span></span><span class="line"><span class="cl">default            <span class="m">1</span>         25h
+</span></span><span class="line"><span class="cl">iam-test           <span class="m">1</span>         24m
+</span></span></code></pre></div><p><strong>Make sure your service account with the ARN of the IAM role is annotated:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ kubectl describe sa iam-test
+</span></span><span class="line"><span class="cl">--- output
+</span></span><span class="line"><span class="cl">Name:                iam-test
+</span></span><span class="line"><span class="cl">Namespace:           default
+</span></span><span class="line"><span class="cl">Labels:              &lt;none&gt;
+</span></span><span class="line"><span class="cl">Annotations:         eks.amazonaws.com/role-arn: arn:aws:iam::<span class="si">${</span><span class="nv">AWS_ACCOUNT_ID</span><span class="si">}</span>:roleksctl-<span class="nv">$EKS_CLUSTER_NAME</span>-addon-iamserviceac-Role1-2UJ4A3H87Z59M
+</span></span><span class="line"><span class="cl">Image pull secrets:  &lt;none&gt;
+</span></span><span class="line"><span class="cl">Mountable secrets:   iam-test-token-5n9cb
+</span></span><span class="line"><span class="cl">Tokens:              iam-test-token-5n9cb
+</span></span><span class="line"><span class="cl">Events:              &lt;none&gt;
+</span></span></code></pre></div><h1 id="deploy-sample-pod">DEPLOY SAMPLE POD</h1>
 <p>Now that we have completed all the necessary configuration to run a Pod with IAM role. We will deploy sample Pod to the cluster, and run a test command to see whether it works correctly or not.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ curl -LO https://eksworkshop.com/beginner/110_irsa/deploy.files/iam-pod.yaml
---- inside
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: eks-iam-test
-spec:
-  replicas: <span class="m">1</span>
-  selector:
-    matchLabels:
-      app: eks-iam-test
-  template:
-    metadata:
-      labels:
-        app: eks-iam-test
-    spec:
-      serviceAccountName: iam-test   &lt;-- this is we need to change in the future
-      containers:
-        - name: eks-iam-test
-          image: sdscello/awscli:latest
-          ports:
-            - containerPort: <span class="m">80</span>
-
-$ kubectl apply -f iam-pod.yaml
-</code></pre></div><h2 id="exec-to-pod-check-iam-role-from-service-account">Exec to pod check iam role from service account</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ kubectl get pods
-NAME                        READY   STATUS    RESTARTS   AGE
-iam-test-xxxxxxxxxxx  1/1     Running   <span class="m">0</span>          4m44s
-
-$ kubectl <span class="nb">exec</span> -it  iam-test-xxxxxxxxxxx bash
-
-root@iam-test-5f46bfb788-9fhcr:/# aws sts get-caller-identity
-<span class="o">{</span>
-    <span class="s2">&#34;Arn&#34;</span>: <span class="s2">&#34;arn:aws:sts::</span><span class="si">${</span><span class="nv">AWS_ACCOUNT_ID</span><span class="si">}</span><span class="s2">/assumed-role/eksctl-</span><span class="nv">$EKS_CLUSTER_NAME</span><span class="s2">-addon-iamserviceac-Role1-2UJ4A3H87Z59M&#34;</span>,
-    <span class="s2">&#34;Account&#34;</span>: <span class="s2">&#34;</span><span class="si">${</span><span class="nv">AWS_ACCOUNT_ID</span><span class="si">}</span><span class="s2">&#34;</span>,
-    <span class="s2">&#34;UserId&#34;</span>: <span class="s2">&#34;AROAUJP5OVXBK6S5OZSWR:botocore-session-1587545083&#34;</span>
-<span class="o">}</span>
-
-<span class="c1">##########  Default in ENV VARS #############</span>
-<span class="c1"># AWS_WEB_IDENTITY_TOKEN_FILE=/var/run/secrets/eks.amazonaws.com/serviceaccount/token</span>
-<span class="c1"># AWS_ROLE_ARN=arn:aws:iam::xxxxxxxxxxxx:role/XXXXXXXXXX-ROLE-XXXXXX</span>
-<span class="c1"># you can cat </span>
-root@iam-test-5f46bfb788-9fhcr:/# cat /var/run/secrets/eks.amazonaws.com/serviceaccount/token 
-
-root@iam-test-5f46bfb788-9fhcr:/# aws s3 cp s3://your-bucket-name/hello.txt
-</code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_BA713D821AD3EE4DD10F9D6A0B6FF7A0B882B9995A0025F4B6E008CC62EA297B_1587547919673_+2020-04-22+5.30.55.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl -LO https://eksworkshop.com/beginner/110_irsa/deploy.files/iam-pod.yaml
+</span></span><span class="line"><span class="cl">--- inside
+</span></span><span class="line"><span class="cl">apiVersion: apps/v1
+</span></span><span class="line"><span class="cl">kind: Deployment
+</span></span><span class="line"><span class="cl">metadata:
+</span></span><span class="line"><span class="cl">  name: eks-iam-test
+</span></span><span class="line"><span class="cl">spec:
+</span></span><span class="line"><span class="cl">  replicas: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  selector:
+</span></span><span class="line"><span class="cl">    matchLabels:
+</span></span><span class="line"><span class="cl">      app: eks-iam-test
+</span></span><span class="line"><span class="cl">  template:
+</span></span><span class="line"><span class="cl">    metadata:
+</span></span><span class="line"><span class="cl">      labels:
+</span></span><span class="line"><span class="cl">        app: eks-iam-test
+</span></span><span class="line"><span class="cl">    spec:
+</span></span><span class="line"><span class="cl">      serviceAccountName: iam-test   &lt;-- this is we need to change in the future
+</span></span><span class="line"><span class="cl">      containers:
+</span></span><span class="line"><span class="cl">        - name: eks-iam-test
+</span></span><span class="line"><span class="cl">          image: sdscello/awscli:latest
+</span></span><span class="line"><span class="cl">          ports:
+</span></span><span class="line"><span class="cl">            - containerPort: <span class="m">80</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ kubectl apply -f iam-pod.yaml
+</span></span></code></pre></div><h2 id="exec-to-pod-check-iam-role-from-service-account">Exec to pod check iam role from service account</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ kubectl get pods
+</span></span><span class="line"><span class="cl">NAME                        READY   STATUS    RESTARTS   AGE
+</span></span><span class="line"><span class="cl">iam-test-xxxxxxxxxxx  1/1     Running   <span class="m">0</span>          4m44s
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ kubectl <span class="nb">exec</span> -it  iam-test-xxxxxxxxxxx bash
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@iam-test-5f46bfb788-9fhcr:/# aws sts get-caller-identity
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Arn&#34;</span>: <span class="s2">&#34;arn:aws:sts::</span><span class="si">${</span><span class="nv">AWS_ACCOUNT_ID</span><span class="si">}</span><span class="s2">/assumed-role/eksctl-</span><span class="nv">$EKS_CLUSTER_NAME</span><span class="s2">-addon-iamserviceac-Role1-2UJ4A3H87Z59M&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Account&#34;</span>: <span class="s2">&#34;</span><span class="si">${</span><span class="nv">AWS_ACCOUNT_ID</span><span class="si">}</span><span class="s2">&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;UserId&#34;</span>: <span class="s2">&#34;AROAUJP5OVXBK6S5OZSWR:botocore-session-1587545083&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">##########  Default in ENV VARS #############</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># AWS_WEB_IDENTITY_TOKEN_FILE=/var/run/secrets/eks.amazonaws.com/serviceaccount/token</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># AWS_ROLE_ARN=arn:aws:iam::xxxxxxxxxxxx:role/XXXXXXXXXX-ROLE-XXXXXX</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># you can cat </span>
+</span></span><span class="line"><span class="cl">root@iam-test-5f46bfb788-9fhcr:/# cat /var/run/secrets/eks.amazonaws.com/serviceaccount/token 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@iam-test-5f46bfb788-9fhcr:/# aws s3 cp s3://your-bucket-name/hello.txt
+</span></span></code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_BA713D821AD3EE4DD10F9D6A0B6FF7A0B882B9995A0025F4B6E008CC62EA297B_1587547919673_+2020-04-22+5.30.55.png" alt=""></p>
 <p><strong>To remove sample application</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ kubectl delete -f iam-pod.yaml
-</code></pre></div><p><strong>To remove IAM role and Service Account stack from cloudformation</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ eksctl delete iamserviceaccount --name iam-test --namespace default --cluster <span class="nv">$EKS_CLUSTER_NAME</span>
-</code></pre></div><p>總結：我們知道如何不使用 worker node IAM role 的權限，限制我們的服務(pod)給與相對應的權限，也代表著 IAM policy 設計的重要性，可以給予最剛好的權限到我們的服務中。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ kubectl delete -f iam-pod.yaml
+</span></span></code></pre></div><p><strong>To remove IAM role and Service Account stack from cloudformation</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ eksctl delete iamserviceaccount --name iam-test --namespace default --cluster <span class="nv">$EKS_CLUSTER_NAME</span>
+</span></span></code></pre></div><p>總結：我們知道如何不使用 worker node IAM role 的權限，限制我們的服務(pod)給與相對應的權限，也代表著 IAM policy 設計的重要性，可以給予最剛好的權限到我們的服務中。</p>
 <p>source: <a href="https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html">https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html</a> , <a href="https://eksworkshop.com/beginner/110_irsa/">https://eksworkshop.com/beginner/110_irsa/</a></p>
 <p>2020年4月22日  Neil Kuan</p>
 ]]></content>

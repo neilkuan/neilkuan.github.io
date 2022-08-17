@@ -10,8 +10,8 @@
 <meta itemprop="name" content="Let’s Encrypt">
 <meta itemprop="description" content="小弟的域名雖然託管在 Route53 上面 ，也知道 AWS 也有提供 ACM 搭配 ELB 憑證託管的免費方案，但有時候申請幾張 憑證來用是相當實用的。
 Let’s Encrypt 的數位憑證認證機構（CA）推出免費 SSL/TLS 憑證服務，也在年底正式對外開放。這是什麼呢？簡單來說，以往想為你的網站加入 SSL 加密協定（HTTPS，也就是網址列上的綠色鎖頭圖示），必須支付一筆費用來申請憑證，但有了 Let’s Encrypt 後將能免費申請憑證，且這一過程非常簡單、自動化。
- 值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
- 並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
+值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
+並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
 docker hub https://hub.docker.com/r/certbot/dns-route53
 因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 IAM Policy 如下：
 { &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Id&#34;: &#34;certbot-dns-route53 sample policy&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;route53:ListHostedZones&#34;, &#34;route53:GetChange&#34; ], &#34;Resource&#34;: [ &#34;*&#34; ] }, { &#34;Effect&#34; : &#34;Allow&#34;, &#34;Action&#34; : [ &#34;route53:ChangeResourceRecordSets&#34; ], &#34;Resource&#34; : [ &#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&#34; &lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53."><meta itemprop="datePublished" content="2020-05-17T10:00:00+00:00" />
@@ -20,8 +20,8 @@ docker hub https://hub.docker.com/r/certbot/dns-route53
 <meta itemprop="keywords" content="CA,AWS,Route53," /><meta property="og:title" content="Let’s Encrypt" />
 <meta property="og:description" content="小弟的域名雖然託管在 Route53 上面 ，也知道 AWS 也有提供 ACM 搭配 ELB 憑證託管的免費方案，但有時候申請幾張 憑證來用是相當實用的。
 Let’s Encrypt 的數位憑證認證機構（CA）推出免費 SSL/TLS 憑證服務，也在年底正式對外開放。這是什麼呢？簡單來說，以往想為你的網站加入 SSL 加密協定（HTTPS，也就是網址列上的綠色鎖頭圖示），必須支付一筆費用來申請憑證，但有了 Let’s Encrypt 後將能免費申請憑證，且這一過程非常簡單、自動化。
- 值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
- 並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
+值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
+並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
 docker hub https://hub.docker.com/r/certbot/dns-route53
 因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 IAM Policy 如下：
 { &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Id&#34;: &#34;certbot-dns-route53 sample policy&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;route53:ListHostedZones&#34;, &#34;route53:GetChange&#34; ], &#34;Resource&#34;: [ &#34;*&#34; ] }, { &#34;Effect&#34; : &#34;Allow&#34;, &#34;Action&#34; : [ &#34;route53:ChangeResourceRecordSets&#34; ], &#34;Resource&#34; : [ &#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&#34; &lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53." />
@@ -36,8 +36,8 @@ docker hub https://hub.docker.com/r/certbot/dns-route53
 <meta name="twitter:title" content="Let’s Encrypt"/>
 <meta name="twitter:description" content="小弟的域名雖然託管在 Route53 上面 ，也知道 AWS 也有提供 ACM 搭配 ELB 憑證託管的免費方案，但有時候申請幾張 憑證來用是相當實用的。
 Let’s Encrypt 的數位憑證認證機構（CA）推出免費 SSL/TLS 憑證服務，也在年底正式對外開放。這是什麼呢？簡單來說，以往想為你的網站加入 SSL 加密協定（HTTPS，也就是網址列上的綠色鎖頭圖示），必須支付一筆費用來申請憑證，但有了 Let’s Encrypt 後將能免費申請憑證，且這一過程非常簡單、自動化。
- 值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
- 並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
+值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
+並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
 docker hub https://hub.docker.com/r/certbot/dns-route53
 因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 IAM Policy 如下：
 { &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Id&#34;: &#34;certbot-dns-route53 sample policy&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;route53:ListHostedZones&#34;, &#34;route53:GetChange&#34; ], &#34;Resource&#34;: [ &#34;*&#34; ] }, { &#34;Effect&#34; : &#34;Allow&#34;, &#34;Action&#34; : [ &#34;route53:ChangeResourceRecordSets&#34; ], &#34;Resource&#34; : [ &#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&#34; &lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53."/>
@@ -100,73 +100,73 @@ Certbot 提供相當完整的安裝指引，到 <a href="https://certbot.eff.org
 <h2 id="docker-hub">docker hub<a href="#docker-hub" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p><a href="https://hub.docker.com/r/certbot/dns-route53">https://hub.docker.com/r/certbot/dns-route53</a></p>
 <p>因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 <strong>IAM Policy</strong> 如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span>
-    <span class="s2">&#34;Version&#34;</span>: <span class="s2">&#34;2012-10-17&#34;</span>,
-    <span class="s2">&#34;Id&#34;</span>: <span class="s2">&#34;certbot-dns-route53 sample policy&#34;</span>,
-    <span class="s2">&#34;Statement&#34;</span>: <span class="o">[</span>
-        <span class="o">{</span>
-            <span class="s2">&#34;Effect&#34;</span>: <span class="s2">&#34;Allow&#34;</span>,
-            <span class="s2">&#34;Action&#34;</span>: <span class="o">[</span>
-                <span class="s2">&#34;route53:ListHostedZones&#34;</span>,
-                <span class="s2">&#34;route53:GetChange&#34;</span>
-            <span class="o">]</span>,
-            <span class="s2">&#34;Resource&#34;</span>: <span class="o">[</span>
-                <span class="s2">&#34;*&#34;</span>
-            <span class="o">]</span>
-        <span class="o">}</span>,
-        <span class="o">{</span>
-            <span class="s2">&#34;Effect&#34;</span> : <span class="s2">&#34;Allow&#34;</span>,
-            <span class="s2">&#34;Action&#34;</span> : <span class="o">[</span>
-                <span class="s2">&#34;route53:ChangeResourceRecordSets&#34;</span>
-            <span class="o">]</span>,
-            <span class="s2">&#34;Resource&#34;</span> : <span class="o">[</span>
-                <span class="s2">&#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&#34;</span>  &lt;- 要換成您的
-            <span class="o">]</span>
-        <span class="o">}</span>
-    <span class="o">]</span>
-<span class="o">}</span>
-</code></pre></div><h2 id="certbot-route53-docs">Certbot-route53 docs<a href="#certbot-route53-docs" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Version&#34;</span>: <span class="s2">&#34;2012-10-17&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Id&#34;</span>: <span class="s2">&#34;certbot-dns-route53 sample policy&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Statement&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">        <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Effect&#34;</span>: <span class="s2">&#34;Allow&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Action&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;route53:ListHostedZones&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;route53:GetChange&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Resource&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;*&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">        <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Effect&#34;</span> : <span class="s2">&#34;Allow&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Action&#34;</span> : <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;route53:ChangeResourceRecordSets&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Resource&#34;</span> : <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&#34;</span>  &lt;- 要換成您的
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><h2 id="certbot-route53-docs">Certbot-route53 docs<a href="#certbot-route53-docs" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p><a href="https://certbot-dns-route53.readthedocs.io/en/stable/">https://certbot-dns-route53.readthedocs.io/en/stable/</a></p>
 <blockquote>
 <p>現在假設您的執行環境是 EC2 (ubuntu) , EC2 的 IAM Role 也已 attach 上述的 IAM Policy 。
 # run image and set .aws default config in container</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">$ docker run -it --rm  --entrypoint ash certbot/dns-route53
-
-<span class="c1"># 將YOUR_DOMAIN 換成您拖管在 route53 的 domain name , YOUR_EMAIL 換成您的 Email。</span>
-<span class="c1"># 進入 container 內。</span>
-certbot certonly --agree-tos <span class="se">\
-</span><span class="se"></span>   --dns-route53 <span class="se">\
-</span><span class="se"></span>   --dns-route53-propagation-seconds <span class="m">30</span> <span class="se">\
-</span><span class="se"></span>   -d *.<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span> -m <span class="si">${</span><span class="nv">YOUR_EMAIL</span><span class="si">}</span> --eff-email 
-
-<span class="c1"># 等待大概 30 s </span>
-Saving debug log to /var/log/letsencrypt/letsencrypt.log
-Found credentials in shared credentials file: ~/.aws/credentials
-Plugins selected: Authenticator dns-route53, Installer None
-Obtaining a new certificate
-Performing the following challenges:
-dns-01 challenge <span class="k">for</span> example.com
-Waiting <span class="k">for</span> verification...
-Cleaning up challenges
-
-IMPORTANT NOTES:
- - Congratulations! Your certificate and chain have been saved at:
-   /etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/fullchain.pem   &lt;- 憑證在這
-   Your key file has been saved at:
-   /etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/privkey.pem     &lt;- key 在這
-   Your cert will expire on 2020-08-15. To obtain a new or tweaked
-   version of this certificate in the future, simply run certbot
-   again. To non-interactively renew *all* of your certificates, run
-   <span class="s2">&#34;certbot renew&#34;</span>
- - If you like Certbot, please consider supporting our work by:
-
-   Donating to ISRG / Let<span class="err">&#39;</span>s Encrypt:   https://letsencrypt.org/donate
-   Donating to EFF:                    https://eff.org/donate-le
-</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">/etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/fullchain.pem   &lt;- 憑證在這
-Your key file has been saved at:
-/etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/privkey.pem     &lt;- key 在這
-</code></pre></div><p>然後再把 憑證複製出來即可 。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ docker run -it --rm  --entrypoint ash certbot/dns-route53
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 將YOUR_DOMAIN 換成您拖管在 route53 的 domain name , YOUR_EMAIL 換成您的 Email。</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 進入 container 內。</span>
+</span></span><span class="line"><span class="cl">certbot certonly --agree-tos <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>   --dns-route53 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>   --dns-route53-propagation-seconds <span class="m">30</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>   -d *.<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span> -m <span class="si">${</span><span class="nv">YOUR_EMAIL</span><span class="si">}</span> --eff-email 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 等待大概 30 s </span>
+</span></span><span class="line"><span class="cl">Saving debug log to /var/log/letsencrypt/letsencrypt.log
+</span></span><span class="line"><span class="cl">Found credentials in shared credentials file: ~/.aws/credentials
+</span></span><span class="line"><span class="cl">Plugins selected: Authenticator dns-route53, Installer None
+</span></span><span class="line"><span class="cl">Obtaining a new certificate
+</span></span><span class="line"><span class="cl">Performing the following challenges:
+</span></span><span class="line"><span class="cl">dns-01 challenge <span class="k">for</span> example.com
+</span></span><span class="line"><span class="cl">Waiting <span class="k">for</span> verification...
+</span></span><span class="line"><span class="cl">Cleaning up challenges
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">IMPORTANT NOTES:
+</span></span><span class="line"><span class="cl"> - Congratulations! Your certificate and chain have been saved at:
+</span></span><span class="line"><span class="cl">   /etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/fullchain.pem   &lt;- 憑證在這
+</span></span><span class="line"><span class="cl">   Your key file has been saved at:
+</span></span><span class="line"><span class="cl">   /etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/privkey.pem     &lt;- key 在這
+</span></span><span class="line"><span class="cl">   Your cert will expire on 2020-08-15. To obtain a new or tweaked
+</span></span><span class="line"><span class="cl">   version of this certificate in the future, simply run certbot
+</span></span><span class="line"><span class="cl">   again. To non-interactively renew *all* of your certificates, run
+</span></span><span class="line"><span class="cl">   <span class="s2">&#34;certbot renew&#34;</span>
+</span></span><span class="line"><span class="cl"> - If you like Certbot, please consider supporting our work by:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   Donating to ISRG / Let<span class="err">&#39;</span>s Encrypt:   https://letsencrypt.org/donate
+</span></span><span class="line"><span class="cl">   Donating to EFF:                    https://eff.org/donate-le
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/fullchain.pem   &lt;- 憑證在這
+</span></span><span class="line"><span class="cl">Your key file has been saved at:
+</span></span><span class="line"><span class="cl">/etc/letsencrypt/live/<span class="si">${</span><span class="nv">YOUR_DOMAIN</span><span class="si">}</span>/privkey.pem     &lt;- key 在這
+</span></span></code></pre></div><p>然後再把 憑證複製出來即可 。</p>
 <p>2020年5月17日 Neil Kuan</p>
 
 			</div>
@@ -193,7 +193,7 @@ Your key file has been saved at:
 	</main>
 
 	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-		<p>&copy; 2021 <a href="https://blog.neilkuan.net/">Neil Blog</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>&copy; 2022 <a href="https://blog.neilkuan.net/">Neil Blog</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
 		<p>
 			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://blog.neilkuan.net/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
 		</p>
@@ -201,7 +201,7 @@ Your key file has been saved at:
 
 
 
-	<script src="https://blog.neilkuan.net/js/bundle.min.7d8545daa55d62427355498dd8da13f98ff79a7938ce7d2a5e2ae1ec0de3beb8.js" integrity="sha256-fYVF2qVdYkJzVUmN2NoT+Y/3mnk4zn0qXirh7A3jvrg=" crossorigin="anonymous"></script>
+	<script src="https://blog.neilkuan.net/js/bundle.min.580988ed2982bcbb74a1773c7abea97b43e4c43b9324e10cda0813ec6ec4bb67.js" integrity="sha256-WAmI7SmCvLt0oXc8er6pe0PkxDuTJOEM2ggT7G7Eu2c=" crossorigin="anonymous"></script>
 	
 
 </body>
