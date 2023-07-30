@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blogs on  Neil Kuan</title>
+    <link>https://blog.neilkuan.net/en/blog/</link>
+    <description>Recent content in Blogs on  Neil Kuan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 10 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/en/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Why aws-sdk-js-v2 get sts assume-role token so slow in k8s node</title>
+      <link>https://blog.neilkuan.net/en/blog/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/</link>
+      <pubDate>Mon, 10 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/en/blog/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/</guid>
+      <description>前言： 工作上遇到的問題，花點時間解決，並解記錄下來。
+為什麼我的 node application 在 k8s 內部執行時，執行以下 function 時如此的慢，我在地端測試都沒有這個問題？？ 開門見山直接看有問題的 code.
+aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &amp;#39;https://sts.us-east-1.amazonaws.com &amp;#39;, region: &amp;#39;us-east-1&amp;#39;, stsRegionalEndpoints: &amp;#39;regional&amp;#39;, }); const credentials = await sts .assumeRole({ RoleArn: roleArn, RoleSessionName: &amp;#39;RoleSessionName&amp;#39;, }) .promise(); 可以看到光是執行 assumeRole() 就花費了 4.668s 的時間！！
+經過另一個方式用測試，採用直接塞 AKSK(ACCESS-KEY)(SECRET-ACCESS-KEY)的方式去執行 assumeRole() 以下為示意code:
+const awsSdk = require(&amp;#39;aws-sdk&amp;#39;); const stsClient = new awsSdk.STS({ endpoint: &amp;#39;https://sts.us-east-1.amazonaws.com/ &amp;#39;, region: &amp;#39;us-east-1&amp;#39;, stsRegionalEndpoints: &amp;#34;regional&amp;#34;, accessKeyId: &amp;#39;ACCESS-KEY&amp;#39;, // &amp;lt;- AK secretAccessKey: &amp;#39;SECRET-ACCESS-KEY&amp;#39; &amp;lt;-SK }); const credentials = stsClient.</description>
+    </item>
+    
+    <item>
+      <title>Where is my db-instance ?!</title>
+      <link>https://blog.neilkuan.net/en/blog/2021-12-16-where-is-my-db-instance/</link>
+      <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/en/blog/2021-12-16-where-is-my-db-instance/</guid>
+      <description>前言：
+有一天， 我的同事詢問我：『為什麼在部門內的帳號 RDS console 出現 2 個 DB Instances 以及 1 個 DB Clusters， 但是點進去Databaes Console 卻什麼也沒有？！』 於是把尋找 『不存在的 db instance 之旅』過程記錄了下來。
+首先我在該 region (us-east-1)，打開了 AWS CloudShell (當前支持 region )。 接著我透過aws rds describe-db-clusters 取得所有的 DB Clusters，以下是我的結果。
+$ aws rds describe-db-clusters { &amp;#34;DBClusters&amp;#34;: [ { &amp;#34;AllocatedStorage&amp;#34;: 1, &amp;#34;AvailabilityZones&amp;#34;: [ &amp;#34;us-east-1c&amp;#34;, &amp;#34;us-east-1d&amp;#34;, &amp;#34;us-east-1b&amp;#34; ], &amp;#34;BackupRetentionPeriod&amp;#34;: 1, &amp;#34;DBClusterIdentifier&amp;#34;: &amp;#34;docdb-test&amp;#34;, &amp;#34;DBClusterParameterGroup&amp;#34;: &amp;#34;default.docdb4.0&amp;#34;, &amp;#34;DBSubnetGroup&amp;#34;: &amp;#34;default&amp;#34;, &amp;#34;Status&amp;#34;: &amp;#34;available&amp;#34;, &amp;#34;EarliestRestorableTime&amp;#34;: &amp;#34;.....&amp;#34;, &amp;#34;Endpoint&amp;#34;: &amp;#34;docdb-test.cluster-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&amp;#34;, &amp;#34;ReaderEndpoint&amp;#34;: &amp;#34;docdb-test.cluster-ro-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&amp;#34;, # endpoint 的結尾是 docdb 是 27017 &amp;lt;-------- &amp;#34;MultiAZ&amp;#34;: true, &amp;#34;Engine&amp;#34;: &amp;#34;docdb&amp;#34;, &amp;#34;EngineVersion&amp;#34;: &amp;#34;4.</description>
+    </item>
+    
+    <item>
+      <title>How to get access to GKE with service account key</title>
+      <link>https://blog.neilkuan.net/en/blog/2021-12-15-gcp-gke-get-access-with-service-account-key/</link>
+      <pubDate>Wed, 15 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/en/blog/2021-12-15-gcp-gke-get-access-with-service-account-key/</guid>
+      <description>前言： 有一天， 我的同事詢問我：『如何設定 GKE Cluster Access for kubectl？！』 我回他：『你要在哪裡透過 kubectl 操作叢集。』 他回我：『專案委託他開發API 並容器化，透過 GTILAB PIPELINE 部署到GKE，但是他有上只有for Runner Server 用的 Cert key。』
+我問他：『PIPELINE 的 deploy Job，是怎麼部署 service 的 deployment的！？』 他回我：『看不到 script 被藏起來了，但是他想在地端透過kubectl 來看 service running 狀態。』 我回他：『好！我幫你查查看，可以怎麼做』。
+於是把過程記錄了下來。
+首先我先拿到了 service account 的 key. 其內容大致長這樣。 cicd-sa@project-id.iam.gserviceaccount.com 是他的 service account email. project-id 是他的 service account 的 project id.
+cat sa-cert.json { &amp;#34;type&amp;#34;: &amp;#34;service_account&amp;#34;, &amp;#34;project_id&amp;#34;: &amp;#34;project-id&amp;#34;, &amp;#34;private_key_id&amp;#34;: &amp;#34;1234567889xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&amp;#34;, &amp;#34;private_key&amp;#34;: &amp;#34;-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/+PoTGiGF3SEo8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+4htHvC\nsesOEKTP1sMZxEaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/7hO6K/VRyT1t8TwOElhCVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/IeVoYWsSp4FkDexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+\nnjq1yVuTGCFvCtGLi8NlVwDe7NUKrqSwjRNyA5F4Q44xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+oguUKxoWWaCsQKBgQDSlZC3w1fAreCd6r8F/ZHg76TbU0C88bFa\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+mV4da8mTSwytLTDc3Dtj5nHXgc2NOodcTY9AwSPldl\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/CVREwPsJJl3fNKcA5VD5rTl15SkE8k2NJl/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+lyf\nKOyexe9Hsa2IcTJQ5Yxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/iFmX1Wb\nuYeCYCd6VKU8u8oMvMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xaSZxLJwo\nne2fkDblz7P6m39mFnpsm7h8DDmzR5eHx5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx +VPi\nd13z8qvxy4VerA8SVXLucrRk\n-----END PRIVATE KEY-----\n&amp;#34;, &amp;#34;client_email&amp;#34;: &amp;#34;cicd-sa@project-id.</description>
+    </item>
+    
+    <item>
+      <title>AWS IAM Policy Generater with iamlive</title>
+      <link>https://blog.neilkuan.net/en/blog/2021-05-27-iam-live/</link>
+      <pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/en/blog/2021-05-27-iam-live/</guid>
+      <description>前言 踏入 IT界 也快2年了，時代快速發展，為了因應快速發展，許多企業都開始擁抱雲端計算，當然目前小弟在的公司也不例外，而我比較常接觸的雲端計算平台為AWS，在使用了AWS 這麼久，身為 IT 最重要的就是如何為 application 配予適當的 iam 權限(policy)，以達到 zero trust，給 application 越是剛剛好的權限越是好，而不是每個 application 要調用 s3 時，你就給他 arn:aws:iam::aws:policy/AmazonS3FullAccess，application 要調用 sqs 時，你就給他 arn:aws:iam::aws:policy/AmazonSQSFullAccess。
+iamlive source github: https://github.com/iann0036/iamlive 有一天我在逛 github 的時候，突然發現一位AWS Hore 寫了一個 相當令我感興趣的 open source，那就是 iamlive ，我們來看看他的說明簡介
+Generate an IAM policy from AWS calls using client-side monitoring (CSM) or embedded proxy。 透過監控 用戶端對 AWS 調用資源的 api 來持續幫你，產生 iam policay，來幫助您知道您調用的api 是需要多少權限。
+到 release page 下載與執行環境可運行的binary https://github.com/iann0036/iamlive/releases 像我就選擇 iamlive-v0.36.0-darwin-amd64.dmg 並將 binary 放入您的 $PATH 路徑中。</description>
+    </item>
+    
+    <item>
+      <title>Introducing AWS CloudShell !!!</title>
+      <link>https://blog.neilkuan.net/en/blog/2020-12-16-aws_cloudshell/</link>
+      <pubDate>Wed, 16 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/en/blog/2020-12-16-aws_cloudshell/</guid>
+      <description>AWS CloudShell AWS 在 re:Invent 2020 &amp;lt;strong&amp;gt;Werner Vogels Keynote&amp;lt;/strong&amp;gt; 中宣佈了
+AWS CloudShell source blog: https://aws.amazon.com/tw/blogs/aws/aws-cloudshell-command-line-access-to-aws-resources/ 特色如下： Browser-based shell
+Issue AWS Command Line Interface (AWS CLI) commands, run scripts, access common command line utilities including PowerShell and Bash, and use other popular AWS CLIs, such as the Amazon ECS CLI and the AWS SAM CLI, to interact with your AWS resources – all without leaving your web browser. (只能說繼GCP CloudShell, Azure CloudShell等類似服務後，AWS終於追上？！，你可以透過browser-based shell , 在上面執行 一些日常的維護 ，快速修復生產環境，甚至嘗試一些新的AWS服務或功能，我也有嘗試安裝cdk 並進行deploy) https://twitter.</description>
+    </item>
+    
+    <item>
+      <title>Introducing GitHub Container Registry !!!</title>
+      <link>https://blog.neilkuan.net/en/blog/2020-09-26-github-container-registry/</link>
+      <pubDate>Sat, 26 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/en/blog/2020-09-26-github-container-registry/</guid>
+      <description>Github Container Registry source new : https://github.blog/2020-09-01-introducing-github-container-registry/ 自去年發布GitHub Packages以來，已經從GitHub下載了數億個軟件包，其中Docker是Packages中僅次於npm的第二受歡迎的ecosystem，儘管GitHub Packages已經為團隊提供了更大的軟件供應鏈可追溯性，但如今，GitHub 正在添加新功能，以改善它通過GitHub Container Registry為開發人員提供的體驗和性能。
+Introducing GitHub Container Registry GitHub Container Registry現已作為公共Beta發布，它改進了我們在GitHub Packages中處理容器的方式。通過今天引入的新功能，您可以更好地實施訪問策略，鼓勵使用標準 base image，並通過在整個 organization 中更輕鬆地共享來促進內部使用。並且提供了開源專案可以拜放 container 的地方for free .
+廢話結束 ，那麼要怎麼做才能 在 Github Container Registry 上面擺放 Public image 給予他人來下載勒
+首先準備 github access token (以下為需要的權限) Select the read:packages scope to download container images and read their metadata. Select the write:packages scope to download and upload container images and read and write their metadata.</description>
+    </item>
+    
+    <item>
+      <title>Building Docker images with Kaniko !!!</title>
+      <link>https://blog.neilkuan.net/en/blog/2020-08-04-building-docker-images-with-kaniko/</link>
+      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/en/blog/2020-08-04-building-docker-images-with-kaniko/</guid>
+      <description>Kaniko !!! Building Docker images with Kaniko kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster. kaniko solves two problems with using the Docker-in-Docker build method:
+Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow. When building an image with kaniko and CI/CD, you should be aware of a few important details:</description>
+    </item>
+    
+    <item>
+      <title>CDK for Terraform Amazing</title>
+      <link>https://blog.neilkuan.net/en/blog/2020-07-17-cdk_for_terraform_amazing_docker/</link>
+      <pubDate>Fri, 17 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/en/blog/2020-07-17-cdk_for_terraform_amazing_docker/</guid>
+      <description>source: https://learn.hashicorp.com/terraform/cdktf/cdktf-install source: https://www.hashicorp.com/blog/cdk-for-terraform-enabling-python-and-typescript-support/ On Linux Install Terraform Download package : https://www.terraform.io/downloads.html # linux x86 $ wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip $ unzip terraform_0.12.28_linux_amd64.zip $ echo $PATH $ chmod +x terraform $ sudo mv terraform /usr/local/bin/ Install CDK for Terraform
+https://learn.hashicorp.com/terraform/cdktf/cdktf-install#quick-start-tutorial $ npm install --global cdktf-cli $ npm install --global cdktf-cli@next # Test cdktf $ cdktf $ cdktf deploy --help $ mkdir typescript-docker &amp;amp;&amp;amp; cd $_ $ cdktf init --template=typescript --local # modify origin cdktf.</description>
+    </item>
+    
+    <item>
+      <title>More more more LoLBanner ~~</title>
+      <link>https://blog.neilkuan.net/en/blog/2020-06-29-lolbanner/</link>
+      <pubDate>Mon, 29 Jun 2020 10:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/en/blog/2020-06-29-lolbanner/</guid>
+      <description>前言： 我的環境是 mac os 如果是其他系統 裝起來應該大同小異 可以參考 https://www.tecmint.com/lolcat-command-to-output-rainbow-of-colors-in-linux-terminal/ lolcat is a ruby gem hence it is essential to have latest version of RUBY installed on your system.
+首先利用 brew 安裝 必要的套件
+沒有 homebrew 請先安裝 ckick here # 如果沒有 ruby 請先安裝 ruby $ brew install ruby $ brew install figlet $ brew install lolcat 創建front 資料夾，並進入
+$ mkdir -p ~/.local/share/fonts/figlet-fonts/ $ cd ~/.local/share/fonts/figlet-fonts 到 https://github.com/xero/figlet-fonts 選取你想要的 主題，我選的是 3d.flf
+下載 文字格式
+$ cd ~/.</description>
+    </item>
+    
+    <item>
+      <title>AWS S3 Private endpoint</title>
+      <link>https://blog.neilkuan.net/en/blog/2020-05-17-aws_s3_private_endpoint/</link>
+      <pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/en/blog/2020-05-17-aws_s3_private_endpoint/</guid>
+      <description>原文：https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-private-connection-no-authentication/
+S3 policy 產生網站:https://awspolicygen.s3.amazonaws.com/policygen.html
+需要大量的 object 頻繁的上傳到 s3 ，又不想走外部網路時做的方式 ＶＰＣ 對S3 的endpoint 傳輸吧！！！
+Need S3 , EC2 , VPC , endpoint , route table.
+Open Amazon VPC console .
+使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。 這邊先幫我記下 VPC 的 ID 等等較好操作。
+Create Endpoint. → Virtual Private Cloud &amp;gt; Endpoints &amp;gt; cretae endpoint 點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID. 由於我選擇 region 為 Tokyo 所以 ,service name 為 com.</description>
+    </item>
+    
+    <item>
+      <title>Let’s Encrypt</title>
+      <link>https://blog.neilkuan.net/en/blog/2020-05-17-certbot_lets_encrypt_create_ca_aws_route53/</link>
+      <pubDate>Sun, 17 May 2020 10:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/en/blog/2020-05-17-certbot_lets_encrypt_create_ca_aws_route53/</guid>
+      <description>小弟的域名雖然託管在 Route53 上面 ，也知道 AWS 也有提供 ACM 搭配 ELB 憑證託管的免費方案，但有時候申請幾張 憑證來用是相當實用的。
+Let’s Encrypt 的數位憑證認證機構（CA ）推出免費 SSL/TLS 憑證服務，也在年底正式對外開放。這是什麼呢？簡單來說，以往想為你的網站加入 SSL 加密協定（HTTPS ，也就是網址列上的綠色鎖頭圖示），必須支付一筆費用來申請憑證，但有了 Let’s Encrypt 後將能免費申請憑證，且這一過程非常簡單、自動化。
+值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
+並且 Certbot 還有提供 docker image 使安裝 Certbot 更快速且簡單，不會污染到環境。
+docker hub https://hub.docker.com/r/certbot/dns-route53 因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 IAM Policy 如下：
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Id&amp;#34;: &amp;#34;certbot-dns-route53 sample policy&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;route53:ListHostedZones&amp;#34;, &amp;#34;route53:GetChange&amp;#34; ], &amp;#34;Resource&amp;#34;: [ &amp;#34;*&amp;#34; ] }, { &amp;#34;Effect&amp;#34; : &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34; : [ &amp;#34;route53:ChangeResourceRecordSets&amp;#34; ], &amp;#34;Resource&amp;#34; : [ &amp;#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&amp;#34; &amp;lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53.</description>
+    </item>
+    
+    <item>
+      <title>Least privilege ?! IAM Role For Service Account (IRSA)</title>
+      <link>https://blog.neilkuan.net/en/blog/2020-04-22-aws-iam-role-for-eks-service-account/</link>
+      <pubDate>Wed, 22 Apr 2020 18:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/en/blog/2020-04-22-aws-iam-role-for-eks-service-account/</guid>
+      <description>使用Amazon EKS集群上服務帳戶的IAM角色，您可以將IAM角色與Kubernetes服務帳戶關聯。 然後，該服務帳戶可以向使用該服務帳戶的任何 pod 中的 container 提供AWS權限。 使用此功能，您不再需要為工作節點( worker nodes ) IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。
+應用程序必須使用AWS憑證簽署其AWS API請求。 此功能提供了一種用於管理應用程序憑證的策略，類似於Amazon EC2實例配置文件向Amazon EC2實例提供憑證的方式。 您可以將IAM角色與Kubernetes服務帳戶相關聯，而不必創建AWS憑證並將其分發到容器或使用Amazon EC2實例的角色。 然後，容器容器中的應用程序可以使用AWS SDK或AWS CLI向授權的AWS服務發出API請求。
+服務帳戶的IAM角色功能具有以下優點：
+最低特權 (Least privilege) -通過使用IAM角色提供服務帳戶功能，您不再需要為工作節點IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。 您可以將IAM權限限定在服務帳戶上，只有使用該服務帳戶的Pod才能訪問這些權限。 此功能還消除了對諸如kiam或kube2iam之類的第三方解決方案的需求。 憑證隔離 (Credential isolation ) - 容器只能檢索與其所屬的服務帳戶關聯的IAM角色的憑據。 容器永遠無法訪問用於屬於另一個容器的另一個容器的憑據。 可審核性 ( Auditability ) - 可通過CloudTrail獲得訪問和事件日誌，以幫助確保進行追溯審核。 2014年，AWS Identity and Access Management添加了對使用OpenID Connect（OIDC）的聯合身份的支持。通過此功能，您可以使用受支持的身份提供者對AWS API調用進行身份驗證，並接收有效的OIDC JSON Web令牌（JWT）。您可以將此令牌傳遞給AWS STS AssumeRoleWithWebIdentity API操作，並接收IAM臨時角色憑證。您可以使用這些憑證與任何AWS服務（例如Amazon S3和DynamoDB）進行交互。
+Kubernetes長期以來一直將服務帳戶用作其內部身份系統。 Pods可以使用僅Kubernetes API服務器可以驗證的自動安裝的令牌（非OIDC JWT）向Kubernetes API服務器進行身份驗證。這些舊版服務帳戶令牌不會過期，並且旋轉簽名密鑰是一個困難的過程。在Kubernetes版本1.12中，添加了對新ProjectedServiceAccountToken功能的支持，該功能是OIDC JSON Web令牌，它還包含服務帳戶標識，並支持可配置的受眾。
+Amazon EKS現在在每個集群上託管一個公共OIDC發現終端節點，其中包含ProjectedServiceAccountToken JSON Web令牌的簽名密鑰，因此外部系統（例如IAM）可以驗證和接受Kubernetes發行的OIDC令牌。
+Using a supported AWS SDK The containers in your pods must use an AWS SDK version that supports assuming an IAM role via an OIDC web identity token file.</description>
+    </item>
+    
+  </channel>
+</rss>
