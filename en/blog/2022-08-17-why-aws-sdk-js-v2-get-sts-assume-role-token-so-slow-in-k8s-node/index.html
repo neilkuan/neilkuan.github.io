@@ -14,7 +14,7 @@ aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &#39;https://st
 經過另一個方式用測試，採用直接塞 AKSK(ACCESS-KEY)(SECRET-ACCESS-KEY)的方式去執行 assumeRole() 以下為示意code:
 const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com/ &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#34;regional&#34;, accessKeyId: &#39;ACCESS-KEY&#39;, // &lt;- AK secretAccessKey: &#39;SECRET-ACCESS-KEY&#39; &lt;-SK }); const credentials = stsClient." />
   <meta name="author" content="NeilKuan" />
-  <meta name="generator" content="Hugo 0.115.4"><link
+  <meta name="generator" content="Hugo 0.117.0"><link
     rel="stylesheet"
     href="https://blog.neilkuan.net/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
     integrity="sha256-j/jNr9OlhxT2QI7kxPl3ABgHJMW9SUCdvNkeHTfi5bw="

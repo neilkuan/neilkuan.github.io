@@ -15,7 +15,7 @@ Let’s Encrypt 的數位憑證認證機構（CA ）推出免費 SSL/TLS 憑證�
 docker hub https://hub.docker.com/r/certbot/dns-route53 因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 IAM Policy 如下：
 { &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Id&#34;: &#34;certbot-dns-route53 sample policy&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;route53:ListHostedZones&#34;, &#34;route53:GetChange&#34; ], &#34;Resource&#34;: [ &#34;*&#34; ] }, { &#34;Effect&#34; : &#34;Allow&#34;, &#34;Action&#34; : [ &#34;route53:ChangeResourceRecordSets&#34; ], &#34;Resource&#34; : [ &#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&#34; &lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53." />
   <meta name="author" content="NeilKuan" />
-  <meta name="generator" content="Hugo 0.115.4"><link
+  <meta name="generator" content="Hugo 0.117.0"><link
     rel="stylesheet"
     href="https://blog.neilkuan.net/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
     integrity="sha256-j/jNr9OlhxT2QI7kxPl3ABgHJMW9SUCdvNkeHTfi5bw="

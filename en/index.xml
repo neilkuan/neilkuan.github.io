@@ -6,7 +6,17 @@
     <description>Recent content on  Neil Kuan</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 10 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/en/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 20 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.neilkuan.net/en/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building Docker images with Kaniko !!!</title>
+      <link>https://blog.neilkuan.net/en/blog/2020-08-04-building-docker-images-with-kaniko/</link>
+      <pubDate>Sun, 20 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.neilkuan.net/en/blog/2020-08-04-building-docker-images-with-kaniko/</guid>
+      <description>Kaniko !!! Building Docker images with Kaniko kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster. kaniko solves two problems with using the Docker-in-Docker build method:
+Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow. When building an image with kaniko and CI/CD, you should be aware of a few important details:</description>
+    </item>
+    
     <item>
       <title>Why aws-sdk-js-v2 get sts assume-role token so slow in k8s node</title>
       <link>https://blog.neilkuan.net/en/blog/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/</link>
@@ -91,16 +101,6 @@ I am Neil
 Welcome to my blog
 Please enjoy !!!
 This is my GitHub . This is my Twitter . This is my Web Site . </description>
-    </item>
-    
-    <item>
-      <title>Building Docker images with Kaniko !!!</title>
-      <link>https://blog.neilkuan.net/en/blog/2020-08-04-building-docker-images-with-kaniko/</link>
-      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.neilkuan.net/en/blog/2020-08-04-building-docker-images-with-kaniko/</guid>
-      <description>Kaniko !!! Building Docker images with Kaniko kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster. kaniko solves two problems with using the Docker-in-Docker build method:
-Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow. When building an image with kaniko and CI/CD, you should be aware of a few important details:</description>
     </item>
     
     <item>
