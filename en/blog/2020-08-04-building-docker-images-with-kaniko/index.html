@@ -38,7 +38,7 @@ Docker-in-Docker requires privileged mode in order to function, which is a signi
 <meta itemprop="description" content="Kaniko !!! Building Docker images with Kaniko kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster. kaniko solves two problems with using the Docker-in-Docker build method:
 Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow. When building an image with kaniko and CI/CD, you should be aware of a few important details:"><meta itemprop="datePublished" content="2023-08-20T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-08-20T00:00:00+00:00" />
-<meta itemprop="wordCount" content="641"><meta itemprop="image" content="https://blog.neilkuan.net/img/20200804-kaniko/1-kaniko.png">
+<meta itemprop="wordCount" content="659"><meta itemprop="image" content="https://blog.neilkuan.net/img/20200804-kaniko/1-kaniko.png">
 <meta itemprop="keywords" content="" />
 
   
@@ -157,7 +157,7 @@ Docker-in-Docker requires privileged mode in order to function, which is a signi
         <line x1="12" y1="6" x2="12" y2="19" />
         <line x1="21" y1="6" x2="21" y2="19" />
       </svg>
-      641&nbsp;words
+      659&nbsp;words
       
     </h5>
     
@@ -312,6 +312,7 @@ gitlab 已有很好的 example</p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">ACCOUNT_ID</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">`</span>aws sts get-caller-identity --output text --query <span style="color:#f1fa8c">&#39;Account&#39;</span><span style="color:#f1fa8c">`</span>
 </span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># 如果要用 profile 記得加上 `-e AWS_PROFILE=example-profile-name` after docker run </span>
 </span></span><span style="display:flex;"><span>docker run <span style="color:#f1fa8c">\
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    -v <span style="color:#8be9fd;font-style:italic">$HOME</span>/.aws:/root/.aws/ <span style="color:#f1fa8c">\
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    -v <span style="color:#8be9fd;font-style:italic">$PWD</span>:/workspace <span style="color:#f1fa8c">\
@@ -327,6 +328,7 @@ gitlab 已有很好的 example</p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">ACCOUNT_ID</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">`</span>aws sts get-caller-identity --output text --query <span style="color:#f1fa8c">&#39;Account&#39;</span><span style="color:#f1fa8c">`</span>
 </span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># 如果要用 profile 記得加上 `-e AWS_PROFILE=example-profile-name` after docker run </span>
 </span></span><span style="display:flex;"><span>docker run <span style="color:#f1fa8c">\
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    -v <span style="color:#8be9fd;font-style:italic">$HOME</span>/.aws:/root/.aws/ <span style="color:#f1fa8c">\
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    -v <span style="color:#8be9fd;font-style:italic">$PWD</span>:/workspace <span style="color:#f1fa8c">\
