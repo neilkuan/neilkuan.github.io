@@ -38,7 +38,7 @@ Docker-in-Docker requires privileged mode in order to function, which is a signi
 <meta itemprop="description" content="Kaniko !!! Building Docker images with Kaniko kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster. kaniko solves two problems with using the Docker-in-Docker build method:
 Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow. When building an image with kaniko and CI/CD, you should be aware of a few important details:"><meta itemprop="datePublished" content="2023-08-20T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-08-20T00:00:00+00:00" />
-<meta itemprop="wordCount" content="590"><meta itemprop="image" content="https://blog.neilkuan.net/img/20200804-kaniko/1-kaniko.png">
+<meta itemprop="wordCount" content="641"><meta itemprop="image" content="https://blog.neilkuan.net/img/20200804-kaniko/1-kaniko.png">
 <meta itemprop="keywords" content="" />
 
   
@@ -147,7 +147,7 @@ Docker-in-Docker requires privileged mode in order to function, which is a signi
         <circle cx="12" cy="12" r="9" />
         <polyline points="12 7 12 12 15 15" />
       </svg>
-      3&nbsp;minutes
+      4&nbsp;minutes
       &nbsp;&bull;
       <svg xmlns="http://www.w3.org/2000/svg" class="mx-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -157,7 +157,7 @@ Docker-in-Docker requires privileged mode in order to function, which is a signi
         <line x1="12" y1="6" x2="12" y2="19" />
         <line x1="21" y1="6" x2="21" y2="19" />
       </svg>
-      590&nbsp;words
+      641&nbsp;words
       
     </h5>
     
@@ -321,7 +321,21 @@ gitlab 已有很好的 example</p>
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    --context dir:///workspace/
 </span></span></code></pre></div><p><img src="/img/20200804-kaniko/5-kaniko.jpeg" alt="">
 <img src="/img/20200804-kaniko/6-kaniko.jpeg" alt=""></p>
-<p>2023年8月20日  Neil Kuan Updated</p>
+<h4 id="create-custom-platform-similarly-to-docker-build---platform-xxx">Create custom platform <code>similarly to docker build --platform xxx</code></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span><span style="color:#6272a4"># 如果要用 profile 記得加上 `-e AWS_PROFILE=example-profile-name`</span>
+</span></span><span style="display:flex;"><span>aws sts get-caller-identity --output text --query <span style="color:#f1fa8c">&#39;Account&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">ACCOUNT_ID</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">`</span>aws sts get-caller-identity --output text --query <span style="color:#f1fa8c">&#39;Account&#39;</span><span style="color:#f1fa8c">`</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>docker run <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    -v <span style="color:#8be9fd;font-style:italic">$HOME</span>/.aws:/root/.aws/ <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    -v <span style="color:#8be9fd;font-style:italic">$PWD</span>:/workspace <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    gcr.io/kaniko-project/executor:v1.14.0-debug <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    --dockerfile /workspace/Dockerfile <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    --destination <span style="color:#f1fa8c">&#34;</span><span style="color:#8be9fd;font-style:italic">$ACCOUNT_ID</span><span style="color:#f1fa8c">.dkr.ecr.us-east-1.amazonaws.com/kaniko-demo:latest&#34;</span> <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    --custom-platform<span style="color:#ff79c6">=</span>linux/amd64 <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    --context dir:///workspace/
+</span></span></code></pre></div><p>2023年8月20日  Neil Kuan Updated</p>
 
   </article><div class="bg-blue-100 dark:bg-gray-900">
   <div class="container px-4 py-12 mx-auto max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
