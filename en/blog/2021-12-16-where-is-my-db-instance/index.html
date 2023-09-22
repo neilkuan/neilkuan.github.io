@@ -13,7 +13,7 @@
 首先我在該 region (us-east-1)，打開了 AWS CloudShell (當前支持 region )。 接著我透過aws rds describe-db-clusters 取得所有的 DB Clusters，以下是我的結果。
 $ aws rds describe-db-clusters { &#34;DBClusters&#34;: [ { &#34;AllocatedStorage&#34;: 1, &#34;AvailabilityZones&#34;: [ &#34;us-east-1c&#34;, &#34;us-east-1d&#34;, &#34;us-east-1b&#34; ], &#34;BackupRetentionPeriod&#34;: 1, &#34;DBClusterIdentifier&#34;: &#34;docdb-test&#34;, &#34;DBClusterParameterGroup&#34;: &#34;default.docdb4.0&#34;, &#34;DBSubnetGroup&#34;: &#34;default&#34;, &#34;Status&#34;: &#34;available&#34;, &#34;EarliestRestorableTime&#34;: &#34;.....&#34;, &#34;Endpoint&#34;: &#34;docdb-test.cluster-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, &#34;ReaderEndpoint&#34;: &#34;docdb-test.cluster-ro-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, # endpoint 的結尾是 docdb 是 27017 &lt;-------- &#34;MultiAZ&#34;: true, &#34;Engine&#34;: &#34;docdb&#34;, &#34;EngineVersion&#34;: &#34;4." />
   <meta name="author" content="NeilKuan" />
-  <meta name="generator" content="Hugo 0.117.0"><link
+  <meta name="generator" content="Hugo 0.118.2"><link
     rel="stylesheet"
     href="https://blog.neilkuan.net/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
     integrity="sha256-j/jNr9OlhxT2QI7kxPl3ABgHJMW9SUCdvNkeHTfi5bw="
