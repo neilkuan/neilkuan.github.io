@@ -14,7 +14,7 @@ aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &#39;https://st
 經過另一個方式用測試，採用直接塞 AKSK(ACCESS-KEY)(SECRET-ACCESS-KEY)的方式去執行 assumeRole() 以下為示意code:
 const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com/ &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#34;regional&#34;, accessKeyId: &#39;ACCESS-KEY&#39;, // &lt;- AK secretAccessKey: &#39;SECRET-ACCESS-KEY&#39; &lt;-SK }); const credentials = stsClient." />
   <meta name="author" content="NeilKuan" />
-  <meta name="generator" content="Hugo 0.118.2"><link
+  <meta name="generator" content="Hugo 0.120.4"><link
     rel="stylesheet"
     href="https://blog.neilkuan.net/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
     integrity="sha256-j/jNr9OlhxT2QI7kxPl3ABgHJMW9SUCdvNkeHTfi5bw="
@@ -33,6 +33,7 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
 <meta property="article:published_time" content="2022-10-10T00:00:00+00:00" />
 <meta property="article:modified_time" content="2022-10-10T00:00:00+00:00" />
 
+
   <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://blog.neilkuan.net/img/2022-10-10-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/4.png"/>
 
@@ -50,7 +51,7 @@ aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &#39;https://st
 經過另一個方式用測試，採用直接塞 AKSK(ACCESS-KEY)(SECRET-ACCESS-KEY)的方式去執行 assumeRole() 以下為示意code:
 const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com/ &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#34;regional&#34;, accessKeyId: &#39;ACCESS-KEY&#39;, // &lt;- AK secretAccessKey: &#39;SECRET-ACCESS-KEY&#39; &lt;-SK }); const credentials = stsClient."><meta itemprop="datePublished" content="2022-10-10T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2022-10-10T00:00:00+00:00" />
-<meta itemprop="wordCount" content="706"><meta itemprop="image" content="https://blog.neilkuan.net/img/2022-10-10-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/4.png">
+<meta itemprop="wordCount" content="772"><meta itemprop="image" content="https://blog.neilkuan.net/img/2022-10-10-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/4.png">
 <meta itemprop="keywords" content="" />
 
   
@@ -169,7 +170,7 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
         <line x1="12" y1="6" x2="12" y2="19" />
         <line x1="21" y1="6" x2="21" y2="19" />
       </svg>
-      706&nbsp;words
+      772&nbsp;words
       
     </h5>
     
@@ -293,13 +294,38 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
 <p>[Container] &ndash;&gt; [bridge] &ndash;&gt; [Instance] &ndash;&gt; [IMDSv2]</p>
 </blockquote>
 <p>而訪問 IMDSv2 timeout 的原因是，預設使用 put 請求，拿取 <code>session token</code> 時，網路層的 hop <a href="https://en.wikipedia.org/wiki/Hop_%28networking%29" target="_blank" rel="noopener">Hop networking</a>
- limit 是 1，而我們 container 的環境是透過 docker bridge 的方式與外界聯絡（與 IMDSv2)，也就是 2 hop ，超過限制時 IMDSv2 的 endpoint 將會拒絕回應，所以造成 timeout。</p>
+ limit 是 1，而我們 container 的環境是透過 docker bridge 的方式與外界聯絡與 (IMDSv2)，也就是 2 hop ，超過限制時 IMDSv2 的 endpoint 將會拒絕回應，所以造成 timeout。</p>
 <blockquote>
 <p>By default, the response to PUT requests has a response hop limit (time to live) of 1 at the IP protocol level. You can adjust the hop limit using the modify-instance-metadata-options command if you need to make it larger. For example, you might need a larger hop limit for backward compatibility with container services running on the instance.
 <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html</a>
 </p>
 </blockquote>
-<h2 id="所以改善此-issue-的方法就是有幾種">所以改善此 issue 的方法就是有幾種：</h2>
+<h3 id="demo">Demo</h3>
+<ol>
+<li>Launch EC2 InstanceMetadataOptions.HttpPutResponseHopLimit setting to <code>1</code> and <code>Metadata version</code> use <code>V1 and V2(token optional)</code></li>
+<li>Connect to Instance
+<img src="/img/2022-10-10-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/7.png" alt=""></li>
+</ol>
+<ul>
+<li>Request a token from IMDSv2 endpoint</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X PUT <span style="color:#f1fa8c">&#34;http://169.254.169.254/latest/api/token&#34;</span> -H <span style="color:#f1fa8c">&#34;X-aws-ec2-metadata-token-ttl-seconds: 21600&#34;</span>
+</span></span></code></pre></div><ul>
+<li>Modify EC2 Instance <code>InstanceMetadataOptions.HttpPutResponseHopLimit</code> to <code>2</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>aws ec2 modify-instance-metadata-options --instance-id i-xxxxxxxxxxxxx --http-put-response-hop-limit <span style="color:#bd93f9">2</span> --region ap-northeast-1
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f1fa8c">&#34;InstanceId&#34;</span>: <span style="color:#f1fa8c">&#34;i-xxxxxxxxxxxxx&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f1fa8c">&#34;InstanceMetadataOptions&#34;</span>: <span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;State&#34;</span>: <span style="color:#f1fa8c">&#34;pending&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;HttpTokens&#34;</span>: <span style="color:#f1fa8c">&#34;optional&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;HttpPutResponseHopLimit&#34;</span>: 2,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;HttpEndpoint&#34;</span>: <span style="color:#f1fa8c">&#34;enabled&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;HttpProtocolIpv6&#34;</span>: <span style="color:#f1fa8c">&#34;disabled&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;InstanceMetadataTags&#34;</span>: <span style="color:#f1fa8c">&#34;disabled&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">}</span>
+</span></span></code></pre></div><h2 id="所以改善此-issue-的方法就是有幾種">所以改善此 issue 的方法就是有幾種：</h2>
 <ol>
 <li>
 <p>強制 ＳＤＫ 使用 IMDSv1 的方式存取 metadata endpoint (不建議比較不安全，往後的 instance 應該也會淘汰v1 的方式去存取metadata endpoint )。</p>
@@ -330,6 +356,8 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
 <li>擷取執行個體中繼資料 - 查詢調節 - <a href="https://docs.aws.amazon.com/zh_tw/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html#instancedata-throttling" target="_blank" rel="noopener">https://docs.aws.amazon.com/zh_tw/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html#instancedata-throttling</a>
 </li>
 <li>AWS 中的錯誤重試與指數退避 - AWS 中的錯誤重試與指數退避 - AWS 一般參考: <a href="https://docs.aws.amazon.com/zh_tw/general/latest/gr/api-retries.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/zh_tw/general/latest/gr/api-retries.html</a>
+</li>
+<li><a href="https://aws.amazon.com/tw/blogs/security/get-the-full-benefits-of-imdsv2-and-disable-imdsv1-across-your-aws-infrastructure/" target="_blank" rel="noopener">https://aws.amazon.com/tw/blogs/security/get-the-full-benefits-of-imdsv2-and-disable-imdsv1-across-your-aws-infrastructure/</a>
 </li>
 </ol>
 <h2 id="20221010-neil-kuan">20221010 Neil Kuan</h2>

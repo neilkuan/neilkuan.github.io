@@ -5,6 +5,7 @@
     <link>https://blog.neilkuan.net/en/categories/</link>
     <description>Recent content in Categories on  Neil Kuan</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language><atom:link href="https://blog.neilkuan.net/en/categories/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <atom:link href="https://blog.neilkuan.net/en/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
