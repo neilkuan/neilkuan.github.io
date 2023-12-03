@@ -51,7 +51,7 @@ aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &#39;https://st
 經過另一個方式用測試，採用直接塞 AKSK(ACCESS-KEY)(SECRET-ACCESS-KEY)的方式去執行 assumeRole() 以下為示意code:
 const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com/ &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#34;regional&#34;, accessKeyId: &#39;ACCESS-KEY&#39;, // &lt;- AK secretAccessKey: &#39;SECRET-ACCESS-KEY&#39; &lt;-SK }); const credentials = stsClient."><meta itemprop="datePublished" content="2022-10-10T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2022-10-10T00:00:00+00:00" />
-<meta itemprop="wordCount" content="772"><meta itemprop="image" content="https://blog.neilkuan.net/img/2022-10-10-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/4.png">
+<meta itemprop="wordCount" content="832"><meta itemprop="image" content="https://blog.neilkuan.net/img/2022-10-10-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/4.png">
 <meta itemprop="keywords" content="" />
 
   
@@ -170,7 +170,7 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
         <line x1="12" y1="6" x2="12" y2="19" />
         <line x1="21" y1="6" x2="21" y2="19" />
       </svg>
-      772&nbsp;words
+      832&nbsp;words
       
     </h5>
     
@@ -325,7 +325,27 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
 </span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;InstanceMetadataTags&#34;</span>: <span style="color:#f1fa8c">&#34;disabled&#34;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">}</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">}</span>
-</span></span></code></pre></div><h2 id="所以改善此-issue-的方法就是有幾種">所以改善此 issue 的方法就是有幾種：</h2>
+</span></span></code></pre></div><h4 id="demo-2">Demo 2</h4>
+<p>Modify instance metadata <code>http-put-response-hop-limit</code> to  <code>1</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>aws ec2 modify-instance-metadata-options --http-put-response-hop-limit <span style="color:#bd93f9">1</span> --instance-id i-xxxxxxxxxxxxx --region ap-northeast-1
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f1fa8c">&#34;InstanceId&#34;</span>: <span style="color:#f1fa8c">&#34;i-0d7b8caf055b2843a&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f1fa8c">&#34;InstanceMetadataOptions&#34;</span>: <span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;State&#34;</span>: <span style="color:#f1fa8c">&#34;pending&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;HttpTokens&#34;</span>: <span style="color:#f1fa8c">&#34;required&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;HttpPutResponseHopLimit&#34;</span>: 1,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;HttpEndpoint&#34;</span>: <span style="color:#f1fa8c">&#34;enabled&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;HttpProtocolIpv6&#34;</span>: <span style="color:#f1fa8c">&#34;disabled&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;InstanceMetadataTags&#34;</span>: <span style="color:#f1fa8c">&#34;disabled&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">}</span>
+</span></span></code></pre></div><p>Try run container with host network&hellip;
+<img src="/img/2022-10-10-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/8.png" alt=""></p>
+<ol>
+<li>Request <code>http://169.254.169.254/latest/api/token</code> Get timeout with not use host network.</li>
+<li>Request <code>http://169.254.169.254/latest/api/token</code> Not get timeout with use host network.</li>
+</ol>
+<h2 id="所以改善此-issue-的方法就是有幾種">所以改善此 issue 的方法就是有幾種：</h2>
 <ol>
 <li>
 <p>強制 ＳＤＫ 使用 IMDSv1 的方式存取 metadata endpoint (不建議比較不安全，往後的 instance 應該也會淘汰v1 的方式去存取metadata endpoint )。</p>
