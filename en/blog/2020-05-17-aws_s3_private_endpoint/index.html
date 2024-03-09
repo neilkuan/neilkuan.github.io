@@ -16,9 +16,9 @@ Open Amazon VPC console .
 使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。 這邊先幫我記下 VPC 的 ID 等等較好操作。
 Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint 點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID. 由於我選擇 region 為 Tokyo 所以 ,service name 為 com." />
   <meta name="author" content="NeilKuan" />
-  <meta name="generator" content="Hugo 0.120.4"><link
+  <meta name="generator" content="Hugo 0.123.8"><link
     rel="stylesheet"
-    href="https://blog.neilkuan.net/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
+    href="https://blog.neilkuan.click/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
     integrity="sha256-j/jNr9OlhxT2QI7kxPl3ABgHJMW9SUCdvNkeHTfi5bw="
   />
   
@@ -33,15 +33,13 @@ Open Amazon VPC console .
 使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。 這邊先幫我記下 VPC 的 ID 等等較好操作。
 Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint 點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID. 由於我選擇 region 為 Tokyo 所以 ,service name 為 com." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.neilkuan.net/en/blog/2020-05-17-aws_s3_private_endpoint/" /><meta property="og:image" content="https://blog.neilkuan.net/img/aws-s3-private-endpoint.png" /><meta property="article:section" content="blog" />
+<meta property="og:url" content="https://blog.neilkuan.click/en/blog/2020-05-17-aws_s3_private_endpoint/" /><meta property="og:image" content="https://blog.neilkuan.click/img/aws-s3-private-endpoint.png" /><meta property="article:section" content="blog" />
 <meta property="article:published_time" content="2020-05-17T10:00:00+00:00" />
 <meta property="article:modified_time" content="2020-05-17T10:00:00+00:00" />
 
 
-  <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://blog.neilkuan.net/img/aws-s3-private-endpoint.png"/>
-
-<meta name="twitter:title" content="AWS S3 Private endpoint"/>
+  <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://blog.neilkuan.click/img/aws-s3-private-endpoint.png" /><meta name="twitter:title" content="AWS S3 Private endpoint"/>
 <meta name="twitter:description" content="原文：https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-private-connection-no-authentication/
 S3 policy 產生網站:https://awspolicygen.s3.amazonaws.com/policygen.html
 需要大量的 object 頻繁的上傳到 s3 ，又不想走外部網路時做的方式 ＶＰＣ 對S3 的endpoint 傳輸吧！！！
@@ -59,13 +57,13 @@ Open Amazon VPC console .
 使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。 這邊先幫我記下 VPC 的 ID 等等較好操作。
 Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint 點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID. 由於我選擇 region 為 Tokyo 所以 ,service name 為 com."><meta itemprop="datePublished" content="2020-05-17T10:00:00+00:00" />
 <meta itemprop="dateModified" content="2020-05-17T10:00:00+00:00" />
-<meta itemprop="wordCount" content="237"><meta itemprop="image" content="https://blog.neilkuan.net/img/aws-s3-private-endpoint.png">
+<meta itemprop="wordCount" content="237"><meta itemprop="image" content="https://blog.neilkuan.click/img/aws-s3-private-endpoint.png" />
 <meta itemprop="keywords" content="" />
 
   
 </head>
 <body class="dark:bg-gray-800 dark:text-white relative flex flex-col min-h-screen"><header class="container flex justify-between md:justify-between gap-4 flex-wrap p-6 mx-auto relative">
-  <a href="https://blog.neilkuan.net/en/" class="capitalize font-extrabold text-2xl">
+  <a href="https://blog.neilkuan.click/en/" class="capitalize font-extrabold text-2xl">
     
      Neil Kuan
     
@@ -197,45 +195,45 @@ Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint �
 </li>
 <li>
 <p>使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。
-<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582861923610_+2020-02-28+11.51.57.png" alt=""></p>
+<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582861923610_+2020-02-28+11.51.57.png"></p>
 <blockquote>
 <p>這邊先幫我記下 VPC 的 ID 等等較好操作。</p>
 </blockquote>
 </li>
 <li>
 <p><strong>Create Endpoint</strong>. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint
-<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582862077954_+2020-02-28+11.54.30.png" alt=""></p>
+<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582862077954_+2020-02-28+11.54.30.png"></p>
 </li>
 <li>
 <p>點選項目 <strong>AWS Service</strong> → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID.
-<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582862196498_+2020-02-28+11.56.29.png" alt=""></p>
+<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582862196498_+2020-02-28+11.56.29.png"></p>
 <blockquote>
 <p>由於我選擇 region 為 Tokyo 所以 ,service name 為 com.amazonaws.ap-northeast-1.s3</p>
 </blockquote>
 </li>
 <li>
 <p>設定 <strong>route tables</strong>,選取VPC 內要與S3 做private endpoint 的 Route Tables
-<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582862562556_+2020-02-28+12.02.27.png" alt=""></p>
+<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582862562556_+2020-02-28+12.02.27.png"></p>
 </li>
 <li>
 <p>設定 <strong>Policy</strong>, 為endpoint 設上 IAM Policy → 並打上 <strong>Tag.</strong>  → 按下 Create endpoint
-<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582862660494_+2020-02-28+12.04.17.png" alt=""></p>
+<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582862660494_+2020-02-28+12.04.17.png"></p>
 </li>
 </ol>
-<p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582862769209_+2020-02-28+12.06.06.png" alt=""></p>
+<p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582862769209_+2020-02-28+12.06.06.png"></p>
 <p><strong>確認以關聯 endpoint 與 Route Table ID。 (並將Endpoint ID 記下來)</strong></p>
-<p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582862800868_+2020-02-28+12.06.37.png" alt=""></p>
+<p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582862800868_+2020-02-28+12.06.37.png"></p>
 <p>查看 已關聯 route table → route . 看到 vpce-xxxxxxx destination 是指定的 region .</p>
-<p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582862902369_+2020-02-28+12.08.18.png" alt=""></p>
+<p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582862902369_+2020-02-28+12.08.18.png"></p>
 <h2 id="設定-s3-bucket-policy">設定 s3 bucket policy</h2>
 <ol>
 <li>Open  <a href="https://console.aws.amazon.com/s3/" target="_blank" rel="noopener">Amazon S3 console</a>
 .</li>
 <li>Create S3 (s3 名稱需符合 dns 解析，以及選取與剛剛建立 VPC endpoint 相同 Region)→ Create
-<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582863368817_+2020-02-28+12.14.26.png" alt=""></li>
+<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582863368817_+2020-02-28+12.14.26.png"></li>
 </ol>
 <h2 id="點選-剛剛建立好了-s3--permissions--bucket-policy-設定bucket-policy">點選 剛剛建立好了 s3 → Permissions → Bucket Policy (設定Bucket Policy)</h2>
-<p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582863396287_+2020-02-28+12.16.31.png" alt=""></p>
+<p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582863396287_+2020-02-28+12.16.31.png"></p>
 <p>官方提供建立 policy web site. <a href="https://awspolicygen.s3.amazonaws.com/policygen.html" target="_blank" rel="noopener">https://awspolicygen.s3.amazonaws.com/policygen.html</a>
 </p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4">#將 BUCKETARN    arn:aws:s3:::$BUCKETARN/*</span>
@@ -264,7 +262,7 @@ Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint �
 </span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">}</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">]</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">}</span>
-</span></span></code></pre></div><p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582863940716_+2020-02-28+12.25.35.png" alt="save 存檔"></p>
+</span></span></code></pre></div><p><img alt="save 存檔" src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582863940716_+2020-02-28+12.25.35.png"></p>
 <h2 id="開啟一台-ec2-在-剛剛的-vpc-內進行測試">開啟一台 ec2 在 剛剛的 vpc 內進行測試。</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4">#可以使用 awscli 進行測試。</span>
 </span></span><span style="display:flex;"><span>aws s3 cp <span style="color:#8be9fd;font-style:italic">$object</span> s3://<span style="color:#8be9fd;font-style:italic">$your</span>-bucket-name/
@@ -272,14 +270,14 @@ Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint �
 </span></span><span style="display:flex;"><span>aws s3 cp  s3://<span style="color:#8be9fd;font-style:italic">$your</span>-bucket-name/<span style="color:#8be9fd;font-style:italic">$object</span> <span style="color:#8be9fd;font-style:italic">$objectname</span>
 </span></span></code></pre></div><blockquote>
 <p>下圖為，為<strong>尚未</strong>設定endpoint 與 s3 bucket policy 上傳object 結果。<br>
-<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582864100235_+2020-02-28+12.28.17.png" alt=""></p>
+<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582864100235_+2020-02-28+12.28.17.png"></p>
 </blockquote>
 <blockquote>
 <p>下圖為，為設定endpoint 與 s3 bucket policy 上傳object 結果。<br>
-<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582864088667_+2020-02-28+12.28.05.png" alt=""></p>
+<img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582864088667_+2020-02-28+12.28.05.png"></p>
 </blockquote>
 <h2 id="也可去-s3-console-查看">也可去 s3 console 查看。</h2>
-<p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582864283778_+2020-02-28+12.31.20.png" alt=""></p>
+<p><img src="https://paper-attachments.dropbox.com/s_772ED61E4CBD94B6C270A40D3E861A48021C1415F696357FAF6130182D990DC6_1582864283778_+2020-02-28+12.31.20.png"></p>
 <p>2020年5月17日 Neil Kuan</p>
 
   </article><div class="bg-blue-100 dark:bg-gray-900">
@@ -476,7 +474,7 @@ Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint �
 
 
 
-<script src="https://blog.neilkuan.net/js/scripts.min.js"></script>
+<script src="https://blog.neilkuan.click/js/scripts.min.js"></script>
 
 
 

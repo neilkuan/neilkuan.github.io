@@ -15,9 +15,9 @@ Let’s Encrypt 的數位憑證認證機構（CA ）推出免費 SSL/TLS 憑證�
 docker hub https://hub.docker.com/r/certbot/dns-route53 因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 IAM Policy 如下：
 { &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Id&#34;: &#34;certbot-dns-route53 sample policy&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;route53:ListHostedZones&#34;, &#34;route53:GetChange&#34; ], &#34;Resource&#34;: [ &#34;*&#34; ] }, { &#34;Effect&#34; : &#34;Allow&#34;, &#34;Action&#34; : [ &#34;route53:ChangeResourceRecordSets&#34; ], &#34;Resource&#34; : [ &#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&#34; &lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53." />
   <meta name="author" content="NeilKuan" />
-  <meta name="generator" content="Hugo 0.120.4"><link
+  <meta name="generator" content="Hugo 0.123.8"><link
     rel="stylesheet"
-    href="https://blog.neilkuan.net/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
+    href="https://blog.neilkuan.click/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
     integrity="sha256-j/jNr9OlhxT2QI7kxPl3ABgHJMW9SUCdvNkeHTfi5bw="
   />
   
@@ -31,15 +31,13 @@ Let’s Encrypt 的數位憑證認證機構（CA ）推出免費 SSL/TLS 憑證�
 docker hub https://hub.docker.com/r/certbot/dns-route53 因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 IAM Policy 如下：
 { &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Id&#34;: &#34;certbot-dns-route53 sample policy&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;route53:ListHostedZones&#34;, &#34;route53:GetChange&#34; ], &#34;Resource&#34;: [ &#34;*&#34; ] }, { &#34;Effect&#34; : &#34;Allow&#34;, &#34;Action&#34; : [ &#34;route53:ChangeResourceRecordSets&#34; ], &#34;Resource&#34; : [ &#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&#34; &lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.neilkuan.net/en/blog/2020-05-17-certbot_lets_encrypt_create_ca_aws_route53/" /><meta property="og:image" content="https://blog.neilkuan.net/img/ca-01.png" /><meta property="article:section" content="blog" />
+<meta property="og:url" content="https://blog.neilkuan.click/en/blog/2020-05-17-certbot_lets_encrypt_create_ca_aws_route53/" /><meta property="og:image" content="https://blog.neilkuan.click/img/ca-01.png" /><meta property="article:section" content="blog" />
 <meta property="article:published_time" content="2020-05-17T10:00:00+00:00" />
 <meta property="article:modified_time" content="2020-05-17T10:00:00+00:00" />
 
 
-  <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://blog.neilkuan.net/img/ca-01.png"/>
-
-<meta name="twitter:title" content="Let’s Encrypt"/>
+  <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://blog.neilkuan.click/img/ca-01.png" /><meta name="twitter:title" content="Let’s Encrypt"/>
 <meta name="twitter:description" content="小弟的域名雖然託管在 Route53 上面 ，也知道 AWS 也有提供 ACM 搭配 ELB 憑證託管的免費方案，但有時候申請幾張 憑證來用是相當實用的。
 Let’s Encrypt 的數位憑證認證機構（CA ）推出免費 SSL/TLS 憑證服務，也在年底正式對外開放。這是什麼呢？簡單來說，以往想為你的網站加入 SSL 加密協定（HTTPS ，也就是網址列上的綠色鎖頭圖示），必須支付一筆費用來申請憑證，但有了 Let’s Encrypt 後將能免費申請憑證，且這一過程非常簡單、自動化。
 值得注意的是 Let’s Encrypt 提供的憑證只有90天，每60天可以更新(renew)憑證。 Certbot 提供相當完整的安裝指引，到 https://certbot.eff.org/ 來做到自動化的更新憑證。
@@ -55,13 +53,13 @@ Let’s Encrypt 的數位憑證認證機構（CA ）推出免費 SSL/TLS 憑證�
 docker hub https://hub.docker.com/r/certbot/dns-route53 因為我的domain 託管在 Route53 Certbot 更是有提供搭配 route 53 驗證憑證的方法，更有可以調用 route53 驗證 ，給予憑證的 role or iam user 需要的 IAM Policy 如下：
 { &#34;Version&#34;: &#34;2012-10-17&#34;, &#34;Id&#34;: &#34;certbot-dns-route53 sample policy&#34;, &#34;Statement&#34;: [ { &#34;Effect&#34;: &#34;Allow&#34;, &#34;Action&#34;: [ &#34;route53:ListHostedZones&#34;, &#34;route53:GetChange&#34; ], &#34;Resource&#34;: [ &#34;*&#34; ] }, { &#34;Effect&#34; : &#34;Allow&#34;, &#34;Action&#34; : [ &#34;route53:ChangeResourceRecordSets&#34; ], &#34;Resource&#34; : [ &#34;arn:aws:route53:::hostedzone/YOURHOSTEDZONEID&#34; &lt;- 要換成您的 ] } ] } Certbot-route53 docs https://certbot-dns-route53."><meta itemprop="datePublished" content="2020-05-17T10:00:00+00:00" />
 <meta itemprop="dateModified" content="2020-05-17T10:00:00+00:00" />
-<meta itemprop="wordCount" content="307"><meta itemprop="image" content="https://blog.neilkuan.net/img/ca-01.png">
+<meta itemprop="wordCount" content="307"><meta itemprop="image" content="https://blog.neilkuan.click/img/ca-01.png" />
 <meta itemprop="keywords" content="" />
 
   
 </head>
 <body class="dark:bg-gray-800 dark:text-white relative flex flex-col min-h-screen"><header class="container flex justify-between md:justify-between gap-4 flex-wrap p-6 mx-auto relative">
-  <a href="https://blog.neilkuan.net/en/" class="capitalize font-extrabold text-2xl">
+  <a href="https://blog.neilkuan.click/en/" class="capitalize font-extrabold text-2xl">
     
      Neil Kuan
     
@@ -460,7 +458,7 @@ Certbot 提供相當完整的安裝指引，到 <a href="https://certbot.eff.org
 
 
 
-<script src="https://blog.neilkuan.net/js/scripts.min.js"></script>
+<script src="https://blog.neilkuan.click/js/scripts.min.js"></script>
 
 
 

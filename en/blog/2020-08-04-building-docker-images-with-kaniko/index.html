@@ -11,9 +11,9 @@
   <meta name="description" content="Kaniko !!! Building Docker images with Kaniko kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster. kaniko solves two problems with using the Docker-in-Docker build method:
 Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow. When building an image with kaniko and CI/CD, you should be aware of a few important details:" />
   <meta name="author" content="NeilKuan" />
-  <meta name="generator" content="Hugo 0.120.4"><link
+  <meta name="generator" content="Hugo 0.123.8"><link
     rel="stylesheet"
-    href="https://blog.neilkuan.net/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
+    href="https://blog.neilkuan.click/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
     integrity="sha256-j/jNr9OlhxT2QI7kxPl3ABgHJMW9SUCdvNkeHTfi5bw="
   />
   
@@ -23,15 +23,13 @@ Docker-in-Docker requires privileged mode in order to function, which is a signi
 <meta property="og:description" content="Kaniko !!! Building Docker images with Kaniko kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster. kaniko solves two problems with using the Docker-in-Docker build method:
 Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow. When building an image with kaniko and CI/CD, you should be aware of a few important details:" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.neilkuan.net/en/blog/2020-08-04-building-docker-images-with-kaniko/" /><meta property="og:image" content="https://blog.neilkuan.net/img/20200804-kaniko/1-kaniko.png" /><meta property="article:section" content="blog" />
+<meta property="og:url" content="https://blog.neilkuan.click/en/blog/2020-08-04-building-docker-images-with-kaniko/" /><meta property="og:image" content="https://blog.neilkuan.click/img/20200804-kaniko/1-kaniko.png" /><meta property="article:section" content="blog" />
 <meta property="article:published_time" content="2023-08-20T00:00:00+00:00" />
 <meta property="article:modified_time" content="2023-08-20T00:00:00+00:00" />
 
 
-  <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://blog.neilkuan.net/img/20200804-kaniko/1-kaniko.png"/>
-
-<meta name="twitter:title" content="Building Docker images with Kaniko !!!"/>
+  <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://blog.neilkuan.click/img/20200804-kaniko/1-kaniko.png" /><meta name="twitter:title" content="Building Docker images with Kaniko !!!"/>
 <meta name="twitter:description" content="Kaniko !!! Building Docker images with Kaniko kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster. kaniko solves two problems with using the Docker-in-Docker build method:
 Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow. When building an image with kaniko and CI/CD, you should be aware of a few important details:"/>
 
@@ -39,13 +37,13 @@ Docker-in-Docker requires privileged mode in order to function, which is a signi
 <meta itemprop="description" content="Kaniko !!! Building Docker images with Kaniko kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster. kaniko solves two problems with using the Docker-in-Docker build method:
 Docker-in-Docker requires privileged mode in order to function, which is a significant security concern. Docker-in-Docker generally incurs a performance penalty and can be quite slow. When building an image with kaniko and CI/CD, you should be aware of a few important details:"><meta itemprop="datePublished" content="2023-08-20T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-08-20T00:00:00+00:00" />
-<meta itemprop="wordCount" content="659"><meta itemprop="image" content="https://blog.neilkuan.net/img/20200804-kaniko/1-kaniko.png">
+<meta itemprop="wordCount" content="659"><meta itemprop="image" content="https://blog.neilkuan.click/img/20200804-kaniko/1-kaniko.png" />
 <meta itemprop="keywords" content="" />
 
   
 </head>
 <body class="dark:bg-gray-800 dark:text-white relative flex flex-col min-h-screen"><header class="container flex justify-between md:justify-between gap-4 flex-wrap p-6 mx-auto relative">
-  <a href="https://blog.neilkuan.net/en/" class="capitalize font-extrabold text-2xl">
+  <a href="https://blog.neilkuan.click/en/" class="capitalize font-extrabold text-2xl">
     
      Neil Kuan
     
@@ -186,7 +184,7 @@ kaniko solves two problems with using the <a href="https://docs.gitlab.com/ee/ci
 <p>簡化來說 ， 使用 docker build 時 最要不得的就是要， mount /var/run/docker.sock 這個 sock 到 build container 內，這使得 build container 需要 <a href="https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities" target="_blank" rel="noopener">privileged mode</a>
  ， 為了解決這個問題 ， google 在 2018 年六月開啟了 <a href="https://github.com/GoogleContainerTools/kaniko" target="_blank" rel="noopener">kaniko</a>
  專案 來解決這個問題  ， 目前 release 到 v.0.24.0 版</p>
-<p><img src="/img/20200804-kaniko/2-kaniko-repo.png" alt=""></p>
+<p><img src="/img/20200804-kaniko/2-kaniko-repo.png"></p>
 <h1 id="如何使用">如何使用</h1>
 <p><strong>env:</strong></p>
 <ul>
@@ -269,10 +267,10 @@ kaniko solves two problems with using the <a href="https://docs.gitlab.com/ee/ci
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>        gcr.io/kaniko-project/executor:latest <span style="color:#f1fa8c">\
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>        -f /workspace/Dockerfile <span style="color:#f1fa8c">\
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>        -d &lt;username/image-name:tag&gt;
-</span></span></code></pre></div><p><img src="/img/20200804-kaniko/3-kaniko-build.png" alt=""></p>
+</span></span></code></pre></div><p><img src="/img/20200804-kaniko/3-kaniko-build.png"></p>
 <p>如果順利 ！？ＸＤ
 你可以到你的 docker hub 看到您透過 kaniko build and push 的 image :</p>
-<p><img src="/img/20200804-kaniko/4-dockerhub.png" alt=""></p>
+<p><img src="/img/20200804-kaniko/4-dockerhub.png"></p>
 <p>更可以將 他整合到 ci/cd pipeline 中
 gitlab 已有很好的 example</p>
 <p><strong>Building images with kaniko and GitLab CI/CD</strong>
@@ -321,8 +319,8 @@ gitlab 已有很好的 example</p>
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    --dockerfile /workspace/Dockerfile <span style="color:#f1fa8c">\
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    --destination <span style="color:#f1fa8c">&#34;</span><span style="color:#8be9fd;font-style:italic">$ACCOUNT_ID</span><span style="color:#f1fa8c">.dkr.ecr.us-east-1.amazonaws.com/kaniko-demo:latest&#34;</span> <span style="color:#f1fa8c">\
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>    --context dir:///workspace/
-</span></span></code></pre></div><p><img src="/img/20200804-kaniko/5-kaniko.jpeg" alt="">
-<img src="/img/20200804-kaniko/6-kaniko.jpeg" alt=""></p>
+</span></span></code></pre></div><p><img src="/img/20200804-kaniko/5-kaniko.jpeg">
+<img src="/img/20200804-kaniko/6-kaniko.jpeg"></p>
 <h4 id="create-custom-platform-similarly-to-docker-build---platform-xxx">Create custom platform <code>similarly to docker build --platform xxx</code></h4>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span><span style="color:#6272a4"># 如果要用 profile 記得加上 `-e AWS_PROFILE=example-profile-name`</span>
 </span></span><span style="display:flex;"><span>aws sts get-caller-identity --output text --query <span style="color:#f1fa8c">&#39;Account&#39;</span>
@@ -534,7 +532,7 @@ gitlab 已有很好的 example</p>
 
 
 
-<script src="https://blog.neilkuan.net/js/scripts.min.js"></script>
+<script src="https://blog.neilkuan.click/js/scripts.min.js"></script>
 
 
 
