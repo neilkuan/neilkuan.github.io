@@ -13,7 +13,7 @@ Introducing GitHub Container Registry GitHub Container Registry現已作為公�
 廢話結束 ，那麼要怎麼做才能 在 Github Container Registry 上面擺放 Public image 給予他人來下載勒
 首先準備 github access token (以下為需要的權限) Select the read:packages scope to download container images and read their metadata. Select the write:packages scope to download and upload container images and read and write their metadata." />
   <meta name="author" content="NeilKuan" />
-  <meta name="generator" content="Hugo 0.123.8"><link
+  <meta name="generator" content="Hugo 0.125.6"><link
     rel="stylesheet"
     href="https://blog.neilkuan.click/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
     integrity="sha256-j/jNr9OlhxT2QI7kxPl3ABgHJMW9SUCdvNkeHTfi5bw="
@@ -21,32 +21,37 @@ Introducing GitHub Container Registry GitHub Container Registry現已作為公�
   
   
 
-  <meta property="og:title" content="Introducing GitHub Container Registry !!!" />
-<meta property="og:description" content="Github Container Registry source new : https://github.blog/2020-09-01-introducing-github-container-registry/ 自去年發布GitHub Packages以來，已經從GitHub下載了數億個軟件包，其中Docker是Packages中僅次於npm的第二受歡迎的ecosystem，儘管GitHub Packages已經為團隊提供了更大的軟件供應鏈可追溯性，但如今，GitHub 正在添加新功能，以改善它通過GitHub Container Registry為開發人員提供的體驗和性能。
+  <meta property="og:url" content="https://blog.neilkuan.click/en/blog/2020-09-26-github-container-registry/">
+  <meta property="og:site_name" content=" Neil Kuan">
+  <meta property="og:title" content="Introducing GitHub Container Registry !!!">
+  <meta property="og:description" content="Github Container Registry source new : https://github.blog/2020-09-01-introducing-github-container-registry/ 自去年發布GitHub Packages以來，已經從GitHub下載了數億個軟件包，其中Docker是Packages中僅次於npm的第二受歡迎的ecosystem，儘管GitHub Packages已經為團隊提供了更大的軟件供應鏈可追溯性，但如今，GitHub 正在添加新功能，以改善它通過GitHub Container Registry為開發人員提供的體驗和性能。
 Introducing GitHub Container Registry GitHub Container Registry現已作為公共Beta發布，它改進了我們在GitHub Packages中處理容器的方式。通過今天引入的新功能，您可以更好地實施訪問策略，鼓勵使用標準 base image，並通過在整個 organization 中更輕鬆地共享來促進內部使用。並且提供了開源專案可以拜放 container 的地方for free .
 廢話結束 ，那麼要怎麼做才能 在 Github Container Registry 上面擺放 Public image 給予他人來下載勒
-首先準備 github access token (以下為需要的權限) Select the read:packages scope to download container images and read their metadata. Select the write:packages scope to download and upload container images and read and write their metadata." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.neilkuan.click/en/blog/2020-09-26-github-container-registry/" /><meta property="og:image" content="https://blog.neilkuan.click/img/20200926-ghcr/ghcr-00.png" /><meta property="article:section" content="blog" />
-<meta property="article:published_time" content="2020-09-26T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-09-26T00:00:00+00:00" />
+首先準備 github access token (以下為需要的權限) Select the read:packages scope to download container images and read their metadata. Select the write:packages scope to download and upload container images and read and write their metadata.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2020-09-26T00:00:00+00:00">
+    <meta property="article:modified_time" content="2020-09-26T00:00:00+00:00">
+    <meta property="og:image" content="https://blog.neilkuan.click/img/20200926-ghcr/ghcr-00.png">
 
-
-  <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://blog.neilkuan.click/img/20200926-ghcr/ghcr-00.png" /><meta name="twitter:title" content="Introducing GitHub Container Registry !!!"/>
+  <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blog.neilkuan.click/img/20200926-ghcr/ghcr-00.png"><meta name="twitter:title" content="Introducing GitHub Container Registry !!!">
 <meta name="twitter:description" content="Github Container Registry source new : https://github.blog/2020-09-01-introducing-github-container-registry/ 自去年發布GitHub Packages以來，已經從GitHub下載了數億個軟件包，其中Docker是Packages中僅次於npm的第二受歡迎的ecosystem，儘管GitHub Packages已經為團隊提供了更大的軟件供應鏈可追溯性，但如今，GitHub 正在添加新功能，以改善它通過GitHub Container Registry為開發人員提供的體驗和性能。
 Introducing GitHub Container Registry GitHub Container Registry現已作為公共Beta發布，它改進了我們在GitHub Packages中處理容器的方式。通過今天引入的新功能，您可以更好地實施訪問策略，鼓勵使用標準 base image，並通過在整個 organization 中更輕鬆地共享來促進內部使用。並且提供了開源專案可以拜放 container 的地方for free .
 廢話結束 ，那麼要怎麼做才能 在 Github Container Registry 上面擺放 Public image 給予他人來下載勒
-首先準備 github access token (以下為需要的權限) Select the read:packages scope to download container images and read their metadata. Select the write:packages scope to download and upload container images and read and write their metadata."/>
+首先準備 github access token (以下為需要的權限) Select the read:packages scope to download container images and read their metadata. Select the write:packages scope to download and upload container images and read and write their metadata.">
 
+  
   <meta itemprop="name" content="Introducing GitHub Container Registry !!!">
-<meta itemprop="description" content="Github Container Registry source new : https://github.blog/2020-09-01-introducing-github-container-registry/ 自去年發布GitHub Packages以來，已經從GitHub下載了數億個軟件包，其中Docker是Packages中僅次於npm的第二受歡迎的ecosystem，儘管GitHub Packages已經為團隊提供了更大的軟件供應鏈可追溯性，但如今，GitHub 正在添加新功能，以改善它通過GitHub Container Registry為開發人員提供的體驗和性能。
+  <meta itemprop="description" content="Github Container Registry source new : https://github.blog/2020-09-01-introducing-github-container-registry/ 自去年發布GitHub Packages以來，已經從GitHub下載了數億個軟件包，其中Docker是Packages中僅次於npm的第二受歡迎的ecosystem，儘管GitHub Packages已經為團隊提供了更大的軟件供應鏈可追溯性，但如今，GitHub 正在添加新功能，以改善它通過GitHub Container Registry為開發人員提供的體驗和性能。
 Introducing GitHub Container Registry GitHub Container Registry現已作為公共Beta發布，它改進了我們在GitHub Packages中處理容器的方式。通過今天引入的新功能，您可以更好地實施訪問策略，鼓勵使用標準 base image，並通過在整個 organization 中更輕鬆地共享來促進內部使用。並且提供了開源專案可以拜放 container 的地方for free .
 廢話結束 ，那麼要怎麼做才能 在 Github Container Registry 上面擺放 Public image 給予他人來下載勒
-首先準備 github access token (以下為需要的權限) Select the read:packages scope to download container images and read their metadata. Select the write:packages scope to download and upload container images and read and write their metadata."><meta itemprop="datePublished" content="2020-09-26T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2020-09-26T00:00:00+00:00" />
-<meta itemprop="wordCount" content="239"><meta itemprop="image" content="https://blog.neilkuan.click/img/20200926-ghcr/ghcr-00.png" />
-<meta itemprop="keywords" content="" />
+首先準備 github access token (以下為需要的權限) Select the read:packages scope to download container images and read their metadata. Select the write:packages scope to download and upload container images and read and write their metadata.">
+  <meta itemprop="datePublished" content="2020-09-26T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2020-09-26T00:00:00+00:00">
+  <meta itemprop="wordCount" content="239">
+  <meta itemprop="image" content="https://blog.neilkuan.click/img/20200926-ghcr/ghcr-00.png">
 
   
 </head>
@@ -381,7 +386,7 @@ Introducing GitHub Container Registry GitHub Container Registry現已作為公�
     </main><footer class="container p-6 mx-auto flex justify-between items-center">
   <span class="text-sm font-light">
     
-    © 2019-2023 Neil Kuan @neil_kuan.
+    © 2019-2024 Neil Kuan @neil_kuan.
     
   </span>
   <span onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="p-1 cursor-pointer">
@@ -428,6 +433,9 @@ Introducing GitHub Container Registry GitHub Container Registry現已作為公�
 
 
 <script src="https://blog.neilkuan.click/js/scripts.min.js"></script>
+
+
+  
 
 
 

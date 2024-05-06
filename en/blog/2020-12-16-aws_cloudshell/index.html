@@ -12,7 +12,7 @@
 AWS CloudShell source blog: https://aws.amazon.com/tw/blogs/aws/aws-cloudshell-command-line-access-to-aws-resources/ 特色如下： Browser-based shell
 Issue AWS Command Line Interface (AWS CLI) commands, run scripts, access common command line utilities including PowerShell and Bash, and use other popular AWS CLIs, such as the Amazon ECS CLI and the AWS SAM CLI, to interact with your AWS resources – all without leaving your web browser. (只能說繼GCP CloudShell, Azure CloudShell等類似服務後，AWS終於追上？！，你可以透過browser-based shell , 在上面執行 一些日常的維護 ，快速修復生產環境，甚至嘗試一些新的AWS服務或功能，我也有嘗試安裝cdk 並進行deploy) https://twitter." />
   <meta name="author" content="NeilKuan" />
-  <meta name="generator" content="Hugo 0.123.8"><link
+  <meta name="generator" content="Hugo 0.125.6"><link
     rel="stylesheet"
     href="https://blog.neilkuan.click/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
     integrity="sha256-j/jNr9OlhxT2QI7kxPl3ABgHJMW9SUCdvNkeHTfi5bw="
@@ -20,29 +20,34 @@ Issue AWS Command Line Interface (AWS CLI) commands, run scripts, access common 
   
   
 
-  <meta property="og:title" content="Introducing AWS CloudShell !!!" />
-<meta property="og:description" content="AWS CloudShell AWS 在 re:Invent 2020 &lt;strong&gt;Werner Vogels Keynote&lt;/strong&gt; 中宣佈了
+  <meta property="og:url" content="https://blog.neilkuan.click/en/blog/2020-12-16-aws_cloudshell/">
+  <meta property="og:site_name" content=" Neil Kuan">
+  <meta property="og:title" content="Introducing AWS CloudShell !!!">
+  <meta property="og:description" content="AWS CloudShell AWS 在 re:Invent 2020 &lt;strong&gt;Werner Vogels Keynote&lt;/strong&gt; 中宣佈了
 AWS CloudShell source blog: https://aws.amazon.com/tw/blogs/aws/aws-cloudshell-command-line-access-to-aws-resources/ 特色如下： Browser-based shell
-Issue AWS Command Line Interface (AWS CLI) commands, run scripts, access common command line utilities including PowerShell and Bash, and use other popular AWS CLIs, such as the Amazon ECS CLI and the AWS SAM CLI, to interact with your AWS resources – all without leaving your web browser. (只能說繼GCP CloudShell, Azure CloudShell等類似服務後，AWS終於追上？！，你可以透過browser-based shell , 在上面執行 一些日常的維護 ，快速修復生產環境，甚至嘗試一些新的AWS服務或功能，我也有嘗試安裝cdk 並進行deploy) https://twitter." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.neilkuan.click/en/blog/2020-12-16-aws_cloudshell/" /><meta property="og:image" content="https://blog.neilkuan.click/img/cloudshell/0.png" /><meta property="article:section" content="blog" />
-<meta property="article:published_time" content="2020-12-16T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-12-16T00:00:00+00:00" />
+Issue AWS Command Line Interface (AWS CLI) commands, run scripts, access common command line utilities including PowerShell and Bash, and use other popular AWS CLIs, such as the Amazon ECS CLI and the AWS SAM CLI, to interact with your AWS resources – all without leaving your web browser. (只能說繼GCP CloudShell, Azure CloudShell等類似服務後，AWS終於追上？！，你可以透過browser-based shell , 在上面執行 一些日常的維護 ，快速修復生產環境，甚至嘗試一些新的AWS服務或功能，我也有嘗試安裝cdk 並進行deploy) https://twitter.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2020-12-16T00:00:00+00:00">
+    <meta property="article:modified_time" content="2020-12-16T00:00:00+00:00">
+    <meta property="og:image" content="https://blog.neilkuan.click/img/cloudshell/0.png">
 
-
-  <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://blog.neilkuan.click/img/cloudshell/0.png" /><meta name="twitter:title" content="Introducing AWS CloudShell !!!"/>
+  <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blog.neilkuan.click/img/cloudshell/0.png"><meta name="twitter:title" content="Introducing AWS CloudShell !!!">
 <meta name="twitter:description" content="AWS CloudShell AWS 在 re:Invent 2020 &lt;strong&gt;Werner Vogels Keynote&lt;/strong&gt; 中宣佈了
 AWS CloudShell source blog: https://aws.amazon.com/tw/blogs/aws/aws-cloudshell-command-line-access-to-aws-resources/ 特色如下： Browser-based shell
-Issue AWS Command Line Interface (AWS CLI) commands, run scripts, access common command line utilities including PowerShell and Bash, and use other popular AWS CLIs, such as the Amazon ECS CLI and the AWS SAM CLI, to interact with your AWS resources – all without leaving your web browser. (只能說繼GCP CloudShell, Azure CloudShell等類似服務後，AWS終於追上？！，你可以透過browser-based shell , 在上面執行 一些日常的維護 ，快速修復生產環境，甚至嘗試一些新的AWS服務或功能，我也有嘗試安裝cdk 並進行deploy) https://twitter."/>
+Issue AWS Command Line Interface (AWS CLI) commands, run scripts, access common command line utilities including PowerShell and Bash, and use other popular AWS CLIs, such as the Amazon ECS CLI and the AWS SAM CLI, to interact with your AWS resources – all without leaving your web browser. (只能說繼GCP CloudShell, Azure CloudShell等類似服務後，AWS終於追上？！，你可以透過browser-based shell , 在上面執行 一些日常的維護 ，快速修復生產環境，甚至嘗試一些新的AWS服務或功能，我也有嘗試安裝cdk 並進行deploy) https://twitter.">
 
+  
   <meta itemprop="name" content="Introducing AWS CloudShell !!!">
-<meta itemprop="description" content="AWS CloudShell AWS 在 re:Invent 2020 &lt;strong&gt;Werner Vogels Keynote&lt;/strong&gt; 中宣佈了
+  <meta itemprop="description" content="AWS CloudShell AWS 在 re:Invent 2020 &lt;strong&gt;Werner Vogels Keynote&lt;/strong&gt; 中宣佈了
 AWS CloudShell source blog: https://aws.amazon.com/tw/blogs/aws/aws-cloudshell-command-line-access-to-aws-resources/ 特色如下： Browser-based shell
-Issue AWS Command Line Interface (AWS CLI) commands, run scripts, access common command line utilities including PowerShell and Bash, and use other popular AWS CLIs, such as the Amazon ECS CLI and the AWS SAM CLI, to interact with your AWS resources – all without leaving your web browser. (只能說繼GCP CloudShell, Azure CloudShell等類似服務後，AWS終於追上？！，你可以透過browser-based shell , 在上面執行 一些日常的維護 ，快速修復生產環境，甚至嘗試一些新的AWS服務或功能，我也有嘗試安裝cdk 並進行deploy) https://twitter."><meta itemprop="datePublished" content="2020-12-16T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2020-12-16T00:00:00+00:00" />
-<meta itemprop="wordCount" content="419"><meta itemprop="image" content="https://blog.neilkuan.click/img/cloudshell/0.png" />
-<meta itemprop="keywords" content="" />
+Issue AWS Command Line Interface (AWS CLI) commands, run scripts, access common command line utilities including PowerShell and Bash, and use other popular AWS CLIs, such as the Amazon ECS CLI and the AWS SAM CLI, to interact with your AWS resources – all without leaving your web browser. (只能說繼GCP CloudShell, Azure CloudShell等類似服務後，AWS終於追上？！，你可以透過browser-based shell , 在上面執行 一些日常的維護 ，快速修復生產環境，甚至嘗試一些新的AWS服務或功能，我也有嘗試安裝cdk 並進行deploy) https://twitter.">
+  <meta itemprop="datePublished" content="2020-12-16T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2020-12-16T00:00:00+00:00">
+  <meta itemprop="wordCount" content="419">
+  <meta itemprop="image" content="https://blog.neilkuan.click/img/cloudshell/0.png">
 
   
 </head>
@@ -385,7 +390,7 @@ cloudshell docs: <a href="https://docs.aws.amazon.com/cloudshell/latest/userguid
     </main><footer class="container p-6 mx-auto flex justify-between items-center">
   <span class="text-sm font-light">
     
-    © 2019-2023 Neil Kuan @neil_kuan.
+    © 2019-2024 Neil Kuan @neil_kuan.
     
   </span>
   <span onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="p-1 cursor-pointer">
@@ -432,6 +437,9 @@ cloudshell docs: <a href="https://docs.aws.amazon.com/cloudshell/latest/userguid
 
 
 <script src="https://blog.neilkuan.click/js/scripts.min.js"></script>
+
+
+  
 
 
 

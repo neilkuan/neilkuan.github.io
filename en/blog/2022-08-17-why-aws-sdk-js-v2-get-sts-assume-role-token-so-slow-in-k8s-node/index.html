@@ -14,7 +14,7 @@ aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &#39;https://st
 經過另一個方式用測試，採用直接塞 AKSK(ACCESS-KEY)(SECRET-ACCESS-KEY)的方式去執行 assumeRole() 以下為示意code:
 const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com/ &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#34;regional&#34;, accessKeyId: &#39;ACCESS-KEY&#39;, // &lt;- AK secretAccessKey: &#39;SECRET-ACCESS-KEY&#39; &lt;-SK }); const credentials = stsClient." />
   <meta name="author" content="NeilKuan" />
-  <meta name="generator" content="Hugo 0.123.8"><link
+  <meta name="generator" content="Hugo 0.125.6"><link
     rel="stylesheet"
     href="https://blog.neilkuan.click/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
     integrity="sha256-j/jNr9OlhxT2QI7kxPl3ABgHJMW9SUCdvNkeHTfi5bw="
@@ -22,35 +22,40 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
   
   
 
-  <meta property="og:title" content="Why aws-sdk-js-v2 get sts assume-role token so slow in k8s node" />
-<meta property="og:description" content="前言： 工作上遇到的問題，花點時間解決，並解記錄下來。
+  <meta property="og:url" content="https://blog.neilkuan.click/en/blog/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/">
+  <meta property="og:site_name" content=" Neil Kuan">
+  <meta property="og:title" content="Why aws-sdk-js-v2 get sts assume-role token so slow in k8s node">
+  <meta property="og:description" content="前言： 工作上遇到的問題，花點時間解決，並解記錄下來。
 為什麼我的 node application 在 k8s 內部執行時，執行以下 function 時如此的慢，我在地端測試都沒有這個問題？？ 開門見山直接看有問題的 code.
 aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#39;regional&#39;, }); const credentials = await sts .assumeRole({ RoleArn: roleArn, RoleSessionName: &#39;RoleSessionName&#39;, }) .promise(); 可以看到光是執行 assumeRole() 就花費了 4.668s 的時間！！
 經過另一個方式用測試，採用直接塞 AKSK(ACCESS-KEY)(SECRET-ACCESS-KEY)的方式去執行 assumeRole() 以下為示意code:
-const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com/ &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#34;regional&#34;, accessKeyId: &#39;ACCESS-KEY&#39;, // &lt;- AK secretAccessKey: &#39;SECRET-ACCESS-KEY&#39; &lt;-SK }); const credentials = stsClient." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.neilkuan.click/en/blog/2022-08-17-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/" /><meta property="og:image" content="https://blog.neilkuan.click/img/2022-10-10-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/4.png" /><meta property="article:section" content="blog" />
-<meta property="article:published_time" content="2022-10-10T00:00:00+00:00" />
-<meta property="article:modified_time" content="2022-10-10T00:00:00+00:00" />
+const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com/ &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#34;regional&#34;, accessKeyId: &#39;ACCESS-KEY&#39;, // &lt;- AK secretAccessKey: &#39;SECRET-ACCESS-KEY&#39; &lt;-SK }); const credentials = stsClient.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2022-10-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2022-10-10T00:00:00+00:00">
+    <meta property="og:image" content="https://blog.neilkuan.click/img/2022-10-10-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/4.png">
 
-
-  <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://blog.neilkuan.click/img/2022-10-10-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/4.png" /><meta name="twitter:title" content="Why aws-sdk-js-v2 get sts assume-role token so slow in k8s node"/>
+  <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blog.neilkuan.click/img/2022-10-10-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/4.png"><meta name="twitter:title" content="Why aws-sdk-js-v2 get sts assume-role token so slow in k8s node">
 <meta name="twitter:description" content="前言： 工作上遇到的問題，花點時間解決，並解記錄下來。
 為什麼我的 node application 在 k8s 內部執行時，執行以下 function 時如此的慢，我在地端測試都沒有這個問題？？ 開門見山直接看有問題的 code.
 aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#39;regional&#39;, }); const credentials = await sts .assumeRole({ RoleArn: roleArn, RoleSessionName: &#39;RoleSessionName&#39;, }) .promise(); 可以看到光是執行 assumeRole() 就花費了 4.668s 的時間！！
 經過另一個方式用測試，採用直接塞 AKSK(ACCESS-KEY)(SECRET-ACCESS-KEY)的方式去執行 assumeRole() 以下為示意code:
-const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com/ &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#34;regional&#34;, accessKeyId: &#39;ACCESS-KEY&#39;, // &lt;- AK secretAccessKey: &#39;SECRET-ACCESS-KEY&#39; &lt;-SK }); const credentials = stsClient."/>
+const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com/ &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#34;regional&#34;, accessKeyId: &#39;ACCESS-KEY&#39;, // &lt;- AK secretAccessKey: &#39;SECRET-ACCESS-KEY&#39; &lt;-SK }); const credentials = stsClient.">
 
+  
   <meta itemprop="name" content="Why aws-sdk-js-v2 get sts assume-role token so slow in k8s node">
-<meta itemprop="description" content="前言： 工作上遇到的問題，花點時間解決，並解記錄下來。
+  <meta itemprop="description" content="前言： 工作上遇到的問題，花點時間解決，並解記錄下來。
 為什麼我的 node application 在 k8s 內部執行時，執行以下 function 時如此的慢，我在地端測試都沒有這個問題？？ 開門見山直接看有問題的 code.
 aws-sdk-js version: 2.1026.0 const sts = new AWS.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#39;regional&#39;, }); const credentials = await sts .assumeRole({ RoleArn: roleArn, RoleSessionName: &#39;RoleSessionName&#39;, }) .promise(); 可以看到光是執行 assumeRole() 就花費了 4.668s 的時間！！
 經過另一個方式用測試，採用直接塞 AKSK(ACCESS-KEY)(SECRET-ACCESS-KEY)的方式去執行 assumeRole() 以下為示意code:
-const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com/ &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#34;regional&#34;, accessKeyId: &#39;ACCESS-KEY&#39;, // &lt;- AK secretAccessKey: &#39;SECRET-ACCESS-KEY&#39; &lt;-SK }); const credentials = stsClient."><meta itemprop="datePublished" content="2022-10-10T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2022-10-10T00:00:00+00:00" />
-<meta itemprop="wordCount" content="832"><meta itemprop="image" content="https://blog.neilkuan.click/img/2022-10-10-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/4.png" />
-<meta itemprop="keywords" content="" />
+const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ endpoint: &#39;https://sts.us-east-1.amazonaws.com/ &#39;, region: &#39;us-east-1&#39;, stsRegionalEndpoints: &#34;regional&#34;, accessKeyId: &#39;ACCESS-KEY&#39;, // &lt;- AK secretAccessKey: &#39;SECRET-ACCESS-KEY&#39; &lt;-SK }); const credentials = stsClient.">
+  <meta itemprop="datePublished" content="2022-10-10T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2022-10-10T00:00:00+00:00">
+  <meta itemprop="wordCount" content="849">
+  <meta itemprop="image" content="https://blog.neilkuan.click/img/2022-10-10-why-aws-sdk-js-v2-get-sts-assume-role-token-so-slow-in-k8s-node/4.png">
 
   
 </head>
@@ -168,7 +173,7 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
         <line x1="12" y1="6" x2="12" y2="19" />
         <line x1="21" y1="6" x2="21" y2="19" />
       </svg>
-      832&nbsp;words
+      849&nbsp;words
       
     </h5>
     
@@ -358,6 +363,12 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
 <p>使用 <a href="https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html" target="_blank" rel="noopener">IRSA</a>
  給予 application 去取得權限與 AWS Service 進行互動。</p>
 </li>
+<li>
+<p>使用 <a href="https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html" target="_blank" rel="noopener">pod-identities</a>
+ 透過 AWS IAM Role 給予 Pod 權限。
+(需要注意一下 support 的 sdk version <a href="https://docs.aws.amazon.com/eks/latest/userguide/pod-id-minimum-sdk.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/eks/latest/userguide/pod-id-minimum-sdk.html</a>
+)</p>
+</li>
 </ol>
 <blockquote>
 <p>將 IAM 角色與 Kubernetes 服務帳戶建立關聯。然後，此服務帳戶可以為使用該服務帳戶之任何 Pod 中的容器提供 AWS 許可。</p>
@@ -378,7 +389,7 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
 <li><a href="https://aws.amazon.com/tw/blogs/security/get-the-full-benefits-of-imdsv2-and-disable-imdsv1-across-your-aws-infrastructure/" target="_blank" rel="noopener">https://aws.amazon.com/tw/blogs/security/get-the-full-benefits-of-imdsv2-and-disable-imdsv1-across-your-aws-infrastructure/</a>
 </li>
 </ol>
-<h2 id="20221010-neil-kuan">20221010 Neil Kuan</h2>
+<h2 id="20240326-neil-kuan-updated">20240326 Neil Kuan Updated</h2>
 
   </article><div class="bg-blue-100 dark:bg-gray-900">
   <div class="container px-4 py-12 mx-auto max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
@@ -528,7 +539,7 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
     </main><footer class="container p-6 mx-auto flex justify-between items-center">
   <span class="text-sm font-light">
     
-    © 2019-2023 Neil Kuan @neil_kuan.
+    © 2019-2024 Neil Kuan @neil_kuan.
     
   </span>
   <span onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="p-1 cursor-pointer">
@@ -575,6 +586,9 @@ const awsSdk = require(&#39;aws-sdk&#39;); const stsClient = new awsSdk.STS({ en
 
 
 <script src="https://blog.neilkuan.click/js/scripts.min.js"></script>
+
+
+  
 
 
 

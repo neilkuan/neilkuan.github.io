@@ -16,7 +16,7 @@ Kubernetes長期以來一直將服務帳戶用作其內部身份系統。 Pods�
 Amazon EKS現在在每個集群上託管一個公共OIDC發現終端節點，其中包含ProjectedServiceAccountToken JSON Web令牌的簽名密鑰，因此外部系統（例如IAM）可以驗證和接受Kubernetes發行的OIDC令牌。
 Using a supported AWS SDK The containers in your pods must use an AWS SDK version that supports assuming an IAM role via an OIDC web identity token file." />
   <meta name="author" content="NeilKuan" />
-  <meta name="generator" content="Hugo 0.123.8"><link
+  <meta name="generator" content="Hugo 0.125.6"><link
     rel="stylesheet"
     href="https://blog.neilkuan.click/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
     integrity="sha256-j/jNr9OlhxT2QI7kxPl3ABgHJMW9SUCdvNkeHTfi5bw="
@@ -24,41 +24,46 @@ Using a supported AWS SDK The containers in your pods must use an AWS SDK versio
   
   
 
-  <meta property="og:title" content="Least privilege ?! IAM Role For Service Account (IRSA)" />
-<meta property="og:description" content="使用Amazon EKS集群上服務帳戶的IAM角色，您可以將IAM角色與Kubernetes服務帳戶關聯。 然後，該服務帳戶可以向使用該服務帳戶的任何 pod 中的 container 提供AWS權限。 使用此功能，您不再需要為工作節點( worker nodes ) IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。
+  <meta property="og:url" content="https://blog.neilkuan.click/en/blog/2020-04-22-aws-iam-role-for-eks-service-account/">
+  <meta property="og:site_name" content=" Neil Kuan">
+  <meta property="og:title" content="Least privilege ?! IAM Role For Service Account (IRSA)">
+  <meta property="og:description" content="使用Amazon EKS集群上服務帳戶的IAM角色，您可以將IAM角色與Kubernetes服務帳戶關聯。 然後，該服務帳戶可以向使用該服務帳戶的任何 pod 中的 container 提供AWS權限。 使用此功能，您不再需要為工作節點( worker nodes ) IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。
 應用程序必須使用AWS憑證簽署其AWS API請求。 此功能提供了一種用於管理應用程序憑證的策略，類似於Amazon EC2實例配置文件向Amazon EC2實例提供憑證的方式。 您可以將IAM角色與Kubernetes服務帳戶相關聯，而不必創建AWS憑證並將其分發到容器或使用Amazon EC2實例的角色。 然後，容器容器中的應用程序可以使用AWS SDK或AWS CLI向授權的AWS服務發出API請求。
 服務帳戶的IAM角色功能具有以下優點：
 最低特權 (Least privilege) -通過使用IAM角色提供服務帳戶功能，您不再需要為工作節點IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。 您可以將IAM權限限定在服務帳戶上，只有使用該服務帳戶的Pod才能訪問這些權限。 此功能還消除了對諸如kiam或kube2iam之類的第三方解決方案的需求。 憑證隔離 (Credential isolation ) - 容器只能檢索與其所屬的服務帳戶關聯的IAM角色的憑據。 容器永遠無法訪問用於屬於另一個容器的另一個容器的憑據。 可審核性 ( Auditability ) - 可通過CloudTrail獲得訪問和事件日誌，以幫助確保進行追溯審核。 2014年，AWS Identity and Access Management添加了對使用OpenID Connect（OIDC）的聯合身份的支持。通過此功能，您可以使用受支持的身份提供者對AWS API調用進行身份驗證，並接收有效的OIDC JSON Web令牌（JWT）。您可以將此令牌傳遞給AWS STS AssumeRoleWithWebIdentity API操作，並接收IAM臨時角色憑證。您可以使用這些憑證與任何AWS服務（例如Amazon S3和DynamoDB）進行交互。
 Kubernetes長期以來一直將服務帳戶用作其內部身份系統。 Pods可以使用僅Kubernetes API服務器可以驗證的自動安裝的令牌（非OIDC JWT）向Kubernetes API服務器進行身份驗證。這些舊版服務帳戶令牌不會過期，並且旋轉簽名密鑰是一個困難的過程。在Kubernetes版本1.12中，添加了對新ProjectedServiceAccountToken功能的支持，該功能是OIDC JSON Web令牌，它還包含服務帳戶標識，並支持可配置的受眾。
 Amazon EKS現在在每個集群上託管一個公共OIDC發現終端節點，其中包含ProjectedServiceAccountToken JSON Web令牌的簽名密鑰，因此外部系統（例如IAM）可以驗證和接受Kubernetes發行的OIDC令牌。
-Using a supported AWS SDK The containers in your pods must use an AWS SDK version that supports assuming an IAM role via an OIDC web identity token file." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.neilkuan.click/en/blog/2020-04-22-aws-iam-role-for-eks-service-account/" /><meta property="og:image" content="https://blog.neilkuan.click/img/2020-04-22-AWS-IAM-Role-For-EKS-Service-Account.png" /><meta property="article:section" content="blog" />
-<meta property="article:published_time" content="2020-04-22T18:00:00+00:00" />
-<meta property="article:modified_time" content="2020-04-22T18:00:00+00:00" />
+Using a supported AWS SDK The containers in your pods must use an AWS SDK version that supports assuming an IAM role via an OIDC web identity token file.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2020-04-22T18:00:00+00:00">
+    <meta property="article:modified_time" content="2020-04-22T18:00:00+00:00">
+    <meta property="og:image" content="https://blog.neilkuan.click/img/2020-04-22-AWS-IAM-Role-For-EKS-Service-Account.png">
 
-
-  <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://blog.neilkuan.click/img/2020-04-22-AWS-IAM-Role-For-EKS-Service-Account.png" /><meta name="twitter:title" content="Least privilege ?! IAM Role For Service Account (IRSA)"/>
+  <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blog.neilkuan.click/img/2020-04-22-AWS-IAM-Role-For-EKS-Service-Account.png"><meta name="twitter:title" content="Least privilege ?! IAM Role For Service Account (IRSA)">
 <meta name="twitter:description" content="使用Amazon EKS集群上服務帳戶的IAM角色，您可以將IAM角色與Kubernetes服務帳戶關聯。 然後，該服務帳戶可以向使用該服務帳戶的任何 pod 中的 container 提供AWS權限。 使用此功能，您不再需要為工作節點( worker nodes ) IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。
 應用程序必須使用AWS憑證簽署其AWS API請求。 此功能提供了一種用於管理應用程序憑證的策略，類似於Amazon EC2實例配置文件向Amazon EC2實例提供憑證的方式。 您可以將IAM角色與Kubernetes服務帳戶相關聯，而不必創建AWS憑證並將其分發到容器或使用Amazon EC2實例的角色。 然後，容器容器中的應用程序可以使用AWS SDK或AWS CLI向授權的AWS服務發出API請求。
 服務帳戶的IAM角色功能具有以下優點：
 最低特權 (Least privilege) -通過使用IAM角色提供服務帳戶功能，您不再需要為工作節點IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。 您可以將IAM權限限定在服務帳戶上，只有使用該服務帳戶的Pod才能訪問這些權限。 此功能還消除了對諸如kiam或kube2iam之類的第三方解決方案的需求。 憑證隔離 (Credential isolation ) - 容器只能檢索與其所屬的服務帳戶關聯的IAM角色的憑據。 容器永遠無法訪問用於屬於另一個容器的另一個容器的憑據。 可審核性 ( Auditability ) - 可通過CloudTrail獲得訪問和事件日誌，以幫助確保進行追溯審核。 2014年，AWS Identity and Access Management添加了對使用OpenID Connect（OIDC）的聯合身份的支持。通過此功能，您可以使用受支持的身份提供者對AWS API調用進行身份驗證，並接收有效的OIDC JSON Web令牌（JWT）。您可以將此令牌傳遞給AWS STS AssumeRoleWithWebIdentity API操作，並接收IAM臨時角色憑證。您可以使用這些憑證與任何AWS服務（例如Amazon S3和DynamoDB）進行交互。
 Kubernetes長期以來一直將服務帳戶用作其內部身份系統。 Pods可以使用僅Kubernetes API服務器可以驗證的自動安裝的令牌（非OIDC JWT）向Kubernetes API服務器進行身份驗證。這些舊版服務帳戶令牌不會過期，並且旋轉簽名密鑰是一個困難的過程。在Kubernetes版本1.12中，添加了對新ProjectedServiceAccountToken功能的支持，該功能是OIDC JSON Web令牌，它還包含服務帳戶標識，並支持可配置的受眾。
 Amazon EKS現在在每個集群上託管一個公共OIDC發現終端節點，其中包含ProjectedServiceAccountToken JSON Web令牌的簽名密鑰，因此外部系統（例如IAM）可以驗證和接受Kubernetes發行的OIDC令牌。
-Using a supported AWS SDK The containers in your pods must use an AWS SDK version that supports assuming an IAM role via an OIDC web identity token file."/>
+Using a supported AWS SDK The containers in your pods must use an AWS SDK version that supports assuming an IAM role via an OIDC web identity token file.">
 
+  
   <meta itemprop="name" content="Least privilege ?! IAM Role For Service Account (IRSA)">
-<meta itemprop="description" content="使用Amazon EKS集群上服務帳戶的IAM角色，您可以將IAM角色與Kubernetes服務帳戶關聯。 然後，該服務帳戶可以向使用該服務帳戶的任何 pod 中的 container 提供AWS權限。 使用此功能，您不再需要為工作節點( worker nodes ) IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。
+  <meta itemprop="description" content="使用Amazon EKS集群上服務帳戶的IAM角色，您可以將IAM角色與Kubernetes服務帳戶關聯。 然後，該服務帳戶可以向使用該服務帳戶的任何 pod 中的 container 提供AWS權限。 使用此功能，您不再需要為工作節點( worker nodes ) IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。
 應用程序必須使用AWS憑證簽署其AWS API請求。 此功能提供了一種用於管理應用程序憑證的策略，類似於Amazon EC2實例配置文件向Amazon EC2實例提供憑證的方式。 您可以將IAM角色與Kubernetes服務帳戶相關聯，而不必創建AWS憑證並將其分發到容器或使用Amazon EC2實例的角色。 然後，容器容器中的應用程序可以使用AWS SDK或AWS CLI向授權的AWS服務發出API請求。
 服務帳戶的IAM角色功能具有以下優點：
 最低特權 (Least privilege) -通過使用IAM角色提供服務帳戶功能，您不再需要為工作節點IAM角色提供擴展權限，以便該節點上的Pod可以調用AWS API。 您可以將IAM權限限定在服務帳戶上，只有使用該服務帳戶的Pod才能訪問這些權限。 此功能還消除了對諸如kiam或kube2iam之類的第三方解決方案的需求。 憑證隔離 (Credential isolation ) - 容器只能檢索與其所屬的服務帳戶關聯的IAM角色的憑據。 容器永遠無法訪問用於屬於另一個容器的另一個容器的憑據。 可審核性 ( Auditability ) - 可通過CloudTrail獲得訪問和事件日誌，以幫助確保進行追溯審核。 2014年，AWS Identity and Access Management添加了對使用OpenID Connect（OIDC）的聯合身份的支持。通過此功能，您可以使用受支持的身份提供者對AWS API調用進行身份驗證，並接收有效的OIDC JSON Web令牌（JWT）。您可以將此令牌傳遞給AWS STS AssumeRoleWithWebIdentity API操作，並接收IAM臨時角色憑證。您可以使用這些憑證與任何AWS服務（例如Amazon S3和DynamoDB）進行交互。
 Kubernetes長期以來一直將服務帳戶用作其內部身份系統。 Pods可以使用僅Kubernetes API服務器可以驗證的自動安裝的令牌（非OIDC JWT）向Kubernetes API服務器進行身份驗證。這些舊版服務帳戶令牌不會過期，並且旋轉簽名密鑰是一個困難的過程。在Kubernetes版本1.12中，添加了對新ProjectedServiceAccountToken功能的支持，該功能是OIDC JSON Web令牌，它還包含服務帳戶標識，並支持可配置的受眾。
 Amazon EKS現在在每個集群上託管一個公共OIDC發現終端節點，其中包含ProjectedServiceAccountToken JSON Web令牌的簽名密鑰，因此外部系統（例如IAM）可以驗證和接受Kubernetes發行的OIDC令牌。
-Using a supported AWS SDK The containers in your pods must use an AWS SDK version that supports assuming an IAM role via an OIDC web identity token file."><meta itemprop="datePublished" content="2020-04-22T18:00:00+00:00" />
-<meta itemprop="dateModified" content="2020-04-22T18:00:00+00:00" />
-<meta itemprop="wordCount" content="1064"><meta itemprop="image" content="https://blog.neilkuan.click/img/2020-04-22-AWS-IAM-Role-For-EKS-Service-Account.png" />
-<meta itemprop="keywords" content="" />
+Using a supported AWS SDK The containers in your pods must use an AWS SDK version that supports assuming an IAM role via an OIDC web identity token file.">
+  <meta itemprop="datePublished" content="2020-04-22T18:00:00+00:00">
+  <meta itemprop="dateModified" content="2020-04-22T18:00:00+00:00">
+  <meta itemprop="wordCount" content="1064">
+  <meta itemprop="image" content="https://blog.neilkuan.click/img/2020-04-22-AWS-IAM-Role-For-EKS-Service-Account.png">
 
   
 </head>
@@ -511,7 +516,7 @@ You must also create a role for your service accounts to use before you associat
     </main><footer class="container p-6 mx-auto flex justify-between items-center">
   <span class="text-sm font-light">
     
-    © 2019-2023 Neil Kuan @neil_kuan.
+    © 2019-2024 Neil Kuan @neil_kuan.
     
   </span>
   <span onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="p-1 cursor-pointer">
@@ -558,6 +563,9 @@ You must also create a role for your service accounts to use before you associat
 
 
 <script src="https://blog.neilkuan.click/js/scripts.min.js"></script>
+
+
+  
 
 
 

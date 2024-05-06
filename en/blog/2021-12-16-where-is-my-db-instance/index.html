@@ -13,7 +13,7 @@
 首先我在該 region (us-east-1)，打開了 AWS CloudShell (當前支持 region )。 接著我透過aws rds describe-db-clusters 取得所有的 DB Clusters，以下是我的結果。
 $ aws rds describe-db-clusters { &#34;DBClusters&#34;: [ { &#34;AllocatedStorage&#34;: 1, &#34;AvailabilityZones&#34;: [ &#34;us-east-1c&#34;, &#34;us-east-1d&#34;, &#34;us-east-1b&#34; ], &#34;BackupRetentionPeriod&#34;: 1, &#34;DBClusterIdentifier&#34;: &#34;docdb-test&#34;, &#34;DBClusterParameterGroup&#34;: &#34;default.docdb4.0&#34;, &#34;DBSubnetGroup&#34;: &#34;default&#34;, &#34;Status&#34;: &#34;available&#34;, &#34;EarliestRestorableTime&#34;: &#34;.....&#34;, &#34;Endpoint&#34;: &#34;docdb-test.cluster-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, &#34;ReaderEndpoint&#34;: &#34;docdb-test.cluster-ro-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, # endpoint 的結尾是 docdb 是 27017 &lt;-------- &#34;MultiAZ&#34;: true, &#34;Engine&#34;: &#34;docdb&#34;, &#34;EngineVersion&#34;: &#34;4." />
   <meta name="author" content="NeilKuan" />
-  <meta name="generator" content="Hugo 0.123.8"><link
+  <meta name="generator" content="Hugo 0.125.6"><link
     rel="stylesheet"
     href="https://blog.neilkuan.click/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
     integrity="sha256-j/jNr9OlhxT2QI7kxPl3ABgHJMW9SUCdvNkeHTfi5bw="
@@ -21,32 +21,37 @@ $ aws rds describe-db-clusters { &#34;DBClusters&#34;: [ { &#34;AllocatedStorage
   
   
 
-  <meta property="og:title" content="Where is my db-instance ?!" />
-<meta property="og:description" content="前言：
+  <meta property="og:url" content="https://blog.neilkuan.click/en/blog/2021-12-16-where-is-my-db-instance/">
+  <meta property="og:site_name" content=" Neil Kuan">
+  <meta property="og:title" content="Where is my db-instance ?!">
+  <meta property="og:description" content="前言：
 有一天， 我的同事詢問我：『為什麼在部門內的帳號 RDS console 出現 2 個 DB Instances 以及 1 個 DB Clusters， 但是點進去Databaes Console 卻什麼也沒有？！』 於是把尋找 『不存在的 db instance 之旅』過程記錄了下來。
 首先我在該 region (us-east-1)，打開了 AWS CloudShell (當前支持 region )。 接著我透過aws rds describe-db-clusters 取得所有的 DB Clusters，以下是我的結果。
-$ aws rds describe-db-clusters { &#34;DBClusters&#34;: [ { &#34;AllocatedStorage&#34;: 1, &#34;AvailabilityZones&#34;: [ &#34;us-east-1c&#34;, &#34;us-east-1d&#34;, &#34;us-east-1b&#34; ], &#34;BackupRetentionPeriod&#34;: 1, &#34;DBClusterIdentifier&#34;: &#34;docdb-test&#34;, &#34;DBClusterParameterGroup&#34;: &#34;default.docdb4.0&#34;, &#34;DBSubnetGroup&#34;: &#34;default&#34;, &#34;Status&#34;: &#34;available&#34;, &#34;EarliestRestorableTime&#34;: &#34;.....&#34;, &#34;Endpoint&#34;: &#34;docdb-test.cluster-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, &#34;ReaderEndpoint&#34;: &#34;docdb-test.cluster-ro-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, # endpoint 的結尾是 docdb 是 27017 &lt;-------- &#34;MultiAZ&#34;: true, &#34;Engine&#34;: &#34;docdb&#34;, &#34;EngineVersion&#34;: &#34;4." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.neilkuan.click/en/blog/2021-12-16-where-is-my-db-instance/" /><meta property="og:image" content="https://blog.neilkuan.click/img/2021-12-16-where-is-my-db-instance/1.png" /><meta property="article:section" content="blog" />
-<meta property="article:published_time" content="2021-12-16T00:00:00+00:00" />
-<meta property="article:modified_time" content="2021-12-16T00:00:00+00:00" />
+$ aws rds describe-db-clusters { &#34;DBClusters&#34;: [ { &#34;AllocatedStorage&#34;: 1, &#34;AvailabilityZones&#34;: [ &#34;us-east-1c&#34;, &#34;us-east-1d&#34;, &#34;us-east-1b&#34; ], &#34;BackupRetentionPeriod&#34;: 1, &#34;DBClusterIdentifier&#34;: &#34;docdb-test&#34;, &#34;DBClusterParameterGroup&#34;: &#34;default.docdb4.0&#34;, &#34;DBSubnetGroup&#34;: &#34;default&#34;, &#34;Status&#34;: &#34;available&#34;, &#34;EarliestRestorableTime&#34;: &#34;.....&#34;, &#34;Endpoint&#34;: &#34;docdb-test.cluster-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, &#34;ReaderEndpoint&#34;: &#34;docdb-test.cluster-ro-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, # endpoint 的結尾是 docdb 是 27017 &lt;-------- &#34;MultiAZ&#34;: true, &#34;Engine&#34;: &#34;docdb&#34;, &#34;EngineVersion&#34;: &#34;4.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2021-12-16T00:00:00+00:00">
+    <meta property="article:modified_time" content="2021-12-16T00:00:00+00:00">
+    <meta property="og:image" content="https://blog.neilkuan.click/img/2021-12-16-where-is-my-db-instance/1.png">
 
-
-  <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://blog.neilkuan.click/img/2021-12-16-where-is-my-db-instance/1.png" /><meta name="twitter:title" content="Where is my db-instance ?!"/>
+  <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blog.neilkuan.click/img/2021-12-16-where-is-my-db-instance/1.png"><meta name="twitter:title" content="Where is my db-instance ?!">
 <meta name="twitter:description" content="前言：
 有一天， 我的同事詢問我：『為什麼在部門內的帳號 RDS console 出現 2 個 DB Instances 以及 1 個 DB Clusters， 但是點進去Databaes Console 卻什麼也沒有？！』 於是把尋找 『不存在的 db instance 之旅』過程記錄了下來。
 首先我在該 region (us-east-1)，打開了 AWS CloudShell (當前支持 region )。 接著我透過aws rds describe-db-clusters 取得所有的 DB Clusters，以下是我的結果。
-$ aws rds describe-db-clusters { &#34;DBClusters&#34;: [ { &#34;AllocatedStorage&#34;: 1, &#34;AvailabilityZones&#34;: [ &#34;us-east-1c&#34;, &#34;us-east-1d&#34;, &#34;us-east-1b&#34; ], &#34;BackupRetentionPeriod&#34;: 1, &#34;DBClusterIdentifier&#34;: &#34;docdb-test&#34;, &#34;DBClusterParameterGroup&#34;: &#34;default.docdb4.0&#34;, &#34;DBSubnetGroup&#34;: &#34;default&#34;, &#34;Status&#34;: &#34;available&#34;, &#34;EarliestRestorableTime&#34;: &#34;.....&#34;, &#34;Endpoint&#34;: &#34;docdb-test.cluster-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, &#34;ReaderEndpoint&#34;: &#34;docdb-test.cluster-ro-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, # endpoint 的結尾是 docdb 是 27017 &lt;-------- &#34;MultiAZ&#34;: true, &#34;Engine&#34;: &#34;docdb&#34;, &#34;EngineVersion&#34;: &#34;4."/>
+$ aws rds describe-db-clusters { &#34;DBClusters&#34;: [ { &#34;AllocatedStorage&#34;: 1, &#34;AvailabilityZones&#34;: [ &#34;us-east-1c&#34;, &#34;us-east-1d&#34;, &#34;us-east-1b&#34; ], &#34;BackupRetentionPeriod&#34;: 1, &#34;DBClusterIdentifier&#34;: &#34;docdb-test&#34;, &#34;DBClusterParameterGroup&#34;: &#34;default.docdb4.0&#34;, &#34;DBSubnetGroup&#34;: &#34;default&#34;, &#34;Status&#34;: &#34;available&#34;, &#34;EarliestRestorableTime&#34;: &#34;.....&#34;, &#34;Endpoint&#34;: &#34;docdb-test.cluster-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, &#34;ReaderEndpoint&#34;: &#34;docdb-test.cluster-ro-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, # endpoint 的結尾是 docdb 是 27017 &lt;-------- &#34;MultiAZ&#34;: true, &#34;Engine&#34;: &#34;docdb&#34;, &#34;EngineVersion&#34;: &#34;4.">
 
+  
   <meta itemprop="name" content="Where is my db-instance ?!">
-<meta itemprop="description" content="前言：
+  <meta itemprop="description" content="前言：
 有一天， 我的同事詢問我：『為什麼在部門內的帳號 RDS console 出現 2 個 DB Instances 以及 1 個 DB Clusters， 但是點進去Databaes Console 卻什麼也沒有？！』 於是把尋找 『不存在的 db instance 之旅』過程記錄了下來。
 首先我在該 region (us-east-1)，打開了 AWS CloudShell (當前支持 region )。 接著我透過aws rds describe-db-clusters 取得所有的 DB Clusters，以下是我的結果。
-$ aws rds describe-db-clusters { &#34;DBClusters&#34;: [ { &#34;AllocatedStorage&#34;: 1, &#34;AvailabilityZones&#34;: [ &#34;us-east-1c&#34;, &#34;us-east-1d&#34;, &#34;us-east-1b&#34; ], &#34;BackupRetentionPeriod&#34;: 1, &#34;DBClusterIdentifier&#34;: &#34;docdb-test&#34;, &#34;DBClusterParameterGroup&#34;: &#34;default.docdb4.0&#34;, &#34;DBSubnetGroup&#34;: &#34;default&#34;, &#34;Status&#34;: &#34;available&#34;, &#34;EarliestRestorableTime&#34;: &#34;.....&#34;, &#34;Endpoint&#34;: &#34;docdb-test.cluster-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, &#34;ReaderEndpoint&#34;: &#34;docdb-test.cluster-ro-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, # endpoint 的結尾是 docdb 是 27017 &lt;-------- &#34;MultiAZ&#34;: true, &#34;Engine&#34;: &#34;docdb&#34;, &#34;EngineVersion&#34;: &#34;4."><meta itemprop="datePublished" content="2021-12-16T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2021-12-16T00:00:00+00:00" />
-<meta itemprop="wordCount" content="161"><meta itemprop="image" content="https://blog.neilkuan.click/img/2021-12-16-where-is-my-db-instance/1.png" />
-<meta itemprop="keywords" content="" />
+$ aws rds describe-db-clusters { &#34;DBClusters&#34;: [ { &#34;AllocatedStorage&#34;: 1, &#34;AvailabilityZones&#34;: [ &#34;us-east-1c&#34;, &#34;us-east-1d&#34;, &#34;us-east-1b&#34; ], &#34;BackupRetentionPeriod&#34;: 1, &#34;DBClusterIdentifier&#34;: &#34;docdb-test&#34;, &#34;DBClusterParameterGroup&#34;: &#34;default.docdb4.0&#34;, &#34;DBSubnetGroup&#34;: &#34;default&#34;, &#34;Status&#34;: &#34;available&#34;, &#34;EarliestRestorableTime&#34;: &#34;.....&#34;, &#34;Endpoint&#34;: &#34;docdb-test.cluster-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, &#34;ReaderEndpoint&#34;: &#34;docdb-test.cluster-ro-xxxxxxxxxxx.us-east-1.docdb.amazonaws.com&#34;, # endpoint 的結尾是 docdb 是 27017 &lt;-------- &#34;MultiAZ&#34;: true, &#34;Engine&#34;: &#34;docdb&#34;, &#34;EngineVersion&#34;: &#34;4.">
+  <meta itemprop="datePublished" content="2021-12-16T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2021-12-16T00:00:00+00:00">
+  <meta itemprop="wordCount" content="161">
+  <meta itemprop="image" content="https://blog.neilkuan.click/img/2021-12-16-where-is-my-db-instance/1.png">
 
   
 </head>
@@ -395,7 +400,7 @@ $ aws rds describe-db-clusters { &#34;DBClusters&#34;: [ { &#34;AllocatedStorage
     </main><footer class="container p-6 mx-auto flex justify-between items-center">
   <span class="text-sm font-light">
     
-    © 2019-2023 Neil Kuan @neil_kuan.
+    © 2019-2024 Neil Kuan @neil_kuan.
     
   </span>
   <span onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="p-1 cursor-pointer">
@@ -442,6 +447,9 @@ $ aws rds describe-db-clusters { &#34;DBClusters&#34;: [ { &#34;AllocatedStorage
 
 
 <script src="https://blog.neilkuan.click/js/scripts.min.js"></script>
+
+
+  
 
 
 

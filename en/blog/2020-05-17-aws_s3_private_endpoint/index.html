@@ -16,7 +16,7 @@ Open Amazon VPC console .
 使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。 這邊先幫我記下 VPC 的 ID 等等較好操作。
 Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint 點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID. 由於我選擇 region 為 Tokyo 所以 ,service name 為 com." />
   <meta name="author" content="NeilKuan" />
-  <meta name="generator" content="Hugo 0.123.8"><link
+  <meta name="generator" content="Hugo 0.125.6"><link
     rel="stylesheet"
     href="https://blog.neilkuan.click/css/styles.min.8ff8cdafd3a58714f6408ee4c4f97700180724c5bd49409dbcd91e1d37e2e5bc.css"
     integrity="sha256-j/jNr9OlhxT2QI7kxPl3ABgHJMW9SUCdvNkeHTfi5bw="
@@ -24,41 +24,46 @@ Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint �
   
   
 
-  <meta property="og:title" content="AWS S3 Private endpoint" />
-<meta property="og:description" content="原文：https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-private-connection-no-authentication/
+  <meta property="og:url" content="https://blog.neilkuan.click/en/blog/2020-05-17-aws_s3_private_endpoint/">
+  <meta property="og:site_name" content=" Neil Kuan">
+  <meta property="og:title" content="AWS S3 Private endpoint">
+  <meta property="og:description" content="原文：https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-private-connection-no-authentication/
 S3 policy 產生網站:https://awspolicygen.s3.amazonaws.com/policygen.html
 需要大量的 object 頻繁的上傳到 s3 ，又不想走外部網路時做的方式 ＶＰＣ 對S3 的endpoint 傳輸吧！！！
 Need S3 , EC2 , VPC , endpoint , route table.
 Open Amazon VPC console .
 使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。 這邊先幫我記下 VPC 的 ID 等等較好操作。
-Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint 點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID. 由於我選擇 region 為 Tokyo 所以 ,service name 為 com." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.neilkuan.click/en/blog/2020-05-17-aws_s3_private_endpoint/" /><meta property="og:image" content="https://blog.neilkuan.click/img/aws-s3-private-endpoint.png" /><meta property="article:section" content="blog" />
-<meta property="article:published_time" content="2020-05-17T10:00:00+00:00" />
-<meta property="article:modified_time" content="2020-05-17T10:00:00+00:00" />
+Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint 點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID. 由於我選擇 region 為 Tokyo 所以 ,service name 為 com.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2020-05-17T10:00:00+00:00">
+    <meta property="article:modified_time" content="2020-05-17T10:00:00+00:00">
+    <meta property="og:image" content="https://blog.neilkuan.click/img/aws-s3-private-endpoint.png">
 
-
-  <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://blog.neilkuan.click/img/aws-s3-private-endpoint.png" /><meta name="twitter:title" content="AWS S3 Private endpoint"/>
+  <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blog.neilkuan.click/img/aws-s3-private-endpoint.png"><meta name="twitter:title" content="AWS S3 Private endpoint">
 <meta name="twitter:description" content="原文：https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-private-connection-no-authentication/
 S3 policy 產生網站:https://awspolicygen.s3.amazonaws.com/policygen.html
 需要大量的 object 頻繁的上傳到 s3 ，又不想走外部網路時做的方式 ＶＰＣ 對S3 的endpoint 傳輸吧！！！
 Need S3 , EC2 , VPC , endpoint , route table.
 Open Amazon VPC console .
 使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。 這邊先幫我記下 VPC 的 ID 等等較好操作。
-Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint 點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID. 由於我選擇 region 為 Tokyo 所以 ,service name 為 com."/>
+Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint 點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID. 由於我選擇 region 為 Tokyo 所以 ,service name 為 com.">
 
+  
   <meta itemprop="name" content="AWS S3 Private endpoint">
-<meta itemprop="description" content="原文：https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-private-connection-no-authentication/
+  <meta itemprop="description" content="原文：https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-private-connection-no-authentication/
 S3 policy 產生網站:https://awspolicygen.s3.amazonaws.com/policygen.html
 需要大量的 object 頻繁的上傳到 s3 ，又不想走外部網路時做的方式 ＶＰＣ 對S3 的endpoint 傳輸吧！！！
 Need S3 , EC2 , VPC , endpoint , route table.
 Open Amazon VPC console .
 使用預設的VPC 即可，region 由你決定，但是VPC region 要和 S3 region 相同。 這邊先幫我記下 VPC 的 ID 等等較好操作。
-Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint 點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID. 由於我選擇 region 為 Tokyo 所以 ,service name 為 com."><meta itemprop="datePublished" content="2020-05-17T10:00:00+00:00" />
-<meta itemprop="dateModified" content="2020-05-17T10:00:00+00:00" />
-<meta itemprop="wordCount" content="237"><meta itemprop="image" content="https://blog.neilkuan.click/img/aws-s3-private-endpoint.png" />
-<meta itemprop="keywords" content="" />
+Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint 點選項目 AWS Service → Service Name 搜尋 S3 → VPC 選取剛剛記下的 VPC ID. 由於我選擇 region 為 Tokyo 所以 ,service name 為 com.">
+  <meta itemprop="datePublished" content="2020-05-17T10:00:00+00:00">
+  <meta itemprop="dateModified" content="2020-05-17T10:00:00+00:00">
+  <meta itemprop="wordCount" content="237">
+  <meta itemprop="image" content="https://blog.neilkuan.click/img/aws-s3-private-endpoint.png">
 
   
 </head>
@@ -428,7 +433,7 @@ Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint �
     </main><footer class="container p-6 mx-auto flex justify-between items-center">
   <span class="text-sm font-light">
     
-    © 2019-2023 Neil Kuan @neil_kuan.
+    © 2019-2024 Neil Kuan @neil_kuan.
     
   </span>
   <span onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="p-1 cursor-pointer">
@@ -475,6 +480,9 @@ Create Endpoint. → Virtual Private Cloud &gt; Endpoints &gt; cretae endpoint �
 
 
 <script src="https://blog.neilkuan.click/js/scripts.min.js"></script>
+
+
+  
 
 
 

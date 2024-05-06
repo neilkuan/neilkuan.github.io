@@ -4,10 +4,17 @@
     <title> Neil Kuan</title>
     <link>https://blog.neilkuan.click/en/</link>
     <description>Recent content on  Neil Kuan</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 20 Aug 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 06 May 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.neilkuan.click/en/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Helm 101</title>
+      <link>https://blog.neilkuan.click/en/blog/2024-05-06-helm-101/</link>
+      <pubDate>Mon, 06 May 2024 00:00:00 +0000</pubDate>
+      <guid>https://blog.neilkuan.click/en/blog/2024-05-06-helm-101/</guid>
+      <description>versions Using helm cli version &amp;ldquo;v3.13.1&amp;rdquo; Orbstack kubernetes enabled &amp;ldquo;1.5.1&amp;rdquo; Install nginx chart into default namespace helm repo add bitnami https://charts.bitnami.com/bitnami helm install nginx bitnami/nginx --namespace default List all release in that namespace helm ls -n default NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERSION nginx default 1 2023-11-09 11:20:06.581867 +0800 CST deployed nginx-15.4.0 1.25.3 ### List all namespace helm released helm ls -A NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERSION nginx default 1 2023-11-09 11:20:06.</description>
+    </item>
     <item>
       <title>Building Docker images with Kaniko !!!</title>
       <link>https://blog.neilkuan.click/en/blog/2020-08-04-building-docker-images-with-kaniko/</link>
