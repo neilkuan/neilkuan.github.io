@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage"><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="icon" href="/favicon.ico">
+
+  <title>
+  New 2025 Amazon ECS Managed Instance Support -  Neil Kuan
+  </title>
+  <meta name="description" content="sources:
+https://aws.amazon.com/tw/about-aws/whats-new/2025/09/amazon-ecs-managed-instances/ https://aws.amazon.com/tw/about-aws/whats-new/2025/12/amazon-ecs-managed-instances-ec2-spot-instances/ Fast Nginx Task Startup with ECS Managed Instances 使用 ECS Managed Instances 快速啟動 Nginx 任務 This project demonstrates how to use Amazon ECS Managed Instances with Terraform to quickly bring up an ECS service running Nginx. 本專案展示如何使用 Terraform 搭配 Amazon ECS Managed Instances 快速啟動運行 Nginx 的 ECS 服務。
+We also measure how long it takes from requesting a single task to the moment the application starts logging — roughly 40 seconds end-to-end." /><meta name="generator" content="Hugo 0.115.0"><link
+    rel="stylesheet"
+    href="https://blog.neilkuan.click/css/styles.min.eb7fe02195897f2fd20b6dcb5f80cda854ce0b58dcf3a28f1d23166a1eaaded4.css"
+    integrity="sha256-63/gIZWJfy/SC23LX4DNqFTOC1jc86KPHSMWah6q3tQ="
+  />
+  
+  
+
+  <meta property="og:title" content="New 2025 Amazon ECS Managed Instance Support" />
+<meta property="og:description" content="sources:
+https://aws.amazon.com/tw/about-aws/whats-new/2025/09/amazon-ecs-managed-instances/ https://aws.amazon.com/tw/about-aws/whats-new/2025/12/amazon-ecs-managed-instances-ec2-spot-instances/ Fast Nginx Task Startup with ECS Managed Instances 使用 ECS Managed Instances 快速啟動 Nginx 任務 This project demonstrates how to use Amazon ECS Managed Instances with Terraform to quickly bring up an ECS service running Nginx. 本專案展示如何使用 Terraform 搭配 Amazon ECS Managed Instances 快速啟動運行 Nginx 的 ECS 服務。
+We also measure how long it takes from requesting a single task to the moment the application starts logging — roughly 40 seconds end-to-end." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.neilkuan.click/blog/2026-01-17-ecs-managed-instance/" /><meta property="og:image" content="https://blog.neilkuan.click/img/2026-01-17-ecs-managed-instance/gpt.png" /><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2026-01-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2026-01-17T00:00:00+00:00" />
+
+  <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://blog.neilkuan.click/img/2026-01-17-ecs-managed-instance/gpt.png"/>
+
+<meta name="twitter:title" content="New 2025 Amazon ECS Managed Instance Support"/>
+<meta name="twitter:description" content="sources:
+https://aws.amazon.com/tw/about-aws/whats-new/2025/09/amazon-ecs-managed-instances/ https://aws.amazon.com/tw/about-aws/whats-new/2025/12/amazon-ecs-managed-instances-ec2-spot-instances/ Fast Nginx Task Startup with ECS Managed Instances 使用 ECS Managed Instances 快速啟動 Nginx 任務 This project demonstrates how to use Amazon ECS Managed Instances with Terraform to quickly bring up an ECS service running Nginx. 本專案展示如何使用 Terraform 搭配 Amazon ECS Managed Instances 快速啟動運行 Nginx 的 ECS 服務。
+We also measure how long it takes from requesting a single task to the moment the application starts logging — roughly 40 seconds end-to-end."/>
+
+  <meta itemprop="name" content="New 2025 Amazon ECS Managed Instance Support">
+<meta itemprop="description" content="sources:
+https://aws.amazon.com/tw/about-aws/whats-new/2025/09/amazon-ecs-managed-instances/ https://aws.amazon.com/tw/about-aws/whats-new/2025/12/amazon-ecs-managed-instances-ec2-spot-instances/ Fast Nginx Task Startup with ECS Managed Instances 使用 ECS Managed Instances 快速啟動 Nginx 任務 This project demonstrates how to use Amazon ECS Managed Instances with Terraform to quickly bring up an ECS service running Nginx. 本專案展示如何使用 Terraform 搭配 Amazon ECS Managed Instances 快速啟動運行 Nginx 的 ECS 服務。
+We also measure how long it takes from requesting a single task to the moment the application starts logging — roughly 40 seconds end-to-end."><meta itemprop="datePublished" content="2026-01-17T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2026-01-17T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1663"><meta itemprop="image" content="https://blog.neilkuan.click/img/2026-01-17-ecs-managed-instance/gpt.png">
+<meta itemprop="keywords" content="" />
+
+  
+</head>
+<body class="dark:bg-gray-800 dark:text-white relative flex flex-col min-h-screen"><header class="container flex justify-between md:justify-between gap-4 flex-wrap p-6 mx-auto relative">
+  <a href="https://blog.neilkuan.click/" class="capitalize font-extrabold text-2xl">
+    
+     Neil Kuan
+    
+  </a>
+  <button class="mobile-menu-button md:hidden">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <line x1="4" y1="8" x2="20" y2="8" />
+      <line x1="4" y1="16" x2="20" y2="16" />
+    </svg>
+  </button>
+  <ul class="mobile-menu absolute z-10 px-6 pb-6 md:p-0 top-full left-0 w-full md:w-auto md:relative hidden md:flex flex-col md:flex-row items-end md:items-center gap-4 lg:gap-6 bg-white dark:bg-gray-800">
+
+    
+    <li><a href="/blog">Blog</a></li>
+    
+    <li><a href="/about">About</a></li>
+    
+
+    
+
+    
+    <li class="grid place-items-center">
+      <span class="open-search inline-block cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <circle cx="10" cy="10" r="7" />
+          <line x1="21" y1="21" x2="15" y2="15" />
+        </svg>
+      </span>
+    </li>
+    
+
+    
+    <li class="grid place-items-center">
+      <span class="toggle-dark-mode inline-block cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <circle cx="12" cy="12" r="3" />
+          <line x1="12" y1="5" x2="12" y2="5.01" />
+          <line x1="17" y1="7" x2="17" y2="7.01" />
+          <line x1="19" y1="12" x2="19" y2="12.01" />
+          <line x1="17" y1="17" x2="17" y2="17.01" />
+          <line x1="12" y1="19" x2="12" y2="19.01" />
+          <line x1="7" y1="17" x2="7" y2="17.01" />
+          <line x1="5" y1="12" x2="5" y2="12.01" />
+          <line x1="7" y1="7" x2="7" y2="7.01" />
+        </svg>
+      </span>
+    </li>
+    
+  </ul>
+</header>
+<main class="flex-1">
+  
+  
+
+  
+  <div class="relative max-w-5xl mx-auto px-4">
+    <img src="/img/2026-01-17-ecs-managed-instance/gpt.png" class="rounded-lg shadow-sm w-full object-contain" />
+    
+    <div class="absolute top-4 right-8 rounded shadow bg-white text-gray-900 dark:bg-gray-900 dark:text-white px-2 py-0.5">
+      
+  
+    January 17, 2026
+  
+
+
+    </div>
+    
+  </div>
+  
+
+  <article class="prose lg:prose-lg mx-auto my-8 dark:prose-dark px-4">
+
+    <h1 class="text-2xl font-bold mb-2">New 2025 Amazon ECS Managed Instance Support</h1>
+    
+    <h5 class="text-sm flex items-center flex-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" class="mr-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <rect x="4" y="5" width="16" height="16" rx="2" />
+        <line x1="16" y1="3" x2="16" y2="7" />
+        <line x1="8" y1="3" x2="8" y2="7" />
+        <line x1="4" y1="11" x2="20" y2="11" />
+        <rect x="8" y="15" width="2" height="2" />
+      </svg>
+      Posted on 
+  
+    January 17, 2026
+  
+
+
+      
+        &nbsp;&bull;&nbsp;
+      
+      <svg xmlns="http://www.w3.org/2000/svg" class="mr-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <circle cx="12" cy="12" r="9" />
+        <polyline points="12 7 12 12 15 15" />
+      </svg>
+      8&nbsp;minutes
+      &nbsp;&bull;
+      <svg xmlns="http://www.w3.org/2000/svg" class="mx-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
+        <path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
+        <line x1="3" y1="6" x2="3" y2="19" />
+        <line x1="12" y1="6" x2="12" y2="19" />
+        <line x1="21" y1="6" x2="21" y2="19" />
+      </svg>
+      1663&nbsp;words
+      
+    </h5>
+    
+
+    
+
+    <p>sources:</p>
+<ul>
+<li><a href="https://aws.amazon.com/tw/about-aws/whats-new/2025/09/amazon-ecs-managed-instances/" target="_blank" rel="noopener">https://aws.amazon.com/tw/about-aws/whats-new/2025/09/amazon-ecs-managed-instances/</a>
+</li>
+<li><a href="https://aws.amazon.com/tw/about-aws/whats-new/2025/12/amazon-ecs-managed-instances-ec2-spot-instances/" target="_blank" rel="noopener">https://aws.amazon.com/tw/about-aws/whats-new/2025/12/amazon-ecs-managed-instances-ec2-spot-instances/</a>
+</li>
+</ul>
+<h2 id="fast-nginx-task-startup-with-ecs-managed-instances">Fast Nginx Task Startup with ECS Managed Instances</h2>
+<h2 id="使用-ecs-managed-instances-快速啟動-nginx-任務">使用 ECS Managed Instances 快速啟動 Nginx 任務</h2>
+<p>This project demonstrates how to use <strong>Amazon ECS Managed Instances</strong> with Terraform to quickly bring up an ECS service running Nginx.
+本專案展示如何使用 Terraform 搭配 <strong>Amazon ECS Managed Instances</strong> 快速啟動運行 Nginx 的 ECS 服務。</p>
+<p>We also measure how long it takes from requesting a single task to the moment the application starts logging — roughly <strong>40 seconds end-to-end</strong>.
+我們也測量了從請求單一任務到應用程式開始記錄日誌所需的時間 — 端到端大約 <strong>40 秒</strong>。</p>
+<ul>
+<li>
+<p><strong>Why ECS Managed Instances are interesting and useful</strong></p>
+</li>
+<li>
+<p><strong>為什麼 ECS Managed Instances 值得關注且實用</strong></p>
+</li>
+<li>
+<p><strong>What this Terraform example is doing at a high level</strong></p>
+</li>
+<li>
+<p><strong>這個 Terraform 範例在高層次上做了什麼</strong></p>
+</li>
+<li>
+<p><strong>Measured time from &ldquo;no instances&rdquo; to &ldquo;first task running Nginx&rdquo;</strong></p>
+</li>
+<li>
+<p><strong>測量從「無實例」到「第一個 Nginx 任務運行」的時間</strong></p>
+</li>
+</ul>
+<hr>
+<h2 id="why-care-about-ecs-managed-instances">Why Care About ECS Managed Instances?</h2>
+<h2 id="為什麼要關心-ecs-managed-instances">為什麼要關心 ECS Managed Instances？</h2>
+<p>When running workloads (tasks / services) on ECS, we typically think in terms of two classic options:
+當在 ECS 上運行工作負載（任務/服務）時，我們通常會想到兩種經典選項：</p>
+<ul>
+<li>
+<p><strong>ECS on EC2</strong>: You manage Auto Scaling Groups, lifecycle, capacity, patching, etc.</p>
+</li>
+<li>
+<p><strong>ECS on EC2</strong>：您需要自行管理 Auto Scaling Groups、生命週期、容量、修補程式等。</p>
+</li>
+<li>
+<p><strong>ECS on Fargate</strong>: No EC2 management, but higher per-unit cost and some limitations on supported sizes.</p>
+</li>
+<li>
+<p><strong>ECS on Fargate</strong>：無需管理 EC2，但單位成本較高且支援的規格有一些限制。</p>
+</li>
+</ul>
+<p><strong>ECS Managed Instances</strong> sit somewhere in between:
+<strong>ECS Managed Instances</strong> 介於兩者之間：</p>
+<ul>
+<li>
+<p>You still use EC2 instances (so you can leverage Graviton, Spot, flexible instance families, etc.).</p>
+</li>
+<li>
+<p>您仍然使用 EC2 實例（因此可以利用 Graviton、Spot、彈性實例系列等）。</p>
+</li>
+<li>
+<p>But you <strong>don&rsquo;t manage ASGs yourself</strong>. ECS uses a capacity provider to manage the EC2 instances for you — essentially &ldquo;auto-managed EC2 capacity powered by ECS&rdquo;.</p>
+</li>
+<li>
+<p>但您<strong>不需要自己管理 ASG</strong>。ECS 使用容量提供者為您管理 EC2 實例 — 本質上是「由 ECS 驅動的自動管理 EC2 容量」。</p>
+</li>
+</ul>
+<p>For SREs/platform teams, this means:
+對於 SRE/平台團隊來說，這意味著：</p>
+<ul>
+<li>
+<p>You define a <strong>pool of instances by attributes (instance requirements)</strong>, e.g. ARM architecture, 2 vCPUs, 4–6 GB memory, etc.</p>
+</li>
+<li>
+<p>您可以透過<strong>屬性（實例需求）定義一組實例池</strong>，例如 ARM 架構、2 個 vCPU、4-6 GB 記憶體等。</p>
+</li>
+<li>
+<p>You don&rsquo;t maintain ASGs and scaling policies directly; instead, you use an <strong>ECS capacity provider strategy</strong> to select capacity sources.</p>
+</li>
+<li>
+<p>您不需要直接維護 ASG 和擴展策略；相反，您使用 <strong>ECS 容量提供者策略</strong>來選擇容量來源。</p>
+</li>
+<li>
+<p>With CloudWatch Logs and Container Insights, the operational experience is close to Fargate, but the cost and flexibility look much more like EC2.</p>
+</li>
+<li>
+<p>透過 CloudWatch Logs 和 Container Insights，操作體驗接近 Fargate，但成本和彈性則更像 EC2。</p>
+</li>
+</ul>
+<hr>
+<h2 id="terraform-example-architecture-overview">Terraform Example: Architecture Overview</h2>
+<h2 id="terraform-範例架構概述">Terraform 範例：架構概述</h2>
+<h3 id="demo-repo-httpsgithubcomneilkuanecs-managed-instance-issue">Demo Repo: <a href="https://github.com" target="_blank" rel="noopener">https://github.com</a>
+:neilkuan/ecs-managed-instance-issue</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com:neilkuan/ecs-managed-instance-issue
+</span></span></code></pre></div><p>The <code>main.tf</code> file wires everything together in <code>ap-east-2</code>. At a high level it does the following:
+<code>main.tf</code> 檔案在 <code>ap-east-2</code> 區域將所有元件串接在一起。在高層次上，它執行以下操作：</p>
+<ul>
+<li>
+<p><strong>Provider and Version Requirements</strong></p>
+</li>
+<li>
+<p><strong>Provider 和版本需求</strong></p>
+<ul>
+<li>Uses the <code>hashicorp/aws</code> provider, version <code>&gt;= 6.25.0</code>, to support the <code>managed_instances_provider</code> configuration.</li>
+<li>使用 <code>hashicorp/aws</code> provider，版本 <code>&gt;= 6.25.0</code>，以支援 <code>managed_instances_provider</code> 設定。</li>
+</ul>
+</li>
+<li>
+<p><strong>Networking and Security Groups</strong></p>
+</li>
+<li>
+<p><strong>網路和安全群組</strong></p>
+<ul>
+<li>
+<p>Uses <code>data &quot;aws_subnets&quot;</code> to fetch private subnets from an existing VPC.</p>
+</li>
+<li>
+<p>使用 <code>data &quot;aws_subnets&quot;</code> 從現有 VPC 中取得私有子網路。</p>
+</li>
+<li>
+<p>Creates two security groups:</p>
+</li>
+<li>
+<p>建立兩個安全群組：</p>
+<ul>
+<li>
+<p><code>ecs_instances</code>: for EC2 instances, allowing outbound traffic.</p>
+</li>
+<li>
+<p><code>ecs_instances</code>：用於 EC2 實例，允許出站流量。</p>
+</li>
+<li>
+<p><code>ecs_tasks</code>: for ECS tasks, allowing inbound HTTP (port 80/tcp) so requests can reach Nginx.</p>
+</li>
+<li>
+<p><code>ecs_tasks</code>：用於 ECS 任務，允許入站 HTTP（連接埠 80/tcp），以便請求可以到達 Nginx。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>IAM Roles and Instance Profile</strong></p>
+</li>
+<li>
+<p><strong>IAM 角色和實例設定檔</strong></p>
+<ul>
+<li>
+<p><code>ecs_infrastructure_role</code>: used by the ECS infrastructure (Managed Instances), attached with:</p>
+</li>
+<li>
+<p><code>ecs_infrastructure_role</code>：由 ECS 基礎設施（Managed Instances）使用，附加：</p>
+<ul>
+<li><code>arn:aws:iam::aws:policy/AmazonECSInfrastructureRolePolicyForManagedInstances</code>.</li>
+<li><code>arn:aws:iam::aws:policy/AmazonECSInfrastructureRolePolicyForManagedInstances</code>。</li>
+</ul>
+</li>
+<li>
+<p><code>ecs_instance_role</code>: used by EC2 instances, attached with:</p>
+</li>
+<li>
+<p><code>ecs_instance_role</code>：由 EC2 實例使用，附加：</p>
+<ul>
+<li><code>AmazonEC2ContainerServiceforEC2Role</code></li>
+<li><code>AmazonEC2ContainerServiceforEC2Role</code></li>
+</ul>
+</li>
+<li>
+<p><code>ecs_task_execution_role</code>: ECS task execution role, attached with:</p>
+</li>
+<li>
+<p><code>ecs_task_execution_role</code>：ECS 任務執行角色，附加：</p>
+<ul>
+<li><code>AmazonECSTaskExecutionRolePolicy</code> (image pulls, logging, etc.).</li>
+<li><code>AmazonECSTaskExecutionRolePolicy</code>（映像檔拉取、日誌記錄等）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>ECS Cluster and Capacity Provider</strong></p>
+</li>
+<li>
+<p><strong>ECS 叢集和容量提供者</strong></p>
+<ul>
+<li>
+<p>Creates an ECS cluster: <code>managed-instances-cluster</code>.</p>
+</li>
+<li>
+<p>建立 ECS 叢集：<code>managed-instances-cluster</code>。</p>
+</li>
+<li>
+<p>Creates a capacity provider <code>managed-instances-cp</code> using <code>managed_instances_provider</code>:</p>
+</li>
+<li>
+<p>使用 <code>managed_instances_provider</code> 建立容量提供者 <code>managed-instances-cp</code>：</p>
+<ul>
+<li>
+<p>Sets <code>infrastructure_role_arn</code> and <code>instance_launch_template</code>.</p>
+</li>
+<li>
+<p>設定 <code>infrastructure_role_arn</code> 和 <code>instance_launch_template</code>。</p>
+</li>
+<li>
+<p>Uses <code>instance_requirements</code> to define the desired EC2 pool:</p>
+</li>
+<li>
+<p>使用 <code>instance_requirements</code> 定義所需的 EC2 池：</p>
+<ul>
+<li>
+<p>vCPU between 2–4, memory between 3–6 GiB.</p>
+</li>
+<li>
+<p>vCPU 介於 2-4 之間，記憶體介於 3-6 GiB 之間。</p>
+</li>
+<li>
+<p><code>cpu_manufacturers = [&quot;amazon-web-services&quot;]</code> to prefer Graviton (e.g. t4g, c7g, m7g).</p>
+</li>
+<li>
+<p><code>cpu_manufacturers = [&quot;amazon-web-services&quot;]</code> 以優先使用 Graviton（例如 t4g、c7g、m7g）。</p>
+</li>
+<li>
+<p>Excludes very small instance types (<code>t4g.nano</code>, <code>t4g.micro</code>, <code>t4g.small</code>).</p>
+</li>
+<li>
+<p>排除非常小的實例類型（<code>t4g.nano</code>、<code>t4g.micro</code>、<code>t4g.small</code>）。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Configures <code>network_configuration</code> to use private subnets and the <code>ecs_instances</code> security group.</p>
+</li>
+<li>
+<p>設定 <code>network_configuration</code> 以使用私有子網路和 <code>ecs_instances</code> 安全群組。</p>
+</li>
+<li>
+<p>Defines <code>storage_configuration</code> and sets <code>monitoring = &quot;BASIC&quot;</code>.</p>
+</li>
+<li>
+<p>定義 <code>storage_configuration</code> 並設定 <code>monitoring = &quot;BASIC&quot;</code>。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Uses <code>aws_ecs_cluster_capacity_providers</code> to attach the capacity provider to the cluster and make it the default strategy.</p>
+</li>
+<li>
+<p>使用 <code>aws_ecs_cluster_capacity_providers</code> 將容量提供者附加到叢集並將其設為預設策略。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Task Definition and Nginx Service</strong></p>
+</li>
+<li>
+<p><strong>任務定義和 Nginx 服務</strong></p>
+<ul>
+<li>
+<p>Task definition <code>nginx-task</code>:</p>
+</li>
+<li>
+<p>任務定義 <code>nginx-task</code>：</p>
+<ul>
+<li>
+<p><code>network_mode = &quot;awsvpc&quot;</code> and <code>requires_compatibilities = [&quot;EC2&quot;, &quot;MANAGED_INSTANCES&quot;]</code>.</p>
+</li>
+<li>
+<p><code>network_mode = &quot;awsvpc&quot;</code> 且 <code>requires_compatibilities = [&quot;EC2&quot;, &quot;MANAGED_INSTANCES&quot;]</code>。</p>
+</li>
+<li>
+<p><code>runtime_platform</code> set to <code>LINUX</code> with <code>ARM64</code> to match Graviton instances.</p>
+</li>
+<li>
+<p><code>runtime_platform</code> 設定為 <code>LINUX</code> 搭配 <code>ARM64</code> 以匹配 Graviton 實例。</p>
+</li>
+<li>
+<p>Container image: <code>public.ecr.aws/nginx/nginx:1.27-alpine-arm64v8</code>, exposing port 80 and sending logs to CloudWatch Logs (<code>/ecs/nginx-managed-instances</code>) via <code>awslogs</code>.</p>
+</li>
+<li>
+<p>容器映像檔：<code>public.ecr.aws/nginx/nginx:1.27-alpine-arm64v8</code>，暴露連接埠 80 並透過 <code>awslogs</code> 將日誌傳送到 CloudWatch Logs（<code>/ecs/nginx-managed-instances</code>）。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>ECS service <code>nginx-service</code>:</p>
+</li>
+<li>
+<p>ECS 服務 <code>nginx-service</code>：</p>
+<ul>
+<li>
+<p><code>desired_count = 1</code> and a <code>capacity_provider_strategy</code> pointing to <code>managed-instances-cp</code>.</p>
+</li>
+<li>
+<p><code>desired_count = 1</code> 且 <code>capacity_provider_strategy</code> 指向 <code>managed-instances-cp</code>。</p>
+</li>
+<li>
+<p>Uses the same private subnets and the <code>ecs_tasks</code> security group.</p>
+</li>
+<li>
+<p>使用相同的私有子網路和 <code>ecs_tasks</code> 安全群組。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>In other words, with a single <code>terraform apply</code> you get:
+換句話說，透過單一 <code>terraform apply</code> 您可以獲得：</p>
+<ul>
+<li>
+<p>An ECS cluster backed by ECS Managed Instances.</p>
+</li>
+<li>
+<p>由 ECS Managed Instances 支撐的 ECS 叢集。</p>
+</li>
+<li>
+<p>A service that triggers ECS to spin up EC2 capacity and then launch an Nginx task.</p>
+</li>
+<li>
+<p>觸發 ECS 啟動 EC2 容量並執行 Nginx 任務的服務。</p>
+</li>
+<li>
+<p>CloudWatch Logs and basic monitoring already wired in.</p>
+</li>
+<li>
+<p>已預先設定好的 CloudWatch Logs 和基本監控。</p>
+</li>
+</ul>
+<h2 id="example-deploy-demo-infra">Example Deploy Demo Infra</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># init </span>
+</span></span><span style="display:flex;"><span>terraform init
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># apply</span>
+</span></span><span style="display:flex;"><span>terraform apply
+</span></span></code></pre></div><p><img src="/img/2026-01-17-ecs-managed-instance/0-1.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># Destroy</span>
+</span></span><span style="display:flex;"><span>terraform destroy
+</span></span></code></pre></div><hr>
+<h2 id="measuring-cold-start-from-requesting-1-task-to-nginx-logging">Measuring Cold Start: From Requesting 1 Task to Nginx Logging</h2>
+<h2 id="測量冷啟動從請求-1-個任務到-nginx-記錄日誌">測量冷啟動：從請求 1 個任務到 Nginx 記錄日誌</h2>
+<p>To understand the cold-start behavior of Managed Instances, we used a small script that continuously lists container instances in the cluster.
+為了了解 Managed Instances 的冷啟動行為，我們使用了一個小腳本持續列出叢集中的容器實例。</p>
+<h3 id="monitoring-script">Monitoring Script</h3>
+<h3 id="監控腳本">監控腳本</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>bash -c <span style="color:#f1fa8c">&#39;while true; do date &amp;&amp; aws ecs list-container-instances --cluster managed-instances-cluster;done&#39;</span>
+</span></span></code></pre></div><p>This prints the current time and the result of <code>aws ecs list-container-instances</code> every second so we can see:
+這會每秒列印當前時間和 <code>aws ecs list-container-instances</code> 的結果，讓我們可以看到：</p>
+<ul>
+<li>
+<p>When there are no EC2 instances registered to the cluster.</p>
+</li>
+<li>
+<p>叢集中何時沒有已註冊的 EC2 實例。</p>
+</li>
+<li>
+<p>When the first managed instance appears and registers with ECS.</p>
+</li>
+<li>
+<p>第一個受管實例何時出現並註冊到 ECS。</p>
+</li>
+</ul>
+<h3 id="timeline-and-results">Timeline and Results</h3>
+<h3 id="時間線和結果">時間線和結果</h3>
+<p>Here&rsquo;s the timeline from &ldquo;requesting 1 Nginx task&rdquo; to &ldquo;Nginx starting to write logs&rdquo;:
+以下是從「請求 1 個 Nginx 任務」到「Nginx 開始寫入日誌」的時間線：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>17:04:46 request <span style="color:#bd93f9">1</span> task 
+</span></span><span style="display:flex;"><span>-&gt; <span style="color:#ff79c6">(</span>19s<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>17:05:5 container instance running <span style="color:#ff79c6">(</span>c6g.large<span style="color:#ff79c6">)</span> 
+</span></span><span style="display:flex;"><span>-&gt; <span style="color:#ff79c6">(</span>15s<span style="color:#ff79c6">)</span>  <span style="color:#ff79c6">(</span>pending<span style="color:#ff79c6">)</span> -&gt; <span style="color:#ff79c6">(</span>running<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>17:05:20 task running 
+</span></span><span style="display:flex;"><span>-&gt; <span style="color:#ff79c6">(</span>7s<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>17:05:27 application <span style="color:#ff79c6">(</span>nginx<span style="color:#ff79c6">)</span> logging
+</span></span></code></pre></div><p>Interpreted step-by-step:
+逐步解讀：</p>
+<ul>
+<li>
+<p><strong>0s</strong>: Request to start one Nginx task on <code>managed-instances-cluster</code>.</p>
+</li>
+<li>
+<p><strong>0 秒</strong>：請求在 <code>managed-instances-cluster</code> 上啟動一個 Nginx 任務。</p>
+</li>
+<li>
+<p><img src="/img/2026-01-17-ecs-managed-instance/0.png" alt=""></p>
+</li>
+<li>
+<p><img src="/img/2026-01-17-ecs-managed-instance/1.png" alt=""></p>
+</li>
+<li>
+<p><strong>~19s later</strong>: The first managed instance (in this run, <code>c6g.large</code>) is launched and registered to the ECS cluster.</p>
+</li>
+<li>
+<p><strong>約 19 秒後</strong>：第一個受管實例（此次執行為 <code>c6g.large</code>）啟動並註冊到 ECS 叢集。</p>
+</li>
+<li>
+<p><img src="/img/2026-01-17-ecs-managed-instance/2.png" alt=""></p>
+</li>
+<li>
+<p><strong>~15s after that</strong>: The ECS task reaches <code>RUNNING</code> state.</p>
+</li>
+<li>
+<p><strong>之後約 15 秒</strong>：ECS 任務達到 <code>RUNNING</code> 狀態。</p>
+</li>
+<li>
+<p><img src="/img/2026-01-17-ecs-managed-instance/3.png" alt=""></p>
+</li>
+<li>
+<p><strong>~7s later</strong>: Nginx starts writing application logs to CloudWatch Logs.</p>
+</li>
+<li>
+<p><strong>再過約 7 秒</strong>：Nginx 開始將應用程式日誌寫入 CloudWatch Logs。</p>
+</li>
+<li>
+<p><img src="/img/2026-01-17-ecs-managed-instance/5.png" alt=""></p>
+</li>
+<li>
+<p><img src="/img/2026-01-17-ecs-managed-instance/6.png" alt=""></p>
+</li>
+</ul>
+<p>So, from &ldquo;no container instances at all&rdquo; to &ldquo;Nginx actually serving and logging&rdquo; you&rsquo;re looking at roughly:
+因此，從「完全沒有容器實例」到「Nginx 實際服務並記錄日誌」大約需要：</p>
+<blockquote>
+<p><strong>19s (bring up EC2 + register) + 15s (pull image &amp; start container) + 7s (app startup &amp; first logs) ≒ 41 seconds</strong>
+<strong>19 秒（啟動 EC2 + 註冊）+ 15 秒（拉取映像檔 &amp; 啟動容器）+ 7 秒（應用程式啟動 &amp; 首次日誌）≒ 41 秒</strong></p>
+</blockquote>
+<p>For many back-office services, internal tools, or low-QPS control-plane style workloads:
+對於許多後台服務、內部工具或低 QPS 控制平面類型的工作負載：</p>
+<ul>
+<li>
+<p>This cold-start time is perfectly reasonable.</p>
+</li>
+<li>
+<p>這個冷啟動時間完全合理。</p>
+</li>
+<li>
+<p>You still gain the cost benefits and flexibility of EC2/Graviton.</p>
+</li>
+<li>
+<p>您仍然可以獲得 EC2/Graviton 的成本優勢和彈性。</p>
+</li>
+</ul>
+<hr>
+<h2 id="when-to-consider-ecs-managed-instances">When to Consider ECS Managed Instances</h2>
+<h2 id="何時考慮使用-ecs-managed-instances">何時考慮使用 ECS Managed Instances</h2>
+<p>Some scenarios where ECS Managed Instances can be a great fit:
+以下是 ECS Managed Instances 非常適合的一些場景：</p>
+<ul>
+<li>
+<p><strong>You want EC2 flexibility and cost-efficiency without maintaining ASGs yourself.</strong></p>
+</li>
+<li>
+<p><strong>您想要 EC2 的彈性和成本效益，但不想自己維護 ASG。</strong></p>
+</li>
+<li>
+<p><strong>Your workloads are bursty or intermittent</strong>, and you&rsquo;re okay with tens of seconds of cold start to avoid paying for idle EC2 capacity.</p>
+</li>
+<li>
+<p><strong>您的工作負載具有突發性或間歇性</strong>，您可以接受數十秒的冷啟動時間，以避免為閒置的 EC2 容量付費。</p>
+</li>
+<li>
+<p><strong>You need specific instance attributes</strong> (e.g. must run on Graviton, must have local NVMe, or must leverage Spot), but still want to orchestrate everything using ECS capacity provider strategies.</p>
+</li>
+<li>
+<p><strong>您需要特定的實例屬性</strong>（例如必須在 Graviton 上運行、必須有本地 NVMe、或必須利用 Spot），但仍希望使用 ECS 容量提供者策略來編排一切。</p>
+</li>
+</ul>
+<p>If you&rsquo;re already familiar with ECS on EC2 or Fargate and want a <strong>more hands-off way of managing EC2 capacity</strong>, this <code>ecs-mg</code> example is a good starting point.
+如果您已經熟悉 ECS on EC2 或 Fargate，並且想要一種<strong>更省事的 EC2 容量管理方式</strong>，這個 <code>ecs-mg</code> 範例是一個很好的起點。</p>
+<p>Just run <code>terraform apply</code>, watch the cluster come to life, and observe how Managed Instances handle capacity and cold starts for your Nginx service.
+只需執行 <code>terraform apply</code>，觀察叢集啟動，並觀察 Managed Instances 如何為您的 Nginx 服務處理容量和冷啟動。</p>
+<hr>
+<h2 id="findings--發現一些事情">Findings / 發現一些事情</h2>
+<h3 id="1-ecs-service-connect-with-ecs-exec-on-managed-instance-has-connection-issues">1. ECS Service Connect with ECS Exec on Managed Instance has connection issues</h3>
+<h3 id="1-當-ecs-service-connect-與-ecs-exec-同時啟用時managed-instance-上的-task-無法正常連線">1. 當 ECS Service Connect 與 ECS Exec 同時啟用時，Managed Instance 上的 Task 無法正常連線</h3>
+<blockquote>
+<p>If you deploy this Terraform example repo, the <code>nginx-service</code> will enable both ECS Service Connect and ECS Exec running on Managed Instance.</p>
+<p>如果你部署了這個 Terraform 範例，<code>nginx-service</code> 會同時開啟 ECS Service Connect 以及 ECS Exec，並運行於 Managed Instance 上。</p>
+</blockquote>
+<p><strong>Example / 範例：</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>aws ecs list-services --cluster managed-instances-cluster --region ap-east-2 --query <span style="color:#f1fa8c">&#39;serviceArns[]&#39;</span> --output table
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># ------------------------------------------------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># |                                         ListServices                                         |</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># +----------------------------------------------------------------------------------------------+</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># |  arn:aws:ecs:ap-east-2:012345678912:service/managed-instances-cluster/nginx-service-exec-ok  |</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># |  arn:aws:ecs:ap-east-2:012345678912:service/managed-instances-cluster/nginx-service-fargate  |</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># |  arn:aws:ecs:ap-east-2:012345678912:service/managed-instances-cluster/nginx-service          |</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># +----------------------------------------------------------------------------------------------+</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>bash scripts/check-exec-connect.bash <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  --cluster managed-instances-cluster <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  --region ap-east-2 <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  --service nginx-service
+</span></span></code></pre></div><p><img src="/img/2026-01-17-ecs-managed-instance/nginx-service.png" alt=""></p>
+<hr>
+<blockquote>
+<p>The <code>nginx-service-exec-ok</code> service only enables ECS Exec running on Managed Instance.</p>
+<p><code>nginx-service-exec-ok</code> 服務僅開啟 ECS Exec，運行於 Managed Instance 上。</p>
+</blockquote>
+<p><strong>Example / 範例：</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>bash scripts/check-exec-connect.bash <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  --cluster managed-instances-cluster <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  --region ap-east-2 <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  --service nginx-service-exec-ok
+</span></span></code></pre></div><p><img src="/img/2026-01-17-ecs-managed-instance/nginx-service-exec-ok.png" alt=""></p>
+<hr>
+<blockquote>
+<p>The <code>nginx-service-fargate</code> service enables both ECS Service Connect and ECS Exec running on Fargate.</p>
+<p><code>nginx-service-fargate</code> 服務同時開啟 ECS Service Connect 以及 ECS Exec，運行於 Fargate 上。</p>
+</blockquote>
+<p><strong>Example / 範例：</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>bash scripts/check-exec-connect.bash <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  --cluster managed-instances-cluster <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  --region ap-east-2 <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  --service nginx-service-fargate
+</span></span></code></pre></div><p><img src="/img/2026-01-17-ecs-managed-instance/nginx-service-fargate.png" alt=""></p>
+<hr>
+<h3 id="summary-table--總結表格">Summary Table / 總結表格</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Service Name</th>
+<th style="text-align:left">Launch Type</th>
+<th style="text-align:center">ECS Service Connect</th>
+<th style="text-align:center">ECS Exec</th>
+<th style="text-align:center">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>nginx-service</code></td>
+<td style="text-align:left">Managed Instance (EC2)</td>
+<td style="text-align:center">✅ Enabled</td>
+<td style="text-align:center">✅ Enabled</td>
+<td style="text-align:center">❌ <strong>Connection Failed</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>nginx-service-exec-ok</code></td>
+<td style="text-align:left">Managed Instance (EC2)</td>
+<td style="text-align:center">❌ Disabled</td>
+<td style="text-align:center">✅ Enabled</td>
+<td style="text-align:center">✅ <strong>Works</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>nginx-service-fargate</code></td>
+<td style="text-align:left">Fargate</td>
+<td style="text-align:center">✅ Enabled</td>
+<td style="text-align:center">✅ Enabled</td>
+<td style="text-align:center">✅ <strong>Works</strong></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">服務名稱</th>
+<th style="text-align:left">啟動類型</th>
+<th style="text-align:center">ECS Service Connect</th>
+<th style="text-align:center">ECS Exec</th>
+<th style="text-align:center">結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>nginx-service</code></td>
+<td style="text-align:left">Managed Instance (EC2)</td>
+<td style="text-align:center">✅ 啟用</td>
+<td style="text-align:center">✅ 啟用</td>
+<td style="text-align:center">❌ <strong>連線失敗</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>nginx-service-exec-ok</code></td>
+<td style="text-align:left">Managed Instance (EC2)</td>
+<td style="text-align:center">❌ 停用</td>
+<td style="text-align:center">✅ 啟用</td>
+<td style="text-align:center">✅ <strong>正常</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>nginx-service-fargate</code></td>
+<td style="text-align:left">Fargate</td>
+<td style="text-align:center">✅ 啟用</td>
+<td style="text-align:center">✅ 啟用</td>
+<td style="text-align:center">✅ <strong>正常</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="architecture-diagram--架構意象圖">Architecture Diagram / 架構意象圖</h3>
+<p><img src="/img/2026-01-17-ecs-managed-instance/summary.png" alt=""></p>
+<h3 id="conclusion--結論">Conclusion / 結論</h3>
+<blockquote>
+<p><strong>Issue</strong>: When both ECS Service Connect and ECS Exec are enabled on a Managed Instance (EC2), the ECS Exec connection fails.</p>
+<p><strong>問題</strong>：當 Managed Instance (EC2) 同時啟用 ECS Service Connect 與 ECS Exec 時，ECS Exec 連線會失敗。</p>
+</blockquote>
+<blockquote>
+<p><strong>Workaround</strong>: Either disable ECS Service Connect on Managed Instance, or use Fargate instead.</p>
+<p><strong>解決方法</strong>：在 Managed Instance 上停用 ECS Service Connect，或改用 Fargate。</p>
+</blockquote>
+<h2 id="-this-issue-was-reported-to-aws-support-on-20251225-and-is-currently-awaiting-a-response">🚨🚨🚨 This issue was reported to AWS Support on 2025/12/25 and is currently awaiting a response.</h2>
+<h2 id="-該問題已經在-20251225-回報給-aws-support目前等待回應中">🚨🚨🚨 該問題已經在 2025/12/25 回報給 AWS Support，目前等待回應中</h2>
+<h2 id="2026-01-17-neil-kuan-updated">2026-01-17 Neil Kuan Updated</h2>
+
+  </article><div class="bg-blue-100 dark:bg-gray-900">
+  <div class="container px-4 py-12 mx-auto max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+    <div>
+      <div class="text-2xl font-bold mb-2">Follow me</div>
+      <p class="opacity-60">Here&#39;s where I hang out in social media</p>
+    </div>
+
+    <ul class="flex justify-center gap-x-3 flex-wrap gap-y-2">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+      <li>
+        <a
+          href="https://github.com/neilkuan"
+          target="_blank"
+          rel="noopener"
+          aria-label="GitHub"
+          class="p-1 inline-block rounded-full border border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-800 cursor-pointer transition-colors dark:text-gray-600 dark:hover:border-gray-300 dark:hover:text-gray-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path
+              d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+            />
+          </svg>
+        </a>
+      </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+      <li>
+        <a
+          href="https://www.linkedin.com/in/neilkuan/"
+          target="_blank"
+          rel="noopener"
+          aria-label="LinkedIn"
+          class="p-1 inline-block rounded-full border border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-800 cursor-pointer transition-colors dark:text-gray-600 dark:hover:border-gray-300 dark:hover:text-gray-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+            <line x1="8" y1="11" x2="8" y2="16" />
+            <line x1="8" y1="8" x2="8" y2="8.01" />
+            <line x1="12" y1="16" x2="12" y2="11" />
+            <path d="M16 16v-3a2 2 0 0 0 -4 0" />
+          </svg>
+        </a>
+      </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+    </ul>
+  </div>
+</div>
+
+    </main><footer class="container p-6 mx-auto flex justify-between items-center">
+  <span class="text-sm font-light">
+    
+    © 2019-2024 Neil Kuan @neil_kuan.
+    
+  </span>
+  <span onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="p-1 cursor-pointer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5"
+      stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M18 15l-6 -6l-6 6h12" />
+    </svg>
+  </span>
+</footer>
+
+<div class="search-ui absolute top-0 left-0 w-full h-full bg-white dark:bg-gray-800 hidden">
+  <div class="container max-w-3xl mx-auto p-12">
+    <div class="relative">
+      <div class="my-4 text-center text-2xl font-bold">Search</div>
+
+      <span class="p-2 absolute right-0 top-0 cursor-pointer close-search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </span>
+    </div>
+
+    <input type="search" class="py-2 px-3 w-full dark:text-black border dark:border-transparent"
+      placeholder="Enter search query" />
+
+    <div class="search-results text-lg font-medium my-4 hidden">Results</div>
+    <ul class="search-list my-2">
+
+    </ul>
+
+    <div class="no-results text-center my-8 hidden">
+      <div class="text-xl font-semibold mb-2">No results found</div>
+      <p class="font-light text-sm">Try adjusting your search query</p>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script src="https://blog.neilkuan.click/js/scripts.min.js"></script>
+
+
+
+
+
+
+<script>
+  
+  const darkmode = document.querySelector('.toggle-dark-mode');
+  function toggleDarkMode() {
+    if (document.documentElement.classList.contains('dark')) {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('darkmode', 'light')
+    } else {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('darkmode', 'dark')
+    }
+  }
+  if (darkmode) {
+    darkmode.addEventListener('click', toggleDarkMode);
+  }
+
+  const darkStorage = localStorage.getItem('darkmode');
+  const isBrowserDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  if (!darkStorage && isBrowserDark) {
+    document.documentElement.classList.add('dark');
+  }
+
+  if (darkStorage && darkStorage === 'dark') {
+    toggleDarkMode();
+  }
+</script>
+
+
+<script>
+  const mobileMenuButton = document.querySelector('.mobile-menu-button')
+  const mobileMenu = document.querySelector('.mobile-menu')
+  function toggleMenu() {
+    mobileMenu.classList.toggle('hidden');
+    mobileMenu.classList.toggle('flex');
+  }
+  if(mobileMenu && mobileMenuButton){
+    mobileMenuButton.addEventListener('click', toggleMenu)
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage"><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="icon" href="/favicon.ico">
+
+  <title>
+  Helm 101 -  Neil Kuan
+  </title>
+  <meta name="description" content="versions Using helm cli version &ldquo;v3.13.1&rdquo; Orbstack kubernetes enabled &ldquo;1.5.1&rdquo; Install nginx chart into default namespace helm repo add bitnami https://charts.bitnami.com/bitnami helm install nginx bitnami/nginx --namespace default List all release in that namespace helm ls -n default NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERSION nginx default 1 2023-11-09 11:20:06.581867 &#43;0800 CST deployed nginx-15.4.0 1.25.3 ### List all namespace helm released helm ls -A NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERSION nginx default 1 2023-11-09 11:20:06." /><meta name="generator" content="Hugo 0.115.0"><link
+    rel="stylesheet"
+    href="https://blog.neilkuan.click/css/styles.min.eb7fe02195897f2fd20b6dcb5f80cda854ce0b58dcf3a28f1d23166a1eaaded4.css"
+    integrity="sha256-63/gIZWJfy/SC23LX4DNqFTOC1jc86KPHSMWah6q3tQ="
+  />
+  
+  
+
+  <meta property="og:title" content="Helm 101" />
+<meta property="og:description" content="versions Using helm cli version &ldquo;v3.13.1&rdquo; Orbstack kubernetes enabled &ldquo;1.5.1&rdquo; Install nginx chart into default namespace helm repo add bitnami https://charts.bitnami.com/bitnami helm install nginx bitnami/nginx --namespace default List all release in that namespace helm ls -n default NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERSION nginx default 1 2023-11-09 11:20:06.581867 &#43;0800 CST deployed nginx-15.4.0 1.25.3 ### List all namespace helm released helm ls -A NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERSION nginx default 1 2023-11-09 11:20:06." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.neilkuan.click/blog/2024-05-06-helm-101/" /><meta property="og:image" content="https://blog.neilkuan.click/img/2024-05-06-helm-101/0.png" /><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2024-05-06T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-05-06T00:00:00+00:00" />
+
+  <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://blog.neilkuan.click/img/2024-05-06-helm-101/0.png"/>
+
+<meta name="twitter:title" content="Helm 101"/>
+<meta name="twitter:description" content="versions Using helm cli version &ldquo;v3.13.1&rdquo; Orbstack kubernetes enabled &ldquo;1.5.1&rdquo; Install nginx chart into default namespace helm repo add bitnami https://charts.bitnami.com/bitnami helm install nginx bitnami/nginx --namespace default List all release in that namespace helm ls -n default NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERSION nginx default 1 2023-11-09 11:20:06.581867 &#43;0800 CST deployed nginx-15.4.0 1.25.3 ### List all namespace helm released helm ls -A NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERSION nginx default 1 2023-11-09 11:20:06."/>
+
+  <meta itemprop="name" content="Helm 101">
+<meta itemprop="description" content="versions Using helm cli version &ldquo;v3.13.1&rdquo; Orbstack kubernetes enabled &ldquo;1.5.1&rdquo; Install nginx chart into default namespace helm repo add bitnami https://charts.bitnami.com/bitnami helm install nginx bitnami/nginx --namespace default List all release in that namespace helm ls -n default NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERSION nginx default 1 2023-11-09 11:20:06.581867 &#43;0800 CST deployed nginx-15.4.0 1.25.3 ### List all namespace helm released helm ls -A NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERSION nginx default 1 2023-11-09 11:20:06."><meta itemprop="datePublished" content="2024-05-06T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2024-05-06T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1578"><meta itemprop="image" content="https://blog.neilkuan.click/img/2024-05-06-helm-101/0.png">
+<meta itemprop="keywords" content="" />
+
+  
+</head>
+<body class="dark:bg-gray-800 dark:text-white relative flex flex-col min-h-screen"><header class="container flex justify-between md:justify-between gap-4 flex-wrap p-6 mx-auto relative">
+  <a href="https://blog.neilkuan.click/" class="capitalize font-extrabold text-2xl">
+    
+     Neil Kuan
+    
+  </a>
+  <button class="mobile-menu-button md:hidden">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <line x1="4" y1="8" x2="20" y2="8" />
+      <line x1="4" y1="16" x2="20" y2="16" />
+    </svg>
+  </button>
+  <ul class="mobile-menu absolute z-10 px-6 pb-6 md:p-0 top-full left-0 w-full md:w-auto md:relative hidden md:flex flex-col md:flex-row items-end md:items-center gap-4 lg:gap-6 bg-white dark:bg-gray-800">
+
+    
+    <li><a href="/blog">Blog</a></li>
+    
+    <li><a href="/about">About</a></li>
+    
+
+    
+
+    
+    <li class="grid place-items-center">
+      <span class="open-search inline-block cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <circle cx="10" cy="10" r="7" />
+          <line x1="21" y1="21" x2="15" y2="15" />
+        </svg>
+      </span>
+    </li>
+    
+
+    
+    <li class="grid place-items-center">
+      <span class="toggle-dark-mode inline-block cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <circle cx="12" cy="12" r="3" />
+          <line x1="12" y1="5" x2="12" y2="5.01" />
+          <line x1="17" y1="7" x2="17" y2="7.01" />
+          <line x1="19" y1="12" x2="19" y2="12.01" />
+          <line x1="17" y1="17" x2="17" y2="17.01" />
+          <line x1="12" y1="19" x2="12" y2="19.01" />
+          <line x1="7" y1="17" x2="7" y2="17.01" />
+          <line x1="5" y1="12" x2="5" y2="12.01" />
+          <line x1="7" y1="7" x2="7" y2="7.01" />
+        </svg>
+      </span>
+    </li>
+    
+  </ul>
+</header>
+<main class="flex-1">
+  
+  
+
+  
+  <div class="relative max-w-5xl mx-auto px-4">
+    <img src="/img/2024-05-06-helm-101/0.png" class="rounded-lg shadow-sm w-full object-contain" />
+    
+    <div class="absolute top-4 right-8 rounded shadow bg-white text-gray-900 dark:bg-gray-900 dark:text-white px-2 py-0.5">
+      
+  
+    May 6, 2024
+  
+
+
+    </div>
+    
+  </div>
+  
+
+  <article class="prose lg:prose-lg mx-auto my-8 dark:prose-dark px-4">
+
+    <h1 class="text-2xl font-bold mb-2">Helm 101</h1>
+    
+    <h5 class="text-sm flex items-center flex-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" class="mr-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <rect x="4" y="5" width="16" height="16" rx="2" />
+        <line x1="16" y1="3" x2="16" y2="7" />
+        <line x1="8" y1="3" x2="8" y2="7" />
+        <line x1="4" y1="11" x2="20" y2="11" />
+        <rect x="8" y="15" width="2" height="2" />
+      </svg>
+      Posted on 
+  
+    May 6, 2024
+  
+
+
+      
+        &nbsp;&bull;&nbsp;
+      
+      <svg xmlns="http://www.w3.org/2000/svg" class="mr-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <circle cx="12" cy="12" r="9" />
+        <polyline points="12 7 12 12 15 15" />
+      </svg>
+      8&nbsp;minutes
+      &nbsp;&bull;
+      <svg xmlns="http://www.w3.org/2000/svg" class="mx-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
+        <path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
+        <line x1="3" y1="6" x2="3" y2="19" />
+        <line x1="12" y1="6" x2="12" y2="19" />
+        <line x1="21" y1="6" x2="21" y2="19" />
+      </svg>
+      1578&nbsp;words
+      
+    </h5>
+    
+
+    
+
+    <ul>
+<li>versions
+<ul>
+<li>Using helm cli version &ldquo;v3.13.1&rdquo;</li>
+<li>Orbstack kubernetes enabled &ldquo;1.5.1&rdquo;</li>
+</ul>
+</li>
+</ul>
+<ol start="0">
+<li>Install nginx chart into default namespace</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>helm repo add bitnami https://charts.bitnami.com/bitnami
+</span></span><span style="display:flex;"><span>helm install nginx bitnami/nginx --namespace default
+</span></span></code></pre></div><ol>
+<li>List all release in that namespace</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>helm ls -n default
+</span></span><span style="display:flex;"><span>NAME    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART           APP VERSION
+</span></span><span style="display:flex;"><span>nginx   default         <span style="color:#bd93f9">1</span>               2023-11-09 11:20:06.581867 +0800 CST    deployed        nginx-15.4.0    1.25.3
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">### List all namespace helm released</span>
+</span></span><span style="display:flex;"><span>helm ls -A 
+</span></span><span style="display:flex;"><span>NAME    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART           APP VERSION
+</span></span><span style="display:flex;"><span>nginx   default         <span style="color:#bd93f9">1</span>               2023-11-09 11:20:06.581867 +0800 CST    deployed        nginx-15.4.0    1.25.3
+</span></span></code></pre></div><ol start="2">
+<li>Get installed released values</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>helm get values nginx 
+</span></span><span style="display:flex;"><span>USER-SUPPLIED VALUES:
+</span></span><span style="display:flex;"><span>null
+</span></span></code></pre></div><ol start="3">
+<li>Show default chart values</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>helm show values bitnami/nginx &gt; values-nginx.yaml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>--- cat values-nginx.yaml ---
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># Copyright VMware, Inc.</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># SPDX-License-Identifier: APACHE-2.0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">## @section Global parameters</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">## Global Docker image parameters</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">## Please, note that this will override the image parameters, including dependencies, configured to use the global value</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">## @param global.imageRegistry Global Docker image registry</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">## @param global.imagePullSecrets Global Docker registry secret names as an array</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">##</span>
+</span></span><span style="display:flex;"><span>global:
+</span></span><span style="display:flex;"><span>  imageRegistry: <span style="color:#f1fa8c">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4">## E.g.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4">## imagePullSecrets:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4">##   - myRegistryKeySecretName</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4">##</span>
+</span></span><span style="display:flex;"><span>  imagePullSecrets: <span style="color:#ff79c6">[]</span>
+</span></span><span style="display:flex;"><span>... etc ...
+</span></span></code></pre></div><ol start="4">
+<li>helm add/remove repo</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4">#           [repo-name] [repo-url] </span>
+</span></span><span style="display:flex;"><span>helm repo add bitnami https://charts.bitnami.com/bitnami
+</span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;bitnami&#34;</span> has been removed from your repositories
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># update repo </span>
+</span></span><span style="display:flex;"><span>helm repo update <span style="color:#ff79c6">[</span>repo-name<span style="color:#ff79c6">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>helm repo remove bitnami
+</span></span></code></pre></div><ol start="5">
+<li>helm diff with plugin , get released and will released chart diff</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># step 0. install helm-diff plugin (Using Helm plugin manager (&gt; 2.3.x)</span>
+</span></span><span style="display:flex;"><span>helm plugin install https://github.com/databus23/helm-diff
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># step 1. helm install released named nginx from &#34;bitnami/nginx&#34; chart.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>helm install nginx bitnami/nginx 
+</span></span><span style="display:flex;"><span>NAME: nginx
+</span></span><span style="display:flex;"><span>LAST DEPLOYED: Thu Nov  <span style="color:#bd93f9">9</span> 16:04:32 <span style="color:#bd93f9">2023</span>
+</span></span><span style="display:flex;"><span>NAMESPACE: default
+</span></span><span style="display:flex;"><span>STATUS: deployed
+</span></span><span style="display:flex;"><span>REVISION: <span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span>TEST SUITE: None
+</span></span><span style="display:flex;"><span>NOTES:
+</span></span><span style="display:flex;"><span>CHART NAME: nginx
+</span></span><span style="display:flex;"><span>CHART VERSION: 15.4.0
+</span></span><span style="display:flex;"><span>APP VERSION: 1.25.3
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>** Please be patient <span style="color:#ff79c6">while</span> the chart is being deployed **
+</span></span><span style="display:flex;"><span>NGINX can be accessed through the following DNS name from within your cluster:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    nginx.default.svc.cluster.local <span style="color:#ff79c6">(</span>port 80<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>To access NGINX from outside the cluster, follow the steps below:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>1. Get the NGINX URL by running these commands:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  NOTE: It may take a few minutes <span style="color:#ff79c6">for</span> the LoadBalancer IP to be available.
+</span></span><span style="display:flex;"><span>        Watch the status with: <span style="color:#f1fa8c">&#39;kubectl get svc --namespace default -w nginx&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">SERVICE_PORT</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">$(</span>kubectl get --namespace default -o <span style="color:#8be9fd;font-style:italic">jsonpath</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;{.spec.ports[0].port}&#34;</span> services nginx<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">SERVICE_IP</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">$(</span>kubectl get svc --namespace default nginx -o <span style="color:#8be9fd;font-style:italic">jsonpath</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;{.status.loadBalancer.ingress[0].ip}&#39;</span><span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;http://</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">SERVICE_IP</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">:</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">SERVICE_PORT</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># step2. use helm-diff get diff</span>
+</span></span><span style="display:flex;"><span>helm diff upgrade nginx bitnami/nginx --set image.tag<span style="color:#ff79c6">=</span>latest    
+</span></span><span style="display:flex;"><span>default, nginx, Deployment <span style="color:#ff79c6">(</span>apps<span style="color:#ff79c6">)</span> has changed:
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>        initContainers:
+</span></span><span style="display:flex;"><span>        containers:
+</span></span><span style="display:flex;"><span>          - name: nginx
+</span></span><span style="display:flex;"><span>-           image: docker.io/bitnami/nginx:1.25.3-debian-11-r0
+</span></span><span style="display:flex;"><span>+           image: docker.io/bitnami/nginx:latest
+</span></span><span style="display:flex;"><span>            imagePullPolicy: <span style="color:#f1fa8c">&#34;IfNotPresent&#34;</span>
+</span></span><span style="display:flex;"><span>            securityContext:
+</span></span><span style="display:flex;"><span>              allowPrivilegeEscalation: <span style="color:#8be9fd;font-style:italic">false</span>
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p><img src="/img/2024-05-06-helm-101/1.png" alt="1.png">
+<img src="/img/2024-05-06-helm-101/2.png" alt="2.png"></p>
+<ol start="6">
+<li>helm upgrade &ndash;dry-run vs helm template
+helm upgrade &ndash;dry-run</li>
+</ol>
+<p>The helm upgrade &ndash;dry-run command serves as a valuable tool for validating and testing Helm chart deployments without altering the Kubernetes cluster. It performs a simulated upgrade of the chart, rendering the configuration and identifying potential conflicts without making any actual changes to the cluster&rsquo;s resources. This functionality is particularly useful for thoroughly testing the deployment process, ensuring the desired configuration is generated, and detecting any potential issues before deploying the chart to a production environment.</p>
+<p>helm template</p>
+<p>The helm template command provides a detailed view of the rendered configuration generated by a Helm chart template. It outputs the YAML manifest that would be applied to the cluster if the chart were upgraded using the helm upgrade command. This detailed representation allows for thorough inspection of the generated configuration, enabling users to identify any necessary adjustments before proceeding with the deployment. Understanding the evaluated Helm templates and the resulting configuration is crucial for ensuring the chart is deployed as intended.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>helm upgrade &ndash;dry-run</th>
+<th>helm template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Purpose</td>
+<td>Simulated chart upgrade without changes</td>
+<td>Renders chart template into YAML manifest</td>
+</tr>
+<tr>
+<td>Level of detail</td>
+<td>Shows rendered configuration and conflicts</td>
+<td>Shows rendered configuration in YAML format</td>
+</tr>
+<tr>
+<td>Deployment impact</td>
+<td>No impact on cluster</td>
+<td>No impact on cluster</td>
+</tr>
+<tr>
+<td>Usage Scenarios</td>
+<td>Validating deployment process, identifying conflicts, validating configuration before deployment</td>
+<td>Inspecting rendered configuration, understanding template evaluation, making manual adjustments</td>
+</tr>
+</tbody>
+</table>
+<ol start="7">
+<li>Search chart name contain nginx</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>helm search repo nginx
+</span></span><span style="display:flex;"><span>NAME                                            CHART VERSION   APP VERSION     DESCRIPTION                                       
+</span></span><span style="display:flex;"><span>bitnami/nginx                                   15.4.0          1.25.3          NGINX Open Source is a web server that can be a...
+</span></span><span style="display:flex;"><span>bitnami/nginx-ingress-controller                9.9.2           1.9.3           NGINX Ingress Controller is an Ingress controll...
+</span></span><span style="display:flex;"><span>bitnami/nginx-intel                             2.1.15          0.4.9           DEPRECATED NGINX Open Source <span style="color:#ff79c6">for</span> Intel is a lig...
+</span></span><span style="display:flex;"><span>prometheus-community/prometheus-nginx-exporter  0.2.0           0.11.0          A Helm chart <span style="color:#ff79c6">for</span> the Prometheus NGINX Exporter    
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># List all chart and version (show the long listing)</span>
+</span></span><span style="display:flex;"><span>helm search repo nginx -l                                   
+</span></span><span style="display:flex;"><span>NAME                                            CHART VERSION   APP VERSION     DESCRIPTION                                       
+</span></span><span style="display:flex;"><span>bitnami/nginx                                   15.4.0          1.25.3          NGINX Open Source is a web server that can be a...
+</span></span><span style="display:flex;"><span>bitnami/nginx                                   15.3.5          1.25.3          NGINX Open Source is a web server that can be a...
+</span></span><span style="display:flex;"><span>bitnami/nginx                                   15.3.4          1.25.2          NGINX Open Source is a web server that can be a...
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>bitnami/nginx                                   12.0.2          1.22.0          NGINX Open Source is a web server that can be a...
+</span></span><span style="display:flex;"><span>bitnami/nginx                                   12.0.1          1.22.0          NGINX Open Source is a web server that can be a...
+</span></span><span style="display:flex;"><span>bitnami/nginx-ingress-controller                9.9.2           1.9.3           NGINX Ingress Controller is an Ingress controll...
+</span></span><span style="display:flex;"><span>bitnami/nginx-ingress-controller                9.9.1           1.9.1           NGINX Ingress Controller is an Ingress controll...
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>bitnami/nginx-ingress-controller                9.2.8           1.2.1           NGINX Ingress Controller is an Ingress controll...
+</span></span><span style="display:flex;"><span>bitnami/nginx-ingress-controller                9.2.6           1.2.1           NGINX Ingress Controller is an Ingress controll...
+</span></span><span style="display:flex;"><span>bitnami/nginx-intel                             2.1.15          0.4.9           DEPRECATED NGINX Open Source <span style="color:#ff79c6">for</span> Intel is a lig...
+</span></span><span style="display:flex;"><span>bitnami/nginx-intel                             2.1.14          0.4.9           NGINX Open Source <span style="color:#ff79c6">for</span> Intel is a lightweight se...
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>bitnami/nginx-intel                             2.0.7           0.4.7           NGINX Open Source <span style="color:#ff79c6">for</span> Intel is a lightweight se...
+</span></span><span style="display:flex;"><span>prometheus-community/prometheus-nginx-exporter  0.2.0           0.11.0          A Helm chart <span style="color:#ff79c6">for</span> the Prometheus NGINX Exporter    
+</span></span><span style="display:flex;"><span>prometheus-community/prometheus-nginx-exporter  0.1.1           0.11.0          A Helm chart <span style="color:#ff79c6">for</span> the Prometheus NGINX Exporter    
+</span></span><span style="display:flex;"><span>prometheus-community/prometheus-nginx-exporter  0.1.0           0.11.0          A Helm chart <span style="color:#ff79c6">for</span> the Prometheus NGINX Exporter
+</span></span></code></pre></div><ol start="8">
+<li>Download the chart from repo to local.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4">## download nginx chart version 15.1.2 from bitnami/nginx repo </span>
+</span></span><span style="display:flex;"><span>helm pull bitnami/nginx --version 15.1.2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ls -l nginx-15.1.2.tgz            
+</span></span><span style="display:flex;"><span>.rw-r--r-- neil.kuan staff <span style="color:#bd93f9">37</span> KB Thu Nov  <span style="color:#bd93f9">9</span> 16:15:06 <span style="color:#bd93f9">2023</span>  nginx-15.1.2.tgz
+</span></span></code></pre></div><ol start="9">
+<li>Publish helm chart to AWS ECR
+docs: <a href="https://splashtop.atlassian.net/wiki/spaces/~712020e6d0f2d2753c4a999b035548993f6100/pages/942670252/Helm&#43;101#docs%3A-Push-Helm-Chart---Amazon-ECR" target="_blank" rel="noopener">https://splashtop.atlassian.net/wiki/spaces/~712020e6d0f2d2753c4a999b035548993f6100/pages/942670252/Helm&#43;101#docs%3A-Push-Helm-Chart---Amazon-ECR</a>
+</li>
+</ol>
+<p>a. 建立一個名為 helm-test-chart 的 Helm Chart 並清除 templates 目錄的內容。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>helm create helm-test-chart
+</span></span><span style="display:flex;"><span>rm -rf ./helm-test-chart/templates/*
+</span></span></code></pre></div><p>b. 在 templates 資料夾中建立 ConfigMap。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">cd</span> helm-test-chart/templates
+</span></span><span style="display:flex;"><span>cat <span style="color:#f1fa8c">&lt;&lt;EOF &gt; configmap.yaml
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">apiVersion: v1
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">kind: ConfigMap
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">metadata:
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">  name: helm-test-chart-configmap
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">data:
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">  myvalue: &#34;Hello World&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">EOF</span>
+</span></span></code></pre></div><p>c. 封裝圖表。輸出將包含您在推送 Helm Chart 時使用的封裝圖表的檔案名稱。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">cd</span> ../..
+</span></span><span style="display:flex;"><span>helm package helm-test-chart
+</span></span><span style="display:flex;"><span>--- output ---
+</span></span><span style="display:flex;"><span>Successfully packaged chart and saved it to: /Users/username/helm-test-chart-0.1.0.tgz
+</span></span></code></pre></div><p>d. 建立儲存庫以存放 Helm Chart。儲存庫的名稱應與您在步驟 2 中建立 Helm Chart 時使用的名稱相符。如需更多詳細資訊</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>aws ecr create-repository <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>     --repository-name helm-test-chart <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>     --region us-west-2
+</span></span></code></pre></div><p>e. 將您的 Helm 用戶端驗證到您打算將 Helm Chart 推送到的 Amazon ECR 登錄檔。所用的每個登錄檔皆必須取得身分驗證字符，字符有效期間為 12 個小時。如需更多詳細資訊，請參閱 私有登錄檔身分驗證。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>aws ecr get-login-password <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>     --region us-west-2 | helm registry login <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>     --username AWS <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>     --password-stdin aws_account_id.dkr.ecr.us-west-2.amazonaws.com
+</span></span></code></pre></div><p>f. 使用 helm push 命令推送 Helm Chart。輸出應該包括 Amazon ECR 儲存庫 URI 和 SHA 摘要。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>helm push helm-test-chart-0.1.0.tgz oci://aws_account_id.dkr.ecr.us-west-2.amazonaws.com/
+</span></span></code></pre></div><p>g. 描述您的 Helm Chart。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>aws ecr describe-images <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>     --repository-name helm-test-chart <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>     --region us-west-2
+</span></span><span style="display:flex;"><span>--- output ---
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f1fa8c">&#34;imageDetails&#34;</span>: <span style="color:#ff79c6">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f1fa8c">&#34;registryId&#34;</span>: <span style="color:#f1fa8c">&#34;aws_account_id&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f1fa8c">&#34;repositoryName&#34;</span>: <span style="color:#f1fa8c">&#34;helm-test-chart&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f1fa8c">&#34;imageDigest&#34;</span>: <span style="color:#f1fa8c">&#34;sha256:dd8aebdda7df991a0ffe0b3d6c0cf315fd582cd26f9755a347a52adEXAMPLE&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f1fa8c">&#34;imageTags&#34;</span>: <span style="color:#ff79c6">[</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f1fa8c">&#34;0.1.0&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">]</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f1fa8c">&#34;imageSizeInBytes&#34;</span>: 1620,
+</span></span><span style="display:flex;"><span>            <span style="color:#f1fa8c">&#34;imagePushedAt&#34;</span>: <span style="color:#f1fa8c">&#34;2021-09-23T11:39:30-05:00&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f1fa8c">&#34;imageManifestMediaType&#34;</span>: <span style="color:#f1fa8c">&#34;application/vnd.oci.image.manifest.v1+json&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f1fa8c">&#34;artifactMediaType&#34;</span>: <span style="color:#f1fa8c">&#34;application/vnd.cncf.helm.config.v1+json&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">}</span>
+</span></span></code></pre></div><ol start="9">
+<li>Helm diif plugin update version</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>helm diff version 
+</span></span><span style="display:flex;"><span>3.8.1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>helm plugin update diff     
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Downloading https://github.com/databus23/helm-diff/releases/latest/download/helm-diff-macos-arm64.tgz
+</span></span><span style="display:flex;"><span>Preparing to install into /Users/neil.kuan/Library/helm/plugins/helm-diff
+</span></span><span style="display:flex;"><span>helm-diff installed into /Users/neil.kuan/Library/helm/plugins/helm-diff/helm-diff
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>helm diff version                                         
+</span></span><span style="display:flex;"><span>3.9.4
+</span></span></code></pre></div><ol start="10">
+<li>Helm imported existed resource to managed
+ref: <a href="https://github.com/helm/helm/pull/7649" target="_blank" rel="noopener">https://github.com/helm/helm/pull/7649</a>
+</li>
+</ol>
+<p>從 Helm 3.2 開始，可以將現有資源導入/採用到 helm 版本¹ 中。要實現這一點，您只需要在資源中添加以下註釋和標籤：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>annotations:
+</span></span><span style="display:flex;"><span>  meta.helm.sh/release-name: app-release-name
+</span></span><span style="display:flex;"><span>  meta.helm.sh/release-namespace: app-deploy-namespace-name
+</span></span><span style="display:flex;"><span>labels:
+</span></span><span style="display:flex;"><span>  app.kubernetes.io/managed-by: Helm 
+</span></span></code></pre></div><p>a. Example create namespace name app-ns</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ kubectl create namespace app-ns
+</span></span><span style="display:flex;"><span>namespace/app-ns created
+</span></span></code></pre></div><p>b. Get Namespace</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ kubectl get namespace app-ns -o yaml
+</span></span><span style="display:flex;"><span>--- output ---
+</span></span><span style="display:flex;"><span>apiVersion: v1
+</span></span><span style="display:flex;"><span>kind: Namespace
+</span></span><span style="display:flex;"><span>metadata:
+</span></span><span style="display:flex;"><span>  creationTimestamp: <span style="color:#f1fa8c">&#34;2024-05-06T00:30:46Z&#34;</span>
+</span></span><span style="display:flex;"><span>  labels:
+</span></span><span style="display:flex;"><span>    kubernetes.io/metadata.name: app-ns
+</span></span><span style="display:flex;"><span>  name: app-ns
+</span></span><span style="display:flex;"><span>  resourceVersion: <span style="color:#f1fa8c">&#34;1039976&#34;</span>
+</span></span><span style="display:flex;"><span>  uid: a2f0c6b0-06d4-480c-bf2b-41532f1973c4
+</span></span><span style="display:flex;"><span>spec:
+</span></span><span style="display:flex;"><span>  finalizers:
+</span></span><span style="display:flex;"><span>  - kubernetes
+</span></span><span style="display:flex;"><span>status:
+</span></span><span style="display:flex;"><span>  phase: Active
+</span></span></code></pre></div><p>c. Add <code>labels</code> and <code>annotates</code> by which <code>release name</code> and <code>release namespace</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">KIND</span><span style="color:#ff79c6">=</span>namespace
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">NAME</span><span style="color:#ff79c6">=</span>app-ns
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">RELEASE_NAME</span><span style="color:#ff79c6">=</span>&lt;????&gt;
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">NAMESPACE</span><span style="color:#ff79c6">=</span>app-ns
+</span></span><span style="display:flex;"><span>kubectl annotate <span style="color:#8be9fd;font-style:italic">$KIND</span> <span style="color:#8be9fd;font-style:italic">$NAME</span> meta.helm.sh/release-name<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$RELEASE_NAME</span>
+</span></span><span style="display:flex;"><span>kubectl annotate <span style="color:#8be9fd;font-style:italic">$KIND</span> <span style="color:#8be9fd;font-style:italic">$NAME</span> meta.helm.sh/release-namespace<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NAMESPACE</span>
+</span></span><span style="display:flex;"><span>kubectl label <span style="color:#8be9fd;font-style:italic">$KIND</span> <span style="color:#8be9fd;font-style:italic">$NAME</span> app.kubernetes.io/managed-by<span style="color:#ff79c6">=</span>Helm
+</span></span></code></pre></div><p>d. Example I want to managed this namespace in helm release name <code>app-v1</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">KIND</span><span style="color:#ff79c6">=</span>namespace
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">NAME</span><span style="color:#ff79c6">=</span>app-ns
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">RELEASE_NAME</span><span style="color:#ff79c6">=</span>app-v1
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">NAMESPACE</span><span style="color:#ff79c6">=</span>app-ns
+</span></span><span style="display:flex;"><span>kubectl annotate <span style="color:#8be9fd;font-style:italic">$KIND</span> <span style="color:#8be9fd;font-style:italic">$NAME</span> meta.helm.sh/release-name<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$RELEASE_NAME</span>
+</span></span><span style="display:flex;"><span>kubectl annotate <span style="color:#8be9fd;font-style:italic">$KIND</span> <span style="color:#8be9fd;font-style:italic">$NAME</span> meta.helm.sh/release-namespace<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NAMESPACE</span>
+</span></span><span style="display:flex;"><span>kubectl label <span style="color:#8be9fd;font-style:italic">$KIND</span> <span style="color:#8be9fd;font-style:italic">$NAME</span> app.kubernetes.io/managed-by<span style="color:#ff79c6">=</span>Helm
+</span></span><span style="display:flex;"><span>namespace/app-ns annotated
+</span></span><span style="display:flex;"><span>namespace/app-ns annotated
+</span></span><span style="display:flex;"><span>namespace/app-ns labeled
+</span></span></code></pre></div><p>e. After added <code>labels</code> and <code>annotates</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ kubectl get namespace app-ns -o yaml
+</span></span><span style="display:flex;"><span>--- output ---
+</span></span><span style="display:flex;"><span>apiVersion: v1
+</span></span><span style="display:flex;"><span>kind: Namespace
+</span></span><span style="display:flex;"><span>metadata:
+</span></span><span style="display:flex;"><span>  annotations:
+</span></span><span style="display:flex;"><span>    meta.helm.sh/release-name: app-v1
+</span></span><span style="display:flex;"><span>    meta.helm.sh/release-namespace: app-ns
+</span></span><span style="display:flex;"><span>  creationTimestamp: <span style="color:#f1fa8c">&#34;2024-05-06T00:30:46Z&#34;</span>
+</span></span><span style="display:flex;"><span>  labels:
+</span></span><span style="display:flex;"><span>    app.kubernetes.io/managed-by: Helm
+</span></span><span style="display:flex;"><span>    kubernetes.io/metadata.name: app-ns
+</span></span><span style="display:flex;"><span>  name: app-ns
+</span></span><span style="display:flex;"><span>  resourceVersion: <span style="color:#f1fa8c">&#34;1040072&#34;</span>
+</span></span><span style="display:flex;"><span>  uid: a2f0c6b0-06d4-480c-bf2b-41532f1973c4
+</span></span><span style="display:flex;"><span>spec:
+</span></span><span style="display:flex;"><span>  finalizers:
+</span></span><span style="display:flex;"><span>  - kubernetes
+</span></span><span style="display:flex;"><span>status:
+</span></span><span style="display:flex;"><span>  phase: Active
+</span></span></code></pre></div><ol start="10">
+<li>Troubleshooting
+Try to import <code>app-ns</code> <code>namespace</code> into helm chart helm-lab in <code>app-v1</code> release.
+<img src="/img/2024-05-06-helm-101/3.png" alt="3.png"></li>
+</ol>
+<p>🚨 🚨 🚨 Meet this error 🚨 🚨 🚨</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Error: INSTALLATION FAILED: Unable to <span style="color:#ff79c6">continue</span> with install:
+</span></span><span style="display:flex;"><span>Namespace <span style="color:#f1fa8c">&#34;app-ns&#34;</span> in namespace <span style="color:#f1fa8c">&#34;&#34;</span> exists and cannot be imported into the current release: 
+</span></span><span style="display:flex;"><span>  invalid ownership metadata;
+</span></span><span style="display:flex;"><span>annotation validation error: key <span style="color:#f1fa8c">&#34;meta.helm.sh/release-namespace&#34;</span> 
+</span></span><span style="display:flex;"><span>must equal <span style="color:#f1fa8c">&#34;app-ns&#34;</span>: current value is <span style="color:#f1fa8c">&#34;app&#34;</span>
+</span></span></code></pre></div><p><img src="/img/2024-05-06-helm-101/4.png" alt="4.png">
+Check out the <code>labels</code> and <code>annotates</code> at <code>app-ns</code> namespace</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ kubectl get namespace app-ns -o yaml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>--- output ---
+</span></span><span style="display:flex;"><span>apiVersion: v1
+</span></span><span style="display:flex;"><span>kind: Namespace
+</span></span><span style="display:flex;"><span>metadata:
+</span></span><span style="display:flex;"><span>  annotations:
+</span></span><span style="display:flex;"><span>    meta.helm.sh/release-name: app-v1
+</span></span><span style="display:flex;"><span>    meta.helm.sh/release-namespace: app
+</span></span><span style="display:flex;"><span>  creationTimestamp: <span style="color:#f1fa8c">&#34;2024-05-06T00:30:46Z&#34;</span>
+</span></span><span style="display:flex;"><span>  labels:
+</span></span><span style="display:flex;"><span>    app.kubernetes.io/managed-by: Helm
+</span></span><span style="display:flex;"><span>    kubernetes.io/metadata.name: app-ns
+</span></span><span style="display:flex;"><span>  name: app-ns
+</span></span><span style="display:flex;"><span>  resourceVersion: <span style="color:#f1fa8c">&#34;1040199&#34;</span>
+</span></span><span style="display:flex;"><span>  uid: a2f0c6b0-06d4-480c-bf2b-41532f1973c4
+</span></span><span style="display:flex;"><span>spec:
+</span></span><span style="display:flex;"><span>  finalizers:
+</span></span><span style="display:flex;"><span>  - kubernetes
+</span></span><span style="display:flex;"><span>status:
+</span></span><span style="display:flex;"><span>  phase: Active
+</span></span></code></pre></div><p>This issue case by <code>annotate</code> <code>meta.helm.sh/release-namespace: app</code>, no equal at helm install <code>helm-lab</code> chart that use namespace <code>app-ns</code>.
+<img src="/img/2024-05-06-helm-101/5.png" alt="5.png">
+<img src="/img/2024-05-06-helm-101/6.png" alt="6.png"></p>
+<p>Let’s fix this issue by <code>overwrite</code> this <code>annotate</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ kubectl annotate ns app-ns <span style="color:#f1fa8c">&#39;meta.helm.sh/release-namespace=app-ns&#39;</span> --overwrite
+</span></span></code></pre></div><p>Check <code>app-ns</code> namespace again</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ kubectl get namespace app-ns -o yaml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>--- output ---
+</span></span><span style="display:flex;"><span>apiVersion: v1
+</span></span><span style="display:flex;"><span>kind: Namespace
+</span></span><span style="display:flex;"><span>metadata:
+</span></span><span style="display:flex;"><span>  annotations:
+</span></span><span style="display:flex;"><span>    meta.helm.sh/release-name: app-v1
+</span></span><span style="display:flex;"><span>    meta.helm.sh/release-namespace: app-ns
+</span></span><span style="display:flex;"><span>  creationTimestamp: <span style="color:#f1fa8c">&#34;2024-05-06T00:30:46Z&#34;</span>
+</span></span><span style="display:flex;"><span>  labels:
+</span></span><span style="display:flex;"><span>    app.kubernetes.io/managed-by: Helm
+</span></span><span style="display:flex;"><span>    kubernetes.io/metadata.name: app-ns
+</span></span><span style="display:flex;"><span>  name: app-ns
+</span></span><span style="display:flex;"><span>  resourceVersion: <span style="color:#f1fa8c">&#34;1040489&#34;</span>
+</span></span><span style="display:flex;"><span>  uid: a2f0c6b0-06d4-480c-bf2b-41532f1973c4
+</span></span><span style="display:flex;"><span>spec:
+</span></span><span style="display:flex;"><span>  finalizers:
+</span></span><span style="display:flex;"><span>  - kubernetes
+</span></span><span style="display:flex;"><span>status:
+</span></span><span style="display:flex;"><span>  phase: Active
+</span></span></code></pre></div><p>Install helm chart <code>helm-lab</code> release name <code>app-v1</code> success!!!
+<img src="/img/2024-05-06-helm-101/7.png" alt="7.png"></p>
+<p>Check <code>app-ns</code> namespace again</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ kubectl get namespace app-ns -o yaml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>--- output ---
+</span></span><span style="display:flex;"><span>apiVersion: v1
+</span></span><span style="display:flex;"><span>kind: Namespace
+</span></span><span style="display:flex;"><span>metadata:
+</span></span><span style="display:flex;"><span>  annotations:
+</span></span><span style="display:flex;"><span>    meta.helm.sh/release-name: app-v1
+</span></span><span style="display:flex;"><span>    meta.helm.sh/release-namespace: app-ns
+</span></span><span style="display:flex;"><span>  creationTimestamp: <span style="color:#f1fa8c">&#34;2024-05-06T00:30:46Z&#34;</span>
+</span></span><span style="display:flex;"><span>  labels:
+</span></span><span style="display:flex;"><span>    app.kubernetes.io/managed-by: Helm
+</span></span><span style="display:flex;"><span>    kubernetes.io/metadata.name: app-ns
+</span></span><span style="display:flex;"><span>  name: app-ns
+</span></span><span style="display:flex;"><span>  resourceVersion: <span style="color:#f1fa8c">&#34;1040489&#34;</span>
+</span></span><span style="display:flex;"><span>  uid: a2f0c6b0-06d4-480c-bf2b-41532f1973c4
+</span></span><span style="display:flex;"><span>spec:
+</span></span><span style="display:flex;"><span>  finalizers:
+</span></span><span style="display:flex;"><span>  - kubernetes
+</span></span><span style="display:flex;"><span>status:
+</span></span><span style="display:flex;"><span>  phase: Active
+</span></span></code></pre></div><h2 id="20240326-neil-kuan-updated">20240326 Neil Kuan Updated</h2>
+
+  </article><div class="bg-blue-100 dark:bg-gray-900">
+  <div class="container px-4 py-12 mx-auto max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+    <div>
+      <div class="text-2xl font-bold mb-2">Follow me</div>
+      <p class="opacity-60">Here&#39;s where I hang out in social media</p>
+    </div>
+
+    <ul class="flex justify-center gap-x-3 flex-wrap gap-y-2">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+      <li>
+        <a
+          href="https://github.com/neilkuan"
+          target="_blank"
+          rel="noopener"
+          aria-label="GitHub"
+          class="p-1 inline-block rounded-full border border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-800 cursor-pointer transition-colors dark:text-gray-600 dark:hover:border-gray-300 dark:hover:text-gray-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path
+              d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+            />
+          </svg>
+        </a>
+      </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+      <li>
+        <a
+          href="https://www.linkedin.com/in/neilkuan/"
+          target="_blank"
+          rel="noopener"
+          aria-label="LinkedIn"
+          class="p-1 inline-block rounded-full border border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-800 cursor-pointer transition-colors dark:text-gray-600 dark:hover:border-gray-300 dark:hover:text-gray-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+            <line x1="8" y1="11" x2="8" y2="16" />
+            <line x1="8" y1="8" x2="8" y2="8.01" />
+            <line x1="12" y1="16" x2="12" y2="11" />
+            <path d="M16 16v-3a2 2 0 0 0 -4 0" />
+          </svg>
+        </a>
+      </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+    </ul>
+  </div>
+</div>
+
+    </main><footer class="container p-6 mx-auto flex justify-between items-center">
+  <span class="text-sm font-light">
+    
+    © 2019-2024 Neil Kuan @neil_kuan.
+    
+  </span>
+  <span onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="p-1 cursor-pointer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5"
+      stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M18 15l-6 -6l-6 6h12" />
+    </svg>
+  </span>
+</footer>
+
+<div class="search-ui absolute top-0 left-0 w-full h-full bg-white dark:bg-gray-800 hidden">
+  <div class="container max-w-3xl mx-auto p-12">
+    <div class="relative">
+      <div class="my-4 text-center text-2xl font-bold">Search</div>
+
+      <span class="p-2 absolute right-0 top-0 cursor-pointer close-search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </span>
+    </div>
+
+    <input type="search" class="py-2 px-3 w-full dark:text-black border dark:border-transparent"
+      placeholder="Enter search query" />
+
+    <div class="search-results text-lg font-medium my-4 hidden">Results</div>
+    <ul class="search-list my-2">
+
+    </ul>
+
+    <div class="no-results text-center my-8 hidden">
+      <div class="text-xl font-semibold mb-2">No results found</div>
+      <p class="font-light text-sm">Try adjusting your search query</p>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script src="https://blog.neilkuan.click/js/scripts.min.js"></script>
+
+
+
+
+
+
+<script>
+  
+  const darkmode = document.querySelector('.toggle-dark-mode');
+  function toggleDarkMode() {
+    if (document.documentElement.classList.contains('dark')) {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('darkmode', 'light')
+    } else {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('darkmode', 'dark')
+    }
+  }
+  if (darkmode) {
+    darkmode.addEventListener('click', toggleDarkMode);
+  }
+
+  const darkStorage = localStorage.getItem('darkmode');
+  const isBrowserDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  if (!darkStorage && isBrowserDark) {
+    document.documentElement.classList.add('dark');
+  }
+
+  if (darkStorage && darkStorage === 'dark') {
+    toggleDarkMode();
+  }
+</script>
+
+
+<script>
+  const mobileMenuButton = document.querySelector('.mobile-menu-button')
+  const mobileMenu = document.querySelector('.mobile-menu')
+  function toggleMenu() {
+    mobileMenu.classList.toggle('hidden');
+    mobileMenu.classList.toggle('flex');
+  }
+  if(mobileMenu && mobileMenuButton){
+    mobileMenuButton.addEventListener('click', toggleMenu)
+  }
+</script>
+</body>
+</html>
